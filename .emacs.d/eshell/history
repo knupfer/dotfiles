@@ -1,0 +1,106 @@
+help
+ls
+man emacs
+eshell
+ls
+git
+cd
+ls
+cd ..
+cd
+cd git/
+cd knupfer.github.io/
+ls
+htop
+man eshell
+angband
+python3
+apt-get -f install
+ls
+find-file muu.txt
+rm muu.txt
+cat muuuu 
+rm muuuu
+cat notes.org
+ls
+rm notes.*
+rm notes.org
+*rm notes.*
+ls
+rm muuuu\~ 
+ls
+cat test.c
+rm test*
+rm *#
+ls
+nice -19 apt-get update
+apt-get update
+ls
+free
+free -h
+cd Org/
+ls
+grep white stimmphysiologie.org
+*grep white stimmphysiologie.org
+grep 'white' stimmphysiologie.org
+grep -n 'white' stimmphysiologie.org
+*grep -n 'white' stimmphysiologie.org
+*grep -n 'stimm' stimmphysiologie.org
+grep -n 'stimm' stimmphysiologie.org
+man grep
+which
+which 0
+which man
+which *man
+*which
+*which man
+sh
+zsh
+eshell
+man eshell
+ls
+cat notiz.org > #<buffer test22>
+cat notiz.org > #<buffer *eshell*>
+cat notiz.org >>> #<buffer test22>
+grep
+grep -h
+grep -n
+grep -n notiz.org
+*grep -n notiz.org
+*grep -n ono notiz.org
+*grep  ono notiz.org
+apt-get remove guake
+guake
+apt-get remove guake*
+apt-get remove evince
+(+ 4 7)
+ls
+cd Org/
+ls
+grep stimm stimmphysiologie.org
+(+ 4 7)
+(- 4 9)
+ls
+ls Org
+notiz.org~  stimmphysiologie.org  stimmphysiologie.pdf   stimmphysiologie.toc   test.tex
+#test.org#  stimmphysiologie.aux  stimmphysiologie.org~  stimmphysiologie.tex   test.log
+#test.org#  stimmphysiologie.aux  stimmphysiologie.org~  stimmphysiologie.tex   test.log
+cd git
+cd knupfer.github.io/_org/
+cd
+cd git/knupfer.github.io/_processing/
+ls
+cd..
+cd ..
+cd _org/
+ls
+sh
+bash
+emacs
+whitespace-mode 
+whitespace-mode 
+whitespace-mode nil
+whitespace-mode
+whitespace-mode nil
+(whitespace-mode nil)
+exit
