@@ -1,0 +1,4 @@
+PATH=/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/florian/neo
+export PATH
+echo "Die Belegung wird nun auf Neo geändert…"
+asdf
