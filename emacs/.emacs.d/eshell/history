@@ -1,92 +1,3 @@
-help
-ls
-man emacs
-eshell
-ls
-git
-cd
-ls
-cd ..
-cd
-cd git/
-cd knupfer.github.io/
-ls
-htop
-man eshell
-angband
-python3
-apt-get -f install
-ls
-find-file muu.txt
-rm muu.txt
-cat muuuu 
-rm muuuu
-cat notes.org
-ls
-rm notes.*
-rm notes.org
-*rm notes.*
-ls
-rm muuuu\~ 
-ls
-cat test.c
-rm test*
-rm *#
-ls
-nice -19 apt-get update
-apt-get update
-ls
-free
-free -h
-cd Org/
-ls
-grep white stimmphysiologie.org
-*grep white stimmphysiologie.org
-grep 'white' stimmphysiologie.org
-grep -n 'white' stimmphysiologie.org
-*grep -n 'white' stimmphysiologie.org
-*grep -n 'stimm' stimmphysiologie.org
-grep -n 'stimm' stimmphysiologie.org
-man grep
-which
-which 0
-which man
-which *man
-*which
-*which man
-sh
-zsh
-eshell
-man eshell
-ls
-cat notiz.org > #<buffer test22>
-cat notiz.org > #<buffer *eshell*>
-cat notiz.org >>> #<buffer test22>
-grep
-grep -h
-grep -n
-grep -n notiz.org
-*grep -n notiz.org
-*grep -n ono notiz.org
-*grep  ono notiz.org
-apt-get remove guake
-guake
-apt-get remove guake*
-apt-get remove evince
-(+ 4 7)
-ls
-cd Org/
-ls
-grep stimm stimmphysiologie.org
-(+ 4 7)
-(- 4 9)
-ls
-ls Org
-notiz.org~  stimmphysiologie.org  stimmphysiologie.pdf   stimmphysiologie.toc   test.tex
-#test.org#  stimmphysiologie.aux  stimmphysiologie.org~  stimmphysiologie.tex   test.log
-#test.org#  stimmphysiologie.aux  stimmphysiologie.org~  stimmphysiologie.tex   test.log
-cd git
-cd knupfer.github.io/_org/
 cd
 cd git/knupfer.github.io/_processing/
 ls
@@ -104,3 +15,114 @@ whitespace-mode
 whitespace-mode nil
 (whitespace-mode nil)
 exit
+ls
+rm dertest.txt 
+which rm
+ls
+cd git/
+cd dotfiles/
+git pull origin master
+ls
+ls -a
+cd emacs
+ls
+ls -a
+cd ..
+rm -r .emacs.d
+ls
+ls -a
+man ln
+ls
+cd
+ls
+ls -a
+mv .emacs.d .emacs.d.bak
+ls
+ls -a
+man ln
+ln -s git/dotfiles/emacs/.emacs.d/ .emacs.d
+ls
+ls -a
+cd .emacs.d
+ls
+ls
+cd
+ls -a
+mv .emacs .emacs.backup
+ln -s git/dotfiles/emacs/.emacs .emacs
+ls -a
+https://github.com/szermatt/emacs-bash-completion                                      
+cd .emacs.d
+git clone https://github.com/szermatt/emacs-bash-completion.git
+ls
+cd eshell
+ls
+cd
+cd .emacs.d
+cd emacs-bash-completion/
+ls
+cp bash-completion.el ../bash-completion.el
+ls
+chmod +x test.sh 
+sh test.sh 
+find-file test.sh
+export DISPLAY :0
+exports DISPLAY :0
+sh test.sh 
+sh test.sh 
+which start
+ls
+rm test.sh
+rm test.sh\~ 
+cd /usr/local/
+ls
+cd sbin
+ls
+ls -a
+cd ..
+cd bin
+ls start
+ls
+cd /usr/sbin
+ls
+ls
+which start
+cd /usr/bin
+ls
+which start
+cd /sbin
+ls start
+ls
+cd /bin
+ls
+cd
+find-file .bashrc
+apt-get remove pcmanfm lxpanel lxlookandfeel
+apt-get remove pcmanfm lxpanel
+apt-get install lxde-core
+apt-get remove pcmanfm lxpanel
+buffer-read-only
+(buffer-read-only)
+'(buffer-read-only)t'
+pkill emacs
+find-file .emacs
+find-file \.emacs
+find-file .emacs
+ls
+Desktop  Org  Rplots.pdf  git
+ke
+w3m
+(w3m)
+cd git/
+cd knupfer.github.io/
+git add -A
+git commit -m 'comment update'
+git push origin master
+ls
+ls  na
+ls -a
+rm .gnus.el
+*rm .gnus.el
+*rm .gnus.el~
+ls -a
+cat .gnus

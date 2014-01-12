@@ -1,16 +1,12 @@
-;; (normal-erase-is-backspace-mode 1)
+(normal-erase-is-backspace-mode 1)
+(require 'org-install)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(add-to-list 'load-path "~/.emacs.d/")
-
-(require 'org-install)
+(add-to-list 'load-path "/root/.emacs.d/")
 (require 'hideshow-org)
-
 (load "highlight-parentheses.el")
 (load "highlight-chars.el")
 (load "adaptive-wrap-0.4.el")
-
-;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map [?\A-k] 'cua-scroll-down)
@@ -20,16 +16,6 @@
 (define-key global-map [?\A-ä] 'cua-scroll-up)
 (define-key global-map [?\A-h] 'beginning-of-line)
 (define-key global-map [?\A-i] 'backward-char)
-(define-key global-map [?\A-\C-i] 'backward-word)
-(define-key global-map [?\A-\C-a] 'right-word)
-(define-key global-map [?\A-\C-u] 'backward-kill-word)
-(define-key global-map [?\A-\C-.] 'kill-word)
-(define-key global-map [?\A-\C-h] 'beginning-of-buffer)
-(define-key global-map [?\A-\C-o] 'end-of-buffer)
-(define-key global-map [?\A-\C-ü] 'backward-paragraph)
-(define-key global-map [?\A-\C-e] 'forward-paragraph)
-(define-key global-map (kbd "C-x A-i") 'previous-buffer)
-(define-key global-map (kbd "C-x A-a") 'next-buffer)
 (define-key global-map [?\A-e] 'next-line)
 (define-key global-map [?\A-a] 'forward-char)
 (define-key global-map [?\A-o] 'end-of-line)
@@ -54,10 +40,19 @@
 (define-key global-map [?\A-m] "3")
 (define-key global-map [?\A-j] ";")
 (define-key global-map [?\A-\s] "0")
-;(define-key global-map [key-8465] 'undo)
 
-(defvar hcz-set-cursor-color-color "")
-(defvar hcz-set-cursor-color-buffer "")
+    (autoload 'bash-completion-dynamic-complete 
+      "bash-completion"
+      "BASH completion hook")
+    (add-hook 'shell-dynamic-complete-functions
+      'bash-completion-dynamic-complete)
+    (add-hook 'shell-command-complete-functions
+      'bash-completion-dynamic-complete)
+
+
+
+    (defvar hcz-set-cursor-color-color "")
+    (defvar hcz-set-cursor-color-buffer "")
 (defun hcz-set-cursor-color-according-to-mode ()
       "change cursor color according to some minor modes."
       ;; set-cursor-color is somewhat costly, so we only call it when needed:
@@ -70,9 +65,15 @@
                  (string= (buffer-name) hcz-set-cursor-color-buffer))
           (set-cursor-color (setq hcz-set-cursor-color-color color))
           (setq hcz-set-cursor-color-buffer (buffer-name)))))
+    (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
+
+
+
+
+(define-key global-map [key-8465] 'undo)
+(define-key function-key-map [f6] 'event-apply-control-modifier)
 
 ;; hooks
-(add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'w3m-mode-hook '(lambda () (load "w3m-config.el")))
 ;; (add-hook 'after-change-major-mode-hook '(lambda () (highlight-parentheses-mode)))
 (add-hook 'prog-mode-hook '(lambda () (hs-org/minor-mode t)
@@ -81,6 +82,7 @@
                                  (hs-hide-all)))
 (add-hook 'LilyPond-mode-hook '(lambda () (highlight-parentheses-mode)))
 (add-hook 'LilyPond-mode-hook '(lambda () (whitespace-mode)))
+
 (add-hook 'ess-mode-hook '(lambda () (hs-org/minor-mode t)
                             (hs-hide-all)))
 ;; (add-hook 'org-mode-hook '(lambda () (hs-org/minor-mode t)
@@ -99,8 +101,6 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (setq org-log-done t)
-
-(eshell)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
