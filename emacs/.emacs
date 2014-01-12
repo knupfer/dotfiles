@@ -131,6 +131,7 @@
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(intitial-frame-alist (quote ((fullscreen . maximized))) t)
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-local-dictionary "de_DE")
  '(ispell-program-name "aspell")
