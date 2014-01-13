@@ -1,27 +1,3 @@
-cd .emacs.d
-ls
-ls
-cd
-ls -a
-mv .emacs .emacs.backup
-ln -s git/dotfiles/emacs/.emacs .emacs
-ls -a
-https://github.com/szermatt/emacs-bash-completion                                      
-cd .emacs.d
-git clone https://github.com/szermatt/emacs-bash-completion.git
-ls
-cd eshell
-ls
-cd
-cd .emacs.d
-cd emacs-bash-completion/
-ls
-cp bash-completion.el ../bash-completion.el
-ls
-chmod +x test.sh 
-sh test.sh 
-find-file test.sh
-export DISPLAY :0
 exports DISPLAY :0
 sh test.sh 
 sh test.sh 
@@ -126,3 +102,27 @@ find-file stimmphysiologie.org
 ls
 ls -
 ls -a
+cd git/dotfiles/
+at 12:00
+cd
+ls
+cd Mail/
+ls
+cd
+cd News/
+ls
+cd 
+rm -r Mail News
+*rm -r Mail News
+ls
+cd git/knupfer.github.io/_org/
+sh publish.sh 
+cd ..
+git add -A
+git commit -m 'commented out vita'
+git push origin master
+cd _org/
+sh publish.sh 
+cd ..
+git add -A
+git commit -m 'test'
