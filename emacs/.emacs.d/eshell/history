@@ -1,8 +1,3 @@
-exports DISPLAY :0
-sh test.sh 
-sh test.sh 
-which start
-ls
 rm test.sh
 rm test.sh\~ 
 cd /usr/local/
@@ -126,3 +121,8 @@ sh publish.sh
 cd ..
 git add -A
 git commit -m 'test'
+cd ..
+cd knupfer.github.io/
+git pull origin master
+my-publish
+ls
