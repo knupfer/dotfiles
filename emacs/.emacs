@@ -34,7 +34,7 @@
 (define-key global-map [?\A-a] 'forward-char)
 (define-key global-map [?\A-o] 'end-of-line)
 (define-key global-map [?\A-x] (kbd "ESC"))
-(define-key global-map [?\A-y] [(tab)])
+(define-key global-map [?\A-y] (kbd "TAB"))
 (define-key global-map [?\A-Y] (lambda nil (interactive) (hs-org/hideshow-all [(shift tab)])))
 (define-key global-map [?\A-ö] 'overwrite-mode)
 (define-key global-map [?\A-q] 'undo)
@@ -116,6 +116,12 @@
  '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (deeper-blue)))
  '(display-time-mode t)
+ '(eshell-banner-message "+----------------------------+
+| Welcome to the Emacs shell |
++----------------------------+
+
+")
+ '(eshell-cmpl-compare-entry-function (quote string-lessp))
  '(eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix)))
  '(eshell-plain-grep-behavior t)
  '(ess-default-style (quote C++))
@@ -179,15 +185,15 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 165 :width normal :foundry "unknown" :family "Source Code Pro"))))
  '(cursor ((t (:background "#709"))))
- '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))) t)
- '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))) t)
+ '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
+ '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))))
  '(fringe ((t (:background "gray8" :foreground "light sea green"))))
  '(hc-hard-hyphen ((nil)))
  '(hc-hard-space ((nil)))
  '(hc-other-char ((t (:foreground "turquoise3"))))
  '(hc-tab ((t nil)))
  '(hc-trailing-whitespace ((nil)))
- '(hl-line ((t (:weight bold))))
+ '(hl-line ((t (:weight semi-bold))))
  '(hl-paren-face ((t (:weight ultra-bold))) t)
  '(mode-line ((t (:background "gray38" :foreground "black" :box nil))))
  '(mode-line-buffer-id ((t (:foreground "#99dddd" :box nil :weight bold))))

@@ -1,44 +1,3 @@
-cd ..
-cd _org/
-ls
-sh
-bash
-emacs
-whitespace-mode 
-whitespace-mode 
-whitespace-mode nil
-whitespace-mode
-whitespace-mode nil
-(whitespace-mode nil)
-exit
-ls
-rm dertest.txt 
-which rm
-ls
-cd git/
-cd dotfiles/
-git pull origin master
-ls
-ls -a
-cd emacs
-ls
-ls -a
-cd ..
-rm -r .emacs.d
-ls
-ls -a
-man ln
-ls
-cd
-ls
-ls -a
-mv .emacs.d .emacs.d.bak
-ls
-ls -a
-man ln
-ln -s git/dotfiles/emacs/.emacs.d/ .emacs.d
-ls
-ls -a
 cd .emacs.d
 ls
 ls
@@ -126,3 +85,44 @@ cd git/dotfiles/
 git add -A
 git commit -m 'updated paths and tabletlayout'
 git push origin master
+cd git/dotfiles/
+git add -A
+git commit -m 'mups'
+git push origin master
+git pull origin master
+cd ..
+cd knupfer.github.io/
+git pull origin master
+cd
+cd Org/
+ls
+mv * /emmc/home/Org/
+ls
+cd /emmc/home/Org/
+ls
+cd ~
+ls
+rm Org
+rmdir Org
+ls
+ln -s /emmc/home/Org/ Org/
+ln -s /emmc/home/Org Org
+ls
+cd Org
+ls
+cd ..
+ls -a
+rmdir .emacs.d.bak/
+rm -r .emacs.d.bak/
+*rm -r .emacs.d.bak/
+rm .emacs.bak
+*rm .emacs.bak
+*rm .emacs\~
+rm -r .angband/
+*rm -r .angband/
+cd Org/
+find-file stimmphysiologie.out
+find-file stimmphysiologie.org
+ls
+ls -
+ls -a
