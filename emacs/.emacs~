@@ -1,12 +1,18 @@
-(normal-erase-is-backspace-mode 1)
-(require 'org-install)
+;; (normal-erase-is-backspace-mode 1)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(add-to-list 'load-path "/root/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/")
+
+(require 'org-install)
 (require 'hideshow-org)
+
+(defun my-publish () 
+(eshell-command "sh publish.sh"))
 (load "highlight-parentheses.el")
 (load "highlight-chars.el")
 (load "adaptive-wrap-0.4.el")
+
+;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map [?\A-k] 'cua-scroll-down)
@@ -16,11 +22,21 @@
 (define-key global-map [?\A-ä] 'cua-scroll-up)
 (define-key global-map [?\A-h] 'beginning-of-line)
 (define-key global-map [?\A-i] 'backward-char)
+(define-key global-map [?\A-\C-i] 'backward-word)
+(define-key global-map [?\A-\C-a] 'right-word)
+(define-key global-map [?\A-\C-u] 'backward-kill-word)
+(define-key global-map [?\A-\C-.] 'kill-word)
+(define-key global-map [?\A-\C-h] 'beginning-of-buffer)
+(define-key global-map [?\A-\C-o] 'end-of-buffer)
+(define-key global-map [?\A-\C-ü] 'backward-paragraph)
+(define-key global-map [?\A-\C-e] 'forward-paragraph)
+(define-key global-map (kbd "C-x A-i") 'previous-buffer)
+(define-key global-map (kbd "C-x A-a") 'next-buffer)
 (define-key global-map [?\A-e] 'next-line)
 (define-key global-map [?\A-a] 'forward-char)
 (define-key global-map [?\A-o] 'end-of-line)
 (define-key global-map [?\A-x] (kbd "ESC"))
-(define-key global-map [?\A-y] [(tab)])
+(define-key global-map [?\A-y] (kbd "TAB"))
 (define-key global-map [?\A-Y] (lambda nil (interactive) (hs-org/hideshow-all [(shift tab)])))
 (define-key global-map [?\A-ö] 'overwrite-mode)
 (define-key global-map [?\A-q] 'undo)
@@ -40,19 +56,10 @@
 (define-key global-map [?\A-m] "3")
 (define-key global-map [?\A-j] ";")
 (define-key global-map [?\A-\s] "0")
+;(define-key global-map [key-8465] 'undo)
 
-    (autoload 'bash-completion-dynamic-complete 
-      "bash-completion"
-      "BASH completion hook")
-    (add-hook 'shell-dynamic-complete-functions
-      'bash-completion-dynamic-complete)
-    (add-hook 'shell-command-complete-functions
-      'bash-completion-dynamic-complete)
-
-
-
-    (defvar hcz-set-cursor-color-color "")
-    (defvar hcz-set-cursor-color-buffer "")
+(defvar hcz-set-cursor-color-color "")
+(defvar hcz-set-cursor-color-buffer "")
 (defun hcz-set-cursor-color-according-to-mode ()
       "change cursor color according to some minor modes."
       ;; set-cursor-color is somewhat costly, so we only call it when needed:
@@ -65,15 +72,9 @@
                  (string= (buffer-name) hcz-set-cursor-color-buffer))
           (set-cursor-color (setq hcz-set-cursor-color-color color))
           (setq hcz-set-cursor-color-buffer (buffer-name)))))
-    (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-
-
-
-
-(define-key global-map [key-8465] 'undo)
-(define-key function-key-map [f6] 'event-apply-control-modifier)
 
 ;; hooks
+(add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'w3m-mode-hook '(lambda () (load "w3m-config.el")))
 ;; (add-hook 'after-change-major-mode-hook '(lambda () (highlight-parentheses-mode)))
 (add-hook 'prog-mode-hook '(lambda () (hs-org/minor-mode t)
@@ -82,7 +83,6 @@
                                  (hs-hide-all)))
 (add-hook 'LilyPond-mode-hook '(lambda () (highlight-parentheses-mode)))
 (add-hook 'LilyPond-mode-hook '(lambda () (whitespace-mode)))
-
 (add-hook 'ess-mode-hook '(lambda () (hs-org/minor-mode t)
                             (hs-hide-all)))
 ;; (add-hook 'org-mode-hook '(lambda () (hs-org/minor-mode t)
@@ -102,6 +102,8 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (setq org-log-done t)
 
+(eshell)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -116,6 +118,12 @@
  '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (deeper-blue)))
  '(display-time-mode t)
+ '(eshell-banner-message "+----------------------------+
+| Welcome to the Emacs shell |
++----------------------------+
+
+")
+ '(eshell-cmpl-compare-entry-function (quote string-lessp))
  '(eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix)))
  '(eshell-plain-grep-behavior t)
  '(ess-default-style (quote C++))
@@ -131,21 +139,23 @@
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(intitial-frame-alist (quote ((fullscreen . maximized))) t)
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-local-dictionary "de_DE")
  '(ispell-program-name "aspell")
  '(menu-bar-mode nil)
  '(org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t))))
  '(org-confirm-babel-evaluate nil)
- '(org-ditaa-eps-jar-path "/root/.emacs.d/DitaaEps.jar")
- '(org-ditaa-jar-path "/root/.emacs.d/ditaa0_9.jar")
+ '(org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar")
+ '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
  '(org-edit-src-content-indentation 0)
  '(org-export-headline-levels 4)
  '(org-export-html-xml-declaration (quote (("html" . "--- ---") ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
  '(org-html-doctype "xhtml-strict")
  '(org-html-head " ")
  '(org-image-actual-width 200)
- '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t))))
+ '(org-list-indent-offset 2)
+ '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function my-publish))))
  '(org-replace-disputed-keys t)
  '(org-src-fontify-natively t)
  '(org-startup-align-all-tables t)
@@ -178,21 +188,21 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 165 :width normal :foundry "unknown" :family "Source Code Pro"))))
  '(cursor ((t (:background "#709"))))
- '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))) t)
- '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))) t)
+ '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
+ '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))))
  '(fringe ((t (:background "gray8" :foreground "light sea green"))))
  '(hc-hard-hyphen ((nil)))
  '(hc-hard-space ((nil)))
  '(hc-other-char ((t (:foreground "turquoise3"))))
  '(hc-tab ((t nil)))
  '(hc-trailing-whitespace ((nil)))
- '(hl-line ((t (:weight bold))))
+ '(hl-line ((t (:weight semi-bold))))
  '(hl-paren-face ((t (:weight ultra-bold))) t)
  '(mode-line ((t (:background "gray38" :foreground "black" :box nil))))
  '(mode-line-buffer-id ((t (:foreground "#99dddd" :box nil :weight bold))))
  '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box (:line-width 1 :color "gray30") :weight light))))
  '(org-indent ((t nil)) t)
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
  '(w3m-arrived-anchor ((t (:foreground "#8888ee"))))
