@@ -1,61 +1,3 @@
-rm test.sh
-rm test.sh\~ 
-cd /usr/local/
-ls
-cd sbin
-ls
-ls -a
-cd ..
-cd bin
-ls start
-ls
-cd /usr/sbin
-ls
-ls
-which start
-cd /usr/bin
-ls
-which start
-cd /sbin
-ls start
-ls
-cd /bin
-ls
-cd
-find-file .bashrc
-apt-get remove pcmanfm lxpanel lxlookandfeel
-apt-get remove pcmanfm lxpanel
-apt-get install lxde-core
-apt-get remove pcmanfm lxpanel
-buffer-read-only
-(buffer-read-only)
-'(buffer-read-only)t'
-pkill emacs
-find-file .emacs
-find-file \.emacs
-find-file .emacs
-ls
-Desktop  Org  Rplots.pdf  git
-ke
-w3m
-(w3m)
-cd git/
-cd knupfer.github.io/
-git add -A
-git commit -m 'comment update'
-git push origin master
-ls
-ls  na
-ls -a
-rm .gnus.el
-*rm .gnus.el
-*rm .gnus.el~
-ls -a
-cat .gnus
-cd git/dotfiles/
-git add -A
-git commit -m 'updated paths and tabletlayout'
-git push origin master
 cd git/dotfiles/
 git add -A
 git commit -m 'mups'
@@ -126,3 +68,61 @@ cd knupfer.github.io/
 git pull origin master
 my-publish
 ls
+cd git/knupfer.github.io/
+git add .
+git commit -m 'about hobbies'
+git push origin master
+cd ..
+cd dotfiles/
+git add .
+git status
+git add -A
+git commit -m 'update'
+git push origin master
+cd ..
+cd knupfer.github.io/
+exit
+cd git/knupfer.github.io/
+git add -A
+git commit -m 'Sort the list in about.html'
+git push origin master
+ls
+cat .gitignore 
+find-file .gitignore 
+ls
+cd /emmc/
+ls
+cd home
+ls
+mkdir downloads
+ls
+cd ..
+cd
+ln -s /emmc/home/downloads downloads
+ls
+apt-get update; apt-get upgrade
+ls
+cd ..
+ls
+cd 
+cd git/
+ls
+cd dotfiles/
+ls
+cd keyboard/
+ls
+cd linux/
+ls
+cat howto~
+ls
+cd Truly/
+ls
+cat starttruly.sh 
+sh starttruly.sh 
+setxkbmap de
+xmodmap 
+xmodmap xmodmaptruly 
+find-file xmodmaptruly 
+xmodmap  test 
+xmodmap  test 
+xmodmap  test 
