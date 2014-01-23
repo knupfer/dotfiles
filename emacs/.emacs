@@ -7,14 +7,39 @@
 (require 'hideshow-org)
 
 (defun knu/publish () 
-(eshell-command "sh publish.sh"))
-
+  "Runs my script, which does a bit cosmetic and cleanup."
+  (eshell-command "sh publish.sh"))
 (defun knu/org-archive ()
+  "Moves archived trees to the bottom of the father."
   (interactive)
   (org-toggle-archive-tag)
   (unless (org-at-heading-p) (error "Not at an headline"))
   (save-excursion (while (ignore-errors (org-move-subtree-down)))))
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry do DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-log-states) ; turn off logging
+    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+(defun dmj/org-remove-redundant-tags ()
+  "Remove redundant tags of headlines in current buffer.
 
+A tag is considered redundant if it is local to a headline and
+inherited by a parent headline."
+  (interactive)
+  (when (eq major-mode 'org-mode)
+    (save-excursion
+      (org-map-entries
+       '(lambda ()
+          (let ((alltags (split-string (or (org-entry-get (point) "ALLTAGS") "") ":"))
+                local inherited tag)
+            (dolist (tag alltags)
+              (if (get-text-property 0 'inherited tag)
+                  (push tag inherited) (push tag local)))
+            (dolist (tag local)
+              (if (member tag inherited) (org-toggle-tag tag 'off)))))
+       t nil))))
+
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 (load "highlight-parentheses.el")
 (load "highlight-chars.el")
@@ -91,13 +116,15 @@
                                  (hs-hide-all)
                                  (highlight-parentheses-mode)
                                  (whitespace-mode)))
-(add-hook 'org-mode-hook '(lambda () (flyspell-mode)
+(add-hook 'org-mode-hook '(lambda ()
+                            (flyspell-mode)
+                            (hc-toggle-highlight-other-chars)
                             (define-key org-mode-map (kbd "C-c C-x a") 'knu/org-archive)))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'prog-mode-hook '(lambda () (hs-org/minor-mode t)
                              (hs-hide-all)))
 (add-hook 'w3m-mode-hook '(lambda () (load "w3m-config.el")))
-
+(add-hook 'python-mode-hook '(lambda () (whitespace-mode)))
 
 (setq split-height-threshold nil)
 (setq split-width-threshold 0)
@@ -114,7 +141,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LilyPond-indent-level 4)
- '(adaptive-wrap-extra-indent 2)
+ '(adaptive-wrap-extra-indent 3)
  '(blink-cursor-interval 0.5)
  '(blink-cursor-mode nil)
  '(c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
@@ -136,8 +163,8 @@
  '(font-use-system-font nil)
  '(fringe-mode (quote (0)) nil (fringe))
  '(global-whitespace-mode t)
- '(hc-other-chars (quote (",.!?{}[]():;»«›‹")))
- '(hc-other-chars-font-lock-override (quote append))
+ '(hc-other-chars (quote (",.!?{}[]():;»«›‹-_/\\+&")))
+ '(hc-other-chars-font-lock-override t)
  '(hfy-ignored-properties nil)
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(indent-tabs-mode nil)
@@ -155,6 +182,7 @@
  '(org-edit-src-content-indentation 0)
  '(org-export-headline-levels 4)
  '(org-export-html-xml-declaration (quote (("html" . "--- ---") ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+ '(org-hierarchical-todo-statistics nil)
  '(org-html-doctype "xhtml-strict")
  '(org-html-head " ")
  '(org-image-actual-width 200)
@@ -164,7 +192,7 @@
  '(org-src-fontify-natively t)
  '(org-startup-align-all-tables t)
  '(org-startup-folded (quote content))
- '(org-startup-indented nil)
+ '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(org-startup-with-inline-images t)
  '(org-support-shift-select (quote always))
@@ -176,6 +204,7 @@
  '(w3m-fontify-before-hook (quote (font-lock-mode)))
  '(whitespace-display-mappings (quote ((space-mark 32 [124] [46]))))
  '(whitespace-empty-at-eob-regexp "^ *\\( \\) \\{20\\}")
+ '(whitespace-global-modes (quote (not org-mode)))
  '(whitespace-hspace-regexp "^ *\\(\\( \\)\\) \\{7\\}")
  '(whitespace-indentation-regexp (quote ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ *\\( \\) \\{19\\}")))
  '(whitespace-line-column 200)
@@ -197,16 +226,19 @@
  '(fringe ((t (:background "gray8" :foreground "light sea green"))))
  '(hc-hard-hyphen ((nil)))
  '(hc-hard-space ((nil)))
- '(hc-other-char ((t (:foreground "turquoise3"))))
+ '(hc-other-char ((t (:foreground "#22aaaa"))))
  '(hc-tab ((t nil)))
  '(hc-trailing-whitespace ((nil)))
  '(hl-paren-face ((t (:weight ultra-bold))) t)
  '(mode-line ((t (:background "gray38" :foreground "black" :box nil))))
  '(mode-line-buffer-id ((t (:foreground "#99dddd" :box nil :weight bold))))
  '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box (:line-width 1 :color "gray30") :weight light))))
- '(org-archived ((t (:foreground "#245"))))
+ '(org-archived ((t (:foreground "#254555"))))
+ '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
+ '(org-hide ((t (:foreground "#000"))))
  '(org-indent ((t nil)) t)
  '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
  '(w3m-arrived-anchor ((t (:foreground "#8888ee"))))
