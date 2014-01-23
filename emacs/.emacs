@@ -1,7 +1,7 @@
 ;; (normal-erase-is-backspace-mode 1)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (require 'org-install)
 (require 'hideshow-org)
@@ -42,7 +42,7 @@ inherited by a parent headline."
 
 
 (load "highlight-parentheses.el")
-(load "highlight-chars.el")
+
 
 ;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)

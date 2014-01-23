@@ -1,45 +1,4 @@
 cd git/dotfiles/
-git add -A
-git commit -m 'mups'
-git push origin master
-git pull origin master
-cd ..
-cd knupfer.github.io/
-git pull origin master
-cd
-cd Org/
-ls
-mv * /emmc/home/Org/
-ls
-cd /emmc/home/Org/
-ls
-cd ~
-ls
-rm Org
-rmdir Org
-ls
-ln -s /emmc/home/Org/ Org/
-ln -s /emmc/home/Org Org
-ls
-cd Org
-ls
-cd ..
-ls -a
-rmdir .emacs.d.bak/
-rm -r .emacs.d.bak/
-*rm -r .emacs.d.bak/
-rm .emacs.bak
-*rm .emacs.bak
-*rm .emacs\~
-rm -r .angband/
-*rm -r .angband/
-cd Org/
-find-file stimmphysiologie.out
-find-file stimmphysiologie.org
-ls
-ls -
-ls -a
-cd git/dotfiles/
 at 12:00
 cd
 ls
@@ -126,3 +85,44 @@ find-file xmodmaptruly
 xmodmap  test 
 xmodmap  test 
 xmodmap  test 
+git add testredundant.el 
+git commit -m 'remove redundant'
+git push origin master
+cd emacs/
+cd .emacs.d/
+ls
+mkdir lisp
+rm highlight-chars.el
+ls
+rm highlight-indentation.el\~
+rm highlight-indentation.el
+rm bash-completion.el 
+cd download/
+ls
+cd hideshow-org/
+ls
+ls -a
+cd ..
+cd ..
+rm -r download/
+ls
+rm adaptive-wrap-0.4.el 
+ls
+rm \#w3m-config.el\# 
+rm w3m-config.el\~
+cd url/
+ls
+cd ..
+ls
+rm -r emacs-bash-completion/
+ls
+mv hideshow-org.el lisp/
+cd lisp/
+ls
+cd ..
+mv w3m-config.el lisp/
+mv highlight-parentheses.el lisp/
+mv htmlize.elc lisp/
+mv htmlize.el lisp/
+ls
+mv shell-command.el lisp/
