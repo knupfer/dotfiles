@@ -39,11 +39,10 @@ inherited by a parent headline."
        t nil))))
 
 
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+
 
 (load "highlight-parentheses.el")
 (load "highlight-chars.el")
-(load "adaptive-wrap-0.4.el")
 
 ;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)
@@ -107,24 +106,31 @@ inherited by a parent headline."
           (setq hcz-set-cursor-color-buffer (buffer-name)))))
 
 ;; hooks
-(add-hook 'after-change-major-mode-hook '(lambda () (highlight-parentheses-mode)
-                                           (adaptive-wrap-prefix-mode)))
-(add-hook 'ess-mode-hook '(lambda () (hs-org/minor-mode t)
+(add-hook 'after-change-major-mode-hook '(lambda () 
+                                           (highlight-parentheses-mode)
+                                           ))
+(add-hook 'ess-mode-hook '(lambda () 
+                            (hs-org/minor-mode t)
                             (hs-hide-all)
                             (whitespace-mode)))
-(add-hook 'LilyPond-mode-hook '(lambda () (hs-org/minor-mode t)
+(add-hook 'LilyPond-mode-hook '(lambda () 
+                                 (hs-org/minor-mode t)
                                  (hs-hide-all)
                                  (highlight-parentheses-mode)
                                  (whitespace-mode)))
 (add-hook 'org-mode-hook '(lambda ()
                             (flyspell-mode)
-                            (hc-toggle-highlight-other-chars)
                             (define-key org-mode-map (kbd "C-c C-x a") 'knu/org-archive)))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-(add-hook 'prog-mode-hook '(lambda () (hs-org/minor-mode t)
+(add-hook 'prog-mode-hook '(lambda () 
+                             (hs-org/minor-mode t)
                              (hs-hide-all)))
-(add-hook 'w3m-mode-hook '(lambda () (load "w3m-config.el")))
-(add-hook 'python-mode-hook '(lambda () (whitespace-mode)))
+(add-hook 'w3m-mode-hook '(lambda ()
+                            (load "w3m-config.el")
+                            ))
+(add-hook 'python-mode-hook '(lambda ()
+                               (whitespace-mode)))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 (setq split-height-threshold nil)
 (setq split-width-threshold 0)
@@ -133,7 +139,7 @@ inherited by a parent headline."
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 (setq org-log-done t)
 
-(eshell)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -141,18 +147,19 @@ inherited by a parent headline."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LilyPond-indent-level 4)
- '(adaptive-wrap-extra-indent 3)
- '(blink-cursor-interval 0.5)
  '(blink-cursor-mode nil)
  '(c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (deeper-blue)))
  '(display-time-mode t)
- '(eshell-banner-message "+----------------------------+
-| Welcome to the Emacs shell |
-+----------------------------+
-
+ '(eshell-banner-message "
+  #############
+  #
+  #  +----------------------------+
+  #  | Welcome to the Emacs shell |
+  #  +----------------------------+
+  #
 ")
  '(eshell-cmpl-compare-entry-function (quote string-lessp))
  '(eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix)))
@@ -163,8 +170,8 @@ inherited by a parent headline."
  '(font-use-system-font nil)
  '(fringe-mode (quote (0)) nil (fringe))
  '(global-whitespace-mode t)
- '(hc-other-chars (quote (",.!?{}[]():;»«›‹-_/\\+&")))
- '(hc-other-chars-font-lock-override t)
+ '(hc-other-chars (quote ("~,.!?{}[]():;»«›‹-_/\\+&")))
+ '(hc-other-chars-font-lock-override (quote keep))
  '(hfy-ignored-properties nil)
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(indent-tabs-mode nil)
@@ -204,7 +211,6 @@ inherited by a parent headline."
  '(w3m-fontify-before-hook (quote (font-lock-mode)))
  '(whitespace-display-mappings (quote ((space-mark 32 [124] [46]))))
  '(whitespace-empty-at-eob-regexp "^ *\\( \\) \\{20\\}")
- '(whitespace-global-modes (quote (not org-mode)))
  '(whitespace-hspace-regexp "^ *\\(\\( \\)\\) \\{7\\}")
  '(whitespace-indentation-regexp (quote ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ *\\( \\) \\{19\\}")))
  '(whitespace-line-column 200)
@@ -212,7 +218,7 @@ inherited by a parent headline."
  '(whitespace-space-before-tab-regexp "^ *\\(\\( \\)\\) \\{3\\}")
  '(whitespace-style (quote (face tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation)))
  '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
- '(whitespace-trailing-regexp "\\([^ äöüßÄÖÜA-Za-z0-9]\\)")
+ '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\)")
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -223,7 +229,7 @@ inherited by a parent headline."
  '(cursor ((t (:background "#709"))))
  '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
  '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))))
- '(fringe ((t (:background "gray8" :foreground "light sea green"))))
+ '(fringe ((t (:background "black" :foreground "#0ff"))))
  '(hc-hard-hyphen ((nil)))
  '(hc-hard-space ((nil)))
  '(hc-other-char ((t (:foreground "#22aaaa"))))
@@ -235,8 +241,8 @@ inherited by a parent headline."
  '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box (:line-width 1 :color "gray30") :weight light))))
  '(org-archived ((t (:foreground "#254555"))))
  '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
- '(org-hide ((t (:foreground "#000"))))
- '(org-indent ((t nil)) t)
+ '(org-hide ((t (:foreground "#777"))))
+ '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
@@ -259,3 +265,5 @@ inherited by a parent headline."
  '(whitespace-space-before-tab ((t (:foreground "#006666"))))
  '(whitespace-tab ((t (:foreground "#113333"))))
  '(whitespace-trailing ((t (:foreground "#22aaaa")))))
+
+(eshell)
