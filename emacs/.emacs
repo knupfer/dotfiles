@@ -6,6 +6,7 @@
 (require 'org-install)
 (require 'hideshow-org)
 
+
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
   (eshell-command "sh publish.sh"))

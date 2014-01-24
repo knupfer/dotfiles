@@ -1,9 +1,3 @@
-cd git/dotfiles/
-at 12:00
-cd
-ls
-cd Mail/
-ls
 cd
 cd News/
 ls
@@ -126,3 +120,9 @@ mv htmlize.elc lisp/
 mv htmlize.el lisp/
 ls
 mv shell-command.el lisp/
+cd git/dotfiles/
+git add -A
+git commit -m 'updates'
+git push origin master
+r
+find-file .emacs

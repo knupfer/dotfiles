@@ -1,5 +1,3 @@
-/root/Org
-/root/Mail
 /root/News
 /root/git/knupfer.github.io/_org
 /home/florian/git
@@ -9,7 +7,6 @@
 /root/git/knupfer.github.io
 /root/git/knupfer.github.io
 /root/git/knupfer.github.io/_org
-~
 /emmc/home
 /emmc
 /
@@ -19,7 +16,6 @@
 /root/git/dotfiles/keyboard
 /root/git/dotfiles/keyboard/linux
 /root/git/dotfiles/keyboard/linux/Truly
-~
 ~/git/dotfiles/emacs/.emacs.d
 ~/git/dotfiles/emacs
 ~/git/dotfiles
@@ -31,3 +27,6 @@
 /home/florian/git/dotfiles/emacs/.emacs.d/lisp
 /home/florian/git/dotfiles/emacs/.emacs.d
 ~/git/dotfiles
+~
+/home/florian/git/dotfiles
+~
