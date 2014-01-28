@@ -9,7 +9,7 @@
 
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
-  (eshell-command "sh publish.sh"))
+  (eshell-command "sh ~git/knupfer.github.io/_org/publish.sh"))
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
   (interactive)
@@ -154,6 +154,7 @@ inherited by a parent headline."
  '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (deeper-blue)))
  '(display-time-mode t)
+ '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eshell-banner-message "
   #############
   #
@@ -195,7 +196,7 @@ inherited by a parent headline."
  '(org-html-head " ")
  '(org-image-actual-width 200)
  '(org-list-indent-offset 2)
- '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
+ '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
  '(org-replace-disputed-keys t)
  '(org-src-fontify-natively t)
  '(org-startup-align-all-tables t)
