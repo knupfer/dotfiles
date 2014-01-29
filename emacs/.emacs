@@ -9,7 +9,7 @@
 
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
-  (eshell-command "sh ~git/knupfer.github.io/_org/publish.sh"))
+  (eshell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
   (interactive)
