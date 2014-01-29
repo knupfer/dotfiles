@@ -48,7 +48,7 @@ inherited by a parent headline."
 ;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-m" 'magit-status)
+(define-key global-map "\C-cm" 'magit-status)
 (define-key global-map [?\A-k] 'cua-scroll-down)
 (define-key global-map [?\A-u] [(backspace)])
 (define-key global-map [?\A-ü] 'previous-line)
