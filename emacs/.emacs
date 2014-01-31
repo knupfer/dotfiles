@@ -1,11 +1,17 @@
-;; (normal-erase-is-backspace-mode 1)
-
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(setq org-log-done t)
+ 
 (require 'org-install)
 (require 'hideshow-org)
 
+(defvar hcz-set-cursor-color-color "")
+(defvar hcz-set-cursor-color-buffer "")
 
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
@@ -38,12 +44,21 @@ inherited by a parent headline."
             (dolist (tag local)
               (if (member tag inherited) (org-toggle-tag tag 'off)))))
        t nil))))
+(defun hcz-set-cursor-color-according-to-mode ()
+      "change cursor color according to some minor modes."
+      ;; set-cursor-color is somewhat costly, so we only call it when needed:
+      (let ((color
+             (if buffer-read-only "white"
+               (if overwrite-mode "#fa0"
+                 "#909"))))
+        (unless (and
+                 (string= color hcz-set-cursor-color-color)
+                 (string= (buffer-name) hcz-set-cursor-color-buffer))
+          (set-cursor-color (setq hcz-set-cursor-color-color color))
+          (setq hcz-set-cursor-color-buffer (buffer-name)))))
 
-
-
-
+(load "pretty-symbols.el")
 (load "highlight-parentheses.el")
-
 
 ;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)
@@ -90,22 +105,6 @@ inherited by a parent headline."
 (define-key global-map [?\A-m] "3")
 (define-key global-map [?\A-j] ";")
 (define-key global-map [?\A-\s] "0")
-;(define-key global-map [key-8465] 'undo)
-
-(defvar hcz-set-cursor-color-color "")
-(defvar hcz-set-cursor-color-buffer "")
-(defun hcz-set-cursor-color-according-to-mode ()
-      "change cursor color according to some minor modes."
-      ;; set-cursor-color is somewhat costly, so we only call it when needed:
-      (let ((color
-             (if buffer-read-only "white"
-               (if overwrite-mode "#fa0"
-                 "#909"))))
-        (unless (and
-                 (string= color hcz-set-cursor-color-color)
-                 (string= (buffer-name) hcz-set-cursor-color-buffer))
-          (set-cursor-color (setq hcz-set-cursor-color-color color))
-          (setq hcz-set-cursor-color-buffer (buffer-name)))))
 
 ;; hooks
 (add-hook 'after-change-major-mode-hook '(lambda () 
@@ -120,28 +119,21 @@ inherited by a parent headline."
                                  (hs-hide-all)
                                  (highlight-parentheses-mode)
                                  (whitespace-mode)))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 (add-hook 'org-mode-hook '(lambda ()
                             (flyspell-mode)
                             (define-key org-mode-map (kbd "C-c C-x a") 'knu/org-archive)))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'prog-mode-hook '(lambda () 
                              (hs-org/minor-mode t)
-                             (hs-hide-all)))
+                             (hs-hide-all)
+                             (pretty-symbols-mode)))
+(add-hook 'python-mode-hook '(lambda ()
+                               (whitespace-mode)))
+(add-hook 'text-mode-hook 'pretty-symbols-mode)
 (add-hook 'w3m-mode-hook '(lambda ()
                             (load "w3m-config.el")
                             ))
-(add-hook 'python-mode-hook '(lambda ()
-                               (whitespace-mode)))
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-(setq split-height-threshold nil)
-(setq split-width-threshold 0)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-(setq org-log-done t)
-
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -208,6 +200,8 @@ inherited by a parent headline."
  '(org-support-shift-select (quote always))
  '(org-todo-keyword-faces (quote (("FAILED" . "#f00") ("CANCELED" . "#ee3"))))
  '(org-todo-keywords (quote ((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))))
+ '(pretty-symbol-categories (lambda relational logical kdm-custom))
+ '(pretty-symbol-patterns (quote ((955 lambda "\\<lambda\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode python-mode inferior-python-mode prog-mode)) (402 lambda "\\<function\\>" (js-mode)) (8800 relational "!=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode)) (8800 relational "/=" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8805 relational ">=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8804 relational "<=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8743 logical "&&" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode)) (8743 logical "\\<and\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8744 logical "||" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode)) (8744 logical "\\<or\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (172 logical "\\<not\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)))))
  '(scroll-bar-mode nil)
  '(tab-width 4)
  '(tool-bar-mode nil)
@@ -224,7 +218,7 @@ inherited by a parent headline."
  '(whitespace-space-before-tab-regexp "^ *\\(\\( \\)\\) \\{3\\}")
  '(whitespace-style (quote (face tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation)))
  '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
- '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\)")
+ '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\)")
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -249,7 +243,7 @@ inherited by a parent headline."
  '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
@@ -272,4 +266,91 @@ inherited by a parent headline."
  '(whitespace-tab ((t (:foreground "#113333"))))
  '(whitespace-trailing ((t (:foreground "#22aaaa")))))
 
+;; and or etc.
+(add-to-list 'pretty-symbol-patterns '(8743 kdm-custom "\\<and\\>" (text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(8743 kdm-custom "\\<und\\>" (text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<or\\>" (text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<oder\\>" (text-mode prog-mode)))  
+
+;; superscripts                                      
+(add-to-list 'pretty-symbol-patterns '(?² kdm-custom "\\*\\*2" (python-mode inferior-python-mode)))      
+(add-to-list 'pretty-symbol-patterns '(?³ kdm-custom "\\*\\*3" (python-mode inferior-python-mode)))      
+(add-to-list 'pretty-symbol-patterns '(?ⁿ kdm-custom "\\*\\*n" (python-mode inferior-python-mode)))      
+
+;; subscripts
+(add-to-list 'pretty-symbol-patterns '(?₀ kdm-custom "_0\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?₁ kdm-custom "_1\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?₂ kdm-custom "_2\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?₃ kdm-custom "_3\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?₄ kdm-custom "_4\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+;; (add-to-list 'pretty-symbol-patterns '(?₅ kdm-custom "_5\\>" (python-mode inferior-python-mode)))     
+;; (add-to-list 'pretty-symbol-patterns '(?₆ kdm-custom "_6\\>" (python-mode inferior-python-mode)))     
+;; (add-to-list 'pretty-symbol-patterns '(?₇ kdm-custom "_7\\>" (python-mode inferior-python-mode)))     
+;; (add-to-list 'pretty-symbol-patterns '(?₈ kdm-custom "_8\\>" (python-mode inferior-python-mode)))     
+;; (add-to-list 'pretty-symbol-patterns '(?₉ kdm-custom "_9\\>" (python-mode inferior-python-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?ᵢ kdm-custom "_i\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?ⱼ kdm-custom "_j\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?ᵣ kdm-custom "_r\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?ᵤ kdm-custom "_u\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?ᵥ kdm-custom "_v\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?ᵪ kdm-custom "_x\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+(add-to-list 'pretty-symbol-patterns '(?ᵧ kdm-custom "_y\\>" (python-mode inferior-python-mode text-mode prog-mode)))        
+;; python specific
+(add-to-list 'pretty-symbol-patterns '(?⓪ kdm-custom "None" (python-mode inferior-python-mode text-mode prog-mode)))         
+(add-to-list 'pretty-symbol-patterns '(?∑ kdm-custom "\\<sum\\>" (python-mode inferior-python-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?∑ kdm-custom "\\<nansum\\>" (python-mode inferior-python-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?√ kdm-custom "sqrt" (python-mode inferior-python-mode)))         
+;; Greek
+(add-to-list 'pretty-symbol-patterns '(?α kdm-custom "\\<alpha\\>" (fundamental-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Α kdm-custom "\\<Alpha\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?β kdm-custom "\\<beta\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?Β kdm-custom "\\<Beta\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?γ kdm-custom "\\<gamma\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Γ kdm-custom "\\<Gamma\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?δ kdm-custom "\\<delta\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Δ kdm-custom "\\<Delta\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?ε kdm-custom "\\<epsilon\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ε kdm-custom "\\<Epsilon\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ζ kdm-custom "\\<zeta\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?Ζ kdm-custom "\\<Zeta\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?η kdm-custom "\\<eta\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?Η kdm-custom "\\<Eta\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?θ kdm-custom "\\<theta\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Θ kdm-custom "\\<Theta\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?ι kdm-custom "\\<iota\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?Ι kdm-custom "\\<Iota\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?κ kdm-custom "\\<kappa\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?K kdm-custom "\\<Kappa\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?λ kdm-custom "\\<lambda\\>" (python-mode inferior-python-mode text-mode prog-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?Λ kdm-custom "\\<Lambda\\>" (python-mode inferior-python-mode text-mode prog-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?μ kdm-custom "\\<mu\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?Μ kdm-custom "\\<Mu\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?ν kdm-custom "\\<nu\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?Ν kdm-custom "\\<Nu\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?ν kdm-custom "\\<vega\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?ν kdm-custom "\\<Vega\\>" (python-mode inferior-python-mode text-mode prog-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?ξ kdm-custom "\\<xi\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?Ξ kdm-custom "\\<Xi\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?ο kdm-custom "\\<omicron\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ο kdm-custom "\\<Omicron\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?π kdm-custom "\\<pi\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?Π kdm-custom "\\<Pi\\>" (python-mode inferior-python-mode text-mode prog-mode)))     
+(add-to-list 'pretty-symbol-patterns '(?ρ kdm-custom "\\<rho\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?Ρ kdm-custom "\\<Rho\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?σ kdm-custom "\\<sigma\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Σ kdm-custom "\\<Sigma\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?τ kdm-custom "\\<tau\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?Τ kdm-custom "\\<Tau\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?υ kdm-custom "\\<upsilon\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Y kdm-custom "\\<Upsilon\\>" (python-mode inferior-python-mode text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(?φ kdm-custom "\\<phi\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?Φ kdm-custom "\\<Phi\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?χ kdm-custom "\\<chi\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?Χ kdm-custom "\\<Chi\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?ψ kdm-custom "\\<psi\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?Ψ kdm-custom "\\<Psi\\>" (python-mode inferior-python-mode text-mode prog-mode)))    
+(add-to-list 'pretty-symbol-patterns '(?ω kdm-custom "\\<omega\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Ω kdm-custom "\\<Omega\\>" (python-mode inferior-python-mode text-mode prog-mode)))  
+
 (eshell)
+
