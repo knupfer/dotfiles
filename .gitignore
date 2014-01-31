@@ -3,4 +3,6 @@ emacs/.emacs.d/eshell/
 emacs/.emacs.d/url/
 emacs/.emacs.d/auto-save-list/
 emacs/.emacs.d/emacs-bash-completion/
+emacs/.emacs.d/session.*
+emacs/.emacs.d/auto-save-list/
 *~
