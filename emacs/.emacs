@@ -273,9 +273,12 @@ inherited by a parent headline."
  '(whitespace-trailing ((t (:foreground "#22aaaa")))))
 
 ;; and or etc.
-(add-to-list 'pretty-symbol-patterns '(8743 kdm-custom "\\<und\\>\\|\\<and\\>" (text-mode prog-mode ess-mode)))  
-(add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<or\\>\\|\\<oder\\>" (text-mode prog-mode ess-mode)))  
-(add-to-list 'pretty-symbol-patterns '(172 kdm-custom "\\<nicht\\>\\|\\<not\\>" (text-mode prog-mode ess-mode)))
+(add-to-list 'pretty-symbol-patterns '(8743 kdm-custom "\\<u?U?nd\\>\\|\\<a?A?nd\\>" (text-mode prog-mode ess-mode)))  
+(add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<o?O?r\\>\\|\\<oder\\>\\|\\<Oder\\>" (text-mode prog-mode ess-mode)))  
+(add-to-list 'pretty-symbol-patterns '(172 kdm-custom "\\<nicht\\>-?\\|\\<not\\>" (text-mode prog-mode ess-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∀ kdm-custom "\\<a?A?lle.?\\>" (text-mode prog-mode ess-mode)))
+(add-to-list 'pretty-symbol-patterns '(?E kdm-custom "\\<E?e?s gibt\\>\\|\\<m?M?anche\\>\\|\\<e?E?inige\\>" (text-mode prog-mode ess-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ø kdm-custom "\\<d?D?urchschnittliche?.?\\>" (text-mode prog-mode ess-mode)))
 
 ;; org-mode
 (add-to-list 'pretty-symbol-patterns '(?α kdm-custom "#\\+BEGIN_SRC" (org-mode)))
@@ -290,6 +293,15 @@ inherited by a parent headline."
 (add-to-list 'pretty-symbol-patterns '(402 kdm-custom "\\<function\\>\\|\\<defun\\>\\|\\<def\\>" (text-mode prog-mode ess-mode)))
 (add-to-list 'pretty-symbol-patterns '(?✠ kdm-custom "\\<return\\>\\|..RESULTS" (text-mode prog-mode ess-mode)))
 (add-to-list 'pretty-symbol-patterns '(?Ø kdm-custom "\\<NULL\\>\\|\\<nil\\>\\|\\<None\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?∀ kdm-custom "\\<for\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?⬊ kdm-custom "\\<if\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?↯ kdm-custom "\\<else\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?↺ kdm-custom "\\<while\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?⚓ kdm-custom "hook" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?⛁ kdm-custom "\\<library\\>" (text-mode prog-mode ess-mode))) 
+
+;;  ⬀ | ⬁ | ⬂ | ⬃ | ⬄ | ⬅ | ⬆ | ⬇ | ⬈ | ⬉ | ⬊ | ⬋ | ⬌ | ⬍ | ⬎ | ⬏ |
+
 ;; superscripts                                      
 (add-to-list 'pretty-symbol-patterns '(?² kdm-custom "\\*\\*2" (python-mode inferior-python-mode)))      
 (add-to-list 'pretty-symbol-patterns '(?³ kdm-custom "\\*\\*3" (python-mode inferior-python-mode)))      
