@@ -218,7 +218,7 @@ inherited by a parent headline."
  '(whitespace-space-before-tab-regexp "^ *\\(\\( \\)\\) \\{3\\}")
  '(whitespace-style (quote (face tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation)))
  '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
- '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\)")
+ '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\)")
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -243,7 +243,7 @@ inherited by a parent headline."
  '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
@@ -271,6 +271,8 @@ inherited by a parent headline."
 (add-to-list 'pretty-symbol-patterns '(8743 kdm-custom "\\<und\\>" (text-mode prog-mode)))  
 (add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<or\\>" (text-mode prog-mode)))  
 (add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<oder\\>" (text-mode prog-mode)))  
+(add-to-list 'pretty-symbol-patterns '(172 kdm-custom "\\<nicht\\>" (text-mode prog-mode)))
+(add-to-list 'pretty-symbol-patterns '(172 kdm-custom "\\<not\\>" (text-mode prog-mode)))
 
 ;; superscripts                                      
 (add-to-list 'pretty-symbol-patterns '(?² kdm-custom "\\*\\*2" (python-mode inferior-python-mode)))      
