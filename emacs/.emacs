@@ -56,6 +56,15 @@ inherited by a parent headline."
                  (string= (buffer-name) hcz-set-cursor-color-buffer))
           (set-cursor-color (setq hcz-set-cursor-color-color color))
           (setq hcz-set-cursor-color-buffer (buffer-name)))))
+(defun toggle-mode-line () 
+  (interactive)
+  (when (equal mode-line-format nil)
+    (setq mode-line-format (default-value 'mode-line-format))
+    (redraw-display)
+            ))
+(defun knu/mode-line ()
+  (interactive)
+  (setq mode-line-format nil))
 
 (load "pretty-symbols.el")
 (load "highlight-parentheses.el")
@@ -105,6 +114,7 @@ inherited by a parent headline."
 (define-key global-map [?\A-m] "3")
 (define-key global-map [?\A-j] ";")
 (define-key global-map [?\A-\s] "0")
+(global-set-key [f12] 'toggle-mode-line)
 
 ;; hooks
 (add-hook 'after-change-major-mode-hook '(lambda () 
@@ -128,6 +138,9 @@ inherited by a parent headline."
                             (define-key org-mode-map (kbd "C-c C-x a") 'knu/org-archive)
                             ))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
+(add-hook 'post-self-insert-hook 'knu/mode-line)
+(add-hook 'echo-area-clear-hook 'raise-frame)
+(add-hook 'echo-area-clear-hook 'toggle-mode-line)
 (add-hook 'prog-mode-hook '(lambda () 
                              (hs-org/minor-mode t)
                              (hs-hide-all)
@@ -140,6 +153,13 @@ inherited by a parent headline."
 (add-hook 'w3m-mode-hook '(lambda ()
                             (load "w3m-config.el")
                             ))
+                                        ;(add-hook 'minibuffer-exit-hook '(lambda ()
+;                             (set-face-attribute 'mode-line (selected-frame) :height 5)
+;))
+                                        ;(add-hook 'minibuffer-setup-hook '(lambda ()
+ ;                                (set-face-attribute 'mode-line (selected-frame) :height 1.0)
+  ;                               ))
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -147,7 +167,8 @@ inherited by a parent headline."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LilyPond-indent-level 4)
- '(blink-cursor-mode nil)
+ '(blink-cursor-delay 3)
+ '(blink-cursor-interval 1)
  '(c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
@@ -177,11 +198,14 @@ inherited by a parent headline."
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
+ '(initial-frame-alist (quote ((minibuffer . maximized) (fullscreen . maximized) (tool-bar-position . right) (left-fringe . 0) (right-fringe))))
  '(intitial-frame-alist (quote ((fullscreen . maximized))) t)
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-local-dictionary "de_DE")
  '(ispell-program-name "aspell")
  '(menu-bar-mode nil)
+ '(minibuffer-auto-raise t)
+ '(minibuffer-frame-alist (quote ((width . 150) (height . 2))))
  '(normal-erase-is-backspace t)
  '(org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t))))
  '(org-confirm-babel-evaluate nil)
@@ -244,23 +268,23 @@ inherited by a parent headline."
  '(hl-paren-face ((t (:weight ultra-bold))) t)
  '(mode-line ((t (:background "gray38" :foreground "black" :box nil))))
  '(mode-line-buffer-id ((t (:foreground "#99dddd" :box nil :weight bold))))
- '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box (:line-width 1 :color "gray30") :weight light))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box nil :weight light))))
  '(org-archived ((t (:foreground "#254555"))))
  '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
- '(w3m-arrived-anchor ((t (:foreground "#8888ee"))) t)
- '(w3m-current-anchor ((t (:weight ultra-bold))) t)
- '(w3m-tab-background ((t (:background "Black" :foreground "#88dddd"))) t)
- '(w3m-tab-selected ((t (:background "Gray75" :foreground "Black"))) t)
- '(w3m-tab-selected-retrieving ((t (:background "#dd6666" :foreground "Black"))) t)
- '(w3m-tab-unselected ((t (:background "Gray30" :foreground "Black"))) t)
- '(w3m-tab-unselected-retrieving ((t (:background "#aa4444" :foreground "Black"))) t)
- '(w3m-tab-unselected-unseen ((t (:background "Gray90" :foreground "Black"))) t)
+ '(w3m-arrived-anchor ((t (:foreground "#8888ee"))))
+ '(w3m-current-anchor ((t (:weight ultra-bold))))
+ '(w3m-tab-background ((t (:background "Black" :foreground "#88dddd"))))
+ '(w3m-tab-selected ((t (:background "Gray75" :foreground "Black"))))
+ '(w3m-tab-selected-retrieving ((t (:background "#dd6666" :foreground "Black"))))
+ '(w3m-tab-unselected ((t (:background "Gray30" :foreground "Black"))))
+ '(w3m-tab-unselected-retrieving ((t (:background "#aa4444" :foreground "Black"))))
+ '(w3m-tab-unselected-unseen ((t (:background "Gray90" :foreground "Black"))))
  '(whitespace-empty ((t (:background "VioletRed4" :foreground "firebrick"))))
  '(whitespace-hspace ((t (:foreground "#114444"))))
  '(whitespace-indentation ((t (:foreground "#661144"))))
@@ -277,7 +301,7 @@ inherited by a parent headline."
 (add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<o?O?r\\>\\|\\<oder\\>\\|\\<Oder\\>" (text-mode prog-mode ess-mode)))  
 (add-to-list 'pretty-symbol-patterns '(172 kdm-custom "\\<nicht\\>-?\\|\\<not\\>" (text-mode prog-mode ess-mode)))
 (add-to-list 'pretty-symbol-patterns '(?∀ kdm-custom "\\<a?A?lle.?\\>" (text-mode prog-mode ess-mode)))
-(add-to-list 'pretty-symbol-patterns '(?E kdm-custom "\\<E?e?s gibt\\>\\|\\<m?M?anche\\>\\|\\<e?E?inige\\>" (text-mode prog-mode ess-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∃ kdm-custom "\\<E?e?s gibt\\>\\|\\<m?M?anche\\>\\|\\<e?E?inige\\>" (text-mode prog-mode ess-mode)))
 (add-to-list 'pretty-symbol-patterns '(?Ø kdm-custom "\\<d?D?urchschnittliche?.?\\>" (text-mode prog-mode ess-mode)))
 
 ;; org-mode
@@ -292,15 +316,22 @@ inherited by a parent headline."
 ;; functions
 (add-to-list 'pretty-symbol-patterns '(402 kdm-custom "\\<function\\>\\|\\<defun\\>\\|\\<def\\>" (text-mode prog-mode ess-mode)))
 (add-to-list 'pretty-symbol-patterns '(?✠ kdm-custom "\\<return\\>\\|..RESULTS" (text-mode prog-mode ess-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ø kdm-custom "\\<NULL\\>\\|\\<nil\\>\\|\\<None\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?∅ kdm-custom "\\<NULL\\>\\|\\<nil\\>\\|\\<None\\>" (text-mode prog-mode ess-mode))) 
 (add-to-list 'pretty-symbol-patterns '(?∀ kdm-custom "\\<for\\>" (text-mode prog-mode ess-mode))) 
 (add-to-list 'pretty-symbol-patterns '(?⬊ kdm-custom "\\<if\\>" (text-mode prog-mode ess-mode))) 
 (add-to-list 'pretty-symbol-patterns '(?↯ kdm-custom "\\<else\\>" (text-mode prog-mode ess-mode))) 
 (add-to-list 'pretty-symbol-patterns '(?↺ kdm-custom "\\<while\\>" (text-mode prog-mode ess-mode))) 
 (add-to-list 'pretty-symbol-patterns '(?⚓ kdm-custom "hook" (text-mode prog-mode ess-mode))) 
 (add-to-list 'pretty-symbol-patterns '(?⛁ kdm-custom "\\<library\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?∵ kdm-custom "\\<weil\\>\\|\\<wegen\\>\\|\\<because\\>" (text-mode prog-mode ess-mode))) 
+(add-to-list 'pretty-symbol-patterns '(?∴ kdm-custom "\\<deswegen\\>\\|\\<therefore\\>\\|\\<folglich\\>\\|\\<also\\>" (text-mode prog-mode ess-mode))) 
 
-;;  ⬀ | ⬁ | ⬂ | ⬃ | ⬄ | ⬅ | ⬆ | ⬇ | ⬈ | ⬉ | ⬊ | ⬋ | ⬌ | ⬍ | ⬎ | ⬏ |
+
+;U+2234 (8756) ∴      THEREFORE                       folglich                                     
+;U+2235 (8757) ∵∵      BECAUSE                         weil                                         
+
+
+;;  ⬀ | ⬁ | ⬂ | ⬃ | ⬄ | ⬅ | ⬆ | ⬇ | ⬈ | ⬉ | ⬊ | ⬋ | ⬌ | ⬍ | ⬎ | ⬏ | ∄
 
 ;; superscripts                                      
 (add-to-list 'pretty-symbol-patterns '(?² kdm-custom "\\*\\*2" (python-mode inferior-python-mode)))      
@@ -381,5 +412,23 @@ inherited by a parent headline."
 (add-to-list 'pretty-symbol-patterns '(?ω kdm-custom "\\<omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))  
 (add-to-list 'pretty-symbol-patterns '(?Ω kdm-custom "\\<Omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))  
 
+;;;; TESTING
+
+
+(with-current-buffer (get-buffer " *Echo Area 0*")
+  (setq-local face-remapping-alist '((default (:foreground "#9bb" :background "#033")))))
+                                        ;(with-current-buffer (get-buffer " *Echo Area 0*")
+ ; (set-background-color "#b33"))
+
+                                        ;(setq minibuffer-frame-alist (append '((auto-raise . t) (auto-lower . t)) minibuffer-frame-alist))
+;(setq initial-frame-alist (append '((minibuffer . nil)) initial-frame-alist))
+
+(setq initial-frame-alist (append '((minibuffer . nil)) initial-frame-alist))
+(setq default-frame-alist (append '((minibuffer . nil)) default-frame-alist))
+(setq minibuffer-auto-raise t)
+                                        ;(setq minibuffer-exit-hook '(lambda () (lower-frame)))
+
 (eshell)
+;(toggle-mode-line)
+
 
