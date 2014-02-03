@@ -1,10 +1,13 @@
+(require 'package)                                                                         
+(package-initialize)                                                                       
+
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
-(setq split-height-threshold nil)
-(setq split-width-threshold 0)
+;(setq split-height-threshold nil)
+;(setq split-width-threshold 0)
 
 (require 'org-install)
 (require 'hideshow-org)
@@ -84,6 +87,7 @@ inherited by a parent headline."
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
  '(custom-enabled-themes (quote (deeper-blue)))
+ '(display-time-24hr-format t)
  '(display-time-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(eshell-banner-message "
@@ -144,6 +148,10 @@ inherited by a parent headline."
  '(pretty-symbol-categories (lambda relational logical kdm-custom))
  '(pretty-symbol-patterns (quote ((955 lambda "\\<lambda\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode python-mode inferior-python-mode prog-mode)) (402 lambda "\\<function\\>" (js-mode)) (8800 relational "!=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode)) (8800 relational "/=" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8805 relational ">=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode ess-mode)) (8804 relational "<=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode ess-mode)) (8743 logical "&&" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode)) (8743 logical "\\<and\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8744 logical "||" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode)) (8744 logical "\\<or\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (172 logical "\\<not\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)))))
  '(scroll-bar-mode nil)
+ '(sml/hidden-modes (quote (" hl-p" " hs+" " WS" " ws")))
+ '(sml/mode-width (quote full))
+ '(sml/name-width 15)
+ '(sml/replacer-regexp-list (quote (("^~/Org/" ":Org:") ("^~/\\.emacs\\.d/" ":ED:") ("^/sudo:.*:" ":SU:") ("^~/Documents/" ":Doc:") ("^~/Dropbox/" ":DB:") ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:") ("^~/[Gg]it/" ":G:") ("^~/[Gg]it[Hh]ub/" ":Git:") ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:"))))
  '(tab-width 4)
  '(tool-bar-mode nil)
  '(tool-bar-position (quote right))
@@ -207,11 +215,12 @@ inherited by a parent headline."
  '(whitespace-tab ((t (:foreground "#113333"))))
  '(whitespace-trailing ((t (:foreground "#22aaaa")))))
 
-(load "knu-testing.el" t)
+
+;(load "knu-testing.el" t)
 (load "knu-pretty-symbol.el")
 ;; This file must be created and pointing to the apropriate file.
 ;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
 (load "knu-device.el" t)
 ;; The hooks should be loaded at the end.
 (load "knu-hooks.el")
-
+(sml/setup)
