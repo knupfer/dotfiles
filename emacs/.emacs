@@ -1,28 +1,28 @@
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq split-height-threshold nil)
-(setq split-width-threshold 0)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
-(setq org-log-done t)
- 
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+
 (require 'org-install)
 (require 'hideshow-org)
 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
-(defvar knu/modified nil)
- 
+
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
-  (eshell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
+  (eshell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
+  )
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
   (interactive)
   (org-toggle-archive-tag)
   (unless (org-at-heading-p) (error "Not at an headline"))
-  (save-excursion (while (ignore-errors (org-move-subtree-down)))))
+  (save-excursion (while (ignore-errors (org-move-subtree-down))))
+  )
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry do DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states) ; turn off logging
@@ -63,25 +63,14 @@ inherited by a parent headline."
     (setq mode-line-format (default-value 'mode-line-format))
     (redraw-display)
             ))
-(defun knu/mode-line ()
-  (interactive)
-  (setq mode-line-format nil))
-(defun knu/modify () 
-  (interactive)
-  (if (equal knu/modified nil)
-(set-face-background 'mode-line "#033")
-(set-face-background 'mode-line "#500")
-                            ))
 
 (load "pretty-symbols.el")
 (load "highlight-parentheses.el")
 
-;; Correct the layout for a tablet.
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cm" 'magit-status)
 (global-set-key [f12] 'toggle-mode-line)
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -140,6 +129,7 @@ inherited by a parent headline."
  '(org-html-head " ")
  '(org-image-actual-width 200)
  '(org-list-indent-offset 2)
+ '(org-log-done (quote time))
  '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
  '(org-replace-disputed-keys t)
  '(org-src-fontify-natively t)
@@ -194,7 +184,7 @@ inherited by a parent headline."
  '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
@@ -217,13 +207,11 @@ inherited by a parent headline."
  '(whitespace-tab ((t (:foreground "#113333"))))
  '(whitespace-trailing ((t (:foreground "#22aaaa")))))
 
-
-
-
 (load "knu-testing.el" t)
 (load "knu-pretty-symbol.el")
-(load "knu-hooks.el")
 ;; This file must be created and pointing to the apropriate file.
 ;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
 (load "knu-device.el" t)
+;; The hooks should be loaded at the end.
+(load "knu-hooks.el")
 
