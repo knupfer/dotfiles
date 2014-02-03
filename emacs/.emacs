@@ -80,47 +80,6 @@ inherited by a parent headline."
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cm" 'magit-status)
-(define-key global-map [?\A-k] 'cua-scroll-down)
-(define-key global-map [?\A-u] [(backspace)])
-(define-key global-map [?\A-ü] 'previous-line)
-(define-key global-map [?\A-.] [(delete)])
-(define-key global-map [?\A-ä] 'cua-scroll-up)
-(define-key global-map [?\A-h] 'beginning-of-line)
-(define-key global-map [?\A-i] 'backward-char)
-(define-key global-map [?\A-\C-i] 'backward-word)
-(define-key global-map [?\A-\C-a] 'right-word)
-(define-key global-map [?\A-\C-u] 'backward-kill-word)
-(define-key global-map [?\A-\C-.] 'kill-word)
-(define-key global-map [?\A-\C-h] 'beginning-of-buffer)
-(define-key global-map [?\A-\C-o] 'end-of-buffer)
-(define-key global-map [?\A-\C-ü] 'backward-paragraph)
-(define-key global-map [?\A-\C-e] 'forward-paragraph)
-(define-key global-map (kbd "C-x A-i") 'previous-buffer)
-(define-key global-map (kbd "C-x A-a") 'next-buffer)
-(define-key global-map [?\A-e] 'next-line)
-(define-key global-map [?\A-a] 'forward-char)
-(define-key global-map [?\A-o] 'end-of-line)
-(define-key global-map [?\A-x] (kbd "ESC"))
-(define-key global-map [?\A-y] (kbd "TAB"))
-(define-key global-map [?\A-Y] (lambda nil (interactive) (hs-org/hideshow-all [(shift tab)])))
-(define-key global-map [?\A-ö] 'overwrite-mode)
-(define-key global-map [?\A-q] 'undo)
-(define-key global-map [?\A-,] (kbd "RET"))
-(define-key global-map [?\A-g] "7")
-(define-key global-map [?\A-c] "8")
-(define-key global-map [?\A-l] "9")
-(define-key global-map [?\A-z] "+")
-(define-key global-map [?\A-f] "")
-(define-key global-map [?\A-d] "")
-(define-key global-map [?\A-t] "4")
-(define-key global-map [?\A-r] "5")
-(define-key global-map [?\A-n] "6")
-(define-key global-map [?\A-s] "")
-(define-key global-map [?\A-p] "1")
-(define-key global-map [?\A-w] "2")
-(define-key global-map [?\A-m] "3")
-(define-key global-map [?\A-j] ";")
-(define-key global-map [?\A-\s] "0")
 (global-set-key [f12] 'toggle-mode-line)
 
 ;; hooks
@@ -160,7 +119,7 @@ inherited by a parent headline."
 ;                            (set-face-attribute 'mode-line nil :height 5)
 ;                            (knu/modify)
 ;                            ))
-(add-hook 'echo-area-clear-hook 'raise-frame)
+
 (add-hook 'prog-mode-hook '(lambda () 
                              (hs-org/minor-mode t)
                              (pretty-symbols-mode)
@@ -172,7 +131,7 @@ inherited by a parent headline."
 (add-hook 'w3m-mode-hook '(lambda ()
                             (load "w3m-config.el")
                             ))
-(add-hook 'exit-minibuffer-hook 'raise-frame)
+
 (add-hook 'first-change-hook '(lambda () (setq-local knu/modified t)))
 
 (custom-set-variables
@@ -423,10 +382,9 @@ inherited by a parent headline."
 (add-to-list 'pretty-symbol-patterns '(?ψ kdm-custom "\\<psi\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))    
 (add-to-list 'pretty-symbol-patterns '(?Ψ kdm-custom "\\<Psi\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))    
 (add-to-list 'pretty-symbol-patterns '(?ω kdm-custom "\\<omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))  
-(add-to-list 'pretty-symbol-patterns '(?Ω kdm-custom "\\<Omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))  
+(add-to-list 'pretty-symbol-patterns '(?Ω kdm-custom "\\<Omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))   
 
 
-(setq default-frame-alist (append default-frame-alist '((minibuffer . nil))))
 
 ;;; TEST from mastering emacs
 
@@ -486,3 +444,7 @@ inherited by a parent headline."
     ;; minor-mode-alist  ;; list of minor modes
     "%-" ;; fill with '-'
     ))
+
+;; This file must be created and pointing to the apropriate file.
+;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el")...
+(load "knu-device.el")
