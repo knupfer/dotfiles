@@ -12,7 +12,8 @@
 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
-
+(defvar knu/modified nil)
+ 
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
   (eshell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
@@ -65,6 +66,12 @@ inherited by a parent headline."
 (defun knu/mode-line ()
   (interactive)
   (setq mode-line-format nil))
+(defun knu/modify () 
+  (interactive)
+  (if (equal knu/modified nil)
+(set-face-background 'mode-line "#033")
+(set-face-background 'mode-line "#500")
+                            ))
 
 (load "pretty-symbols.el")
 (load "highlight-parentheses.el")
@@ -141,13 +148,18 @@ inherited by a parent headline."
                             ))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'activate-mark-hook '(lambda () 
-                             (set-face-attribute 'mode-line nil :height 1.0)))
+                             (set-face-attribute 'mode-line nil :height 1.0)
+                             ))
 (add-hook 'deactivate-mark-hook '(lambda () 
                              (set-face-attribute 'mode-line nil :height 5)))
 (add-hook 'minibuffer-setup-hook '(lambda () 
                              (set-face-attribute 'mode-line nil :height 1.0)))
 (add-hook 'minibuffer-exit-hook '(lambda () 
-                             (set-face-attribute 'mode-line nil :height 5)))
+                            (set-face-attribute 'mode-line nil :height 5)))
+;(add-hook 'deactivate-mark-hook '(lambda () 
+;                            (set-face-attribute 'mode-line nil :height 5)
+;                            (knu/modify)
+;                            ))
 (add-hook 'echo-area-clear-hook 'raise-frame)
 (add-hook 'prog-mode-hook '(lambda () 
                              (hs-org/minor-mode t)
@@ -161,6 +173,7 @@ inherited by a parent headline."
                             (load "w3m-config.el")
                             ))
 (add-hook 'exit-minibuffer-hook 'raise-frame)
+(add-hook 'first-change-hook '(lambda () (setq-local knu/modified t)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -414,3 +427,62 @@ inherited by a parent headline."
 
 
 (setq default-frame-alist (append default-frame-alist '((minibuffer . nil))))
+
+;;; TEST from mastering emacs
+
+;; use setq-default to set it for /all/ modes
+(setq mode-line-format
+  (list
+    ;; the buffer name; the file name as a tool tip
+    '(:eval (propertize "%b " 'face 'font-lock-keyword-face
+        'help-echo (buffer-file-name)))
+
+    ;; line and column
+    "(" ;; '%02' to set to 2 chars at least; prevents flickering
+      (propertize "%02l" 'face 'font-lock-type-face) ","
+      (propertize "%02c" 'face 'font-lock-type-face) 
+    ") "
+
+    ;; relative position, size of file
+    "["
+    (propertize "%p" 'face 'font-lock-constant-face) ;; % above top
+    "/"
+    (propertize "%I" 'face 'font-lock-constant-face) ;; size
+    "] "
+
+    ;; the current major mode for the buffer.
+    "["
+
+    '(:eval (propertize "%m" 'face 'font-lock-string-face
+              'help-echo buffer-file-coding-system))
+    "] "
+
+    "[" ;; insert vs overwrite mode, input-method in a tooltip
+    '(:eval (propertize (if overwrite-mode "Ovr" "Ins")
+              'face 'font-lock-preprocessor-face
+              'help-echo (concat "Buffer is in "
+                           (if overwrite-mode "overwrite" "insert") " mode")))
+
+    ;; was this buffer modified since the last save?
+    '(:eval (when (buffer-modified-p)
+              (concat ","  (propertize "Mod"
+                             'face 'font-lock-warning-face
+                             'help-echo "Buffer has been modified"))))
+
+    ;; is this buffer read-only?
+    '(:eval (when buffer-read-only
+              (concat ","  (propertize "RO"
+                             'face 'font-lock-type-face
+                             'help-echo "Buffer is read-only"))))  
+    "] "
+
+    ;; add the time, with the date and the emacs uptime in the tooltip
+    '(:eval (propertize (format-time-string "%H:%M")
+              'help-echo
+              (concat (format-time-string "%c; ")
+                      (emacs-uptime "Uptime:%hh"))))
+    " --"
+    ;; i don't want to see minor-modes; but if you want, uncomment this:
+    ;; minor-mode-alist  ;; list of minor modes
+    "%-" ;; fill with '-'
+    ))
