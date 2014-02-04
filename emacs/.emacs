@@ -6,8 +6,6 @@
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
-;(setq split-height-threshold nil)
-;(setq split-width-threshold 0)
 
 (require 'org-install)
 (require 'hideshow-org)
@@ -68,7 +66,6 @@ inherited by a parent headline."
             ))
 
 (load "pretty-symbols.el")
-(load "highlight-parentheses.el")
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
@@ -185,6 +182,7 @@ inherited by a parent headline."
  '(hc-tab ((t nil)) t)
  '(hc-trailing-whitespace ((nil)) t)
  '(hl-paren-face ((t (:weight ultra-bold))) t)
+ '(magit-header ((t (:background "#155" :foreground "#5fe"))))
  '(mode-line ((t (:background "#033" :foreground "#9bb" :box nil))))
  '(mode-line-buffer-id ((t (:foreground "#99dddd" :box nil :weight bold))))
  '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box nil :weight light))))
@@ -192,7 +190,7 @@ inherited by a parent headline."
  '(org-checkbox ((t (:inherit bold :foreground "#2f2"))))
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
@@ -223,4 +221,5 @@ inherited by a parent headline."
 (load "knu-device.el" t)
 ;; The hooks should be loaded at the end.
 (load "knu-hooks.el")
+
 (sml/setup)
