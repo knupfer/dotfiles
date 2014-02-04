@@ -9,11 +9,17 @@
 ;; org-mode
 (add-to-list 'pretty-symbol-patterns '(?α kdm-custom "#\\+BEGIN_SRC" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?β kdm-custom "#\\+END_SRC" (org-mode)))
-(add-to-list 'pretty-symbol-patterns '(?▷ kdm-custom "- \\[ ]" (org-mode)))
-(add-to-list 'pretty-symbol-patterns '(?> kdm-custom "- \\[-]" (org-mode)))
-(add-to-list 'pretty-symbol-patterns '(?▶ kdm-custom "- \\[X]" (org-mode)))
+(add-to-list 'pretty-symbol-patterns '(?> kdm-custom "- \\[ ]" (org-mode)))
+(add-to-list 'pretty-symbol-patterns '(?+ kdm-custom "- \\[-]" (org-mode)))
+(add-to-list 'pretty-symbol-patterns '(?▷ kdm-custom "- \\[X]" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?δ kdm-custom "#\\+BEGIN_COMMENT" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?ξ kdm-custom "#\\+END_COMMENT" (org-mode)))
+
+(add-to-list 'pretty-symbol-patterns '(?▶ kdm-custom "\\*\\*? TO\\|\\*\\*? DO" (org-mode)))
+(add-to-list 'pretty-symbol-patterns '(?▶ kdm-custom "DO\\>\\|NE\\>" (org-mode)))
+
+(add-to-list 'pretty-symbol-patterns '(?x kdm-custom "\\*\\*? FA\\|\\*\\*? CAN" (org-mode)))
+(add-to-list 'pretty-symbol-patterns '(?x kdm-custom "ILED\\>\\|CELED\\>" (org-mode)))
 
 ;; functions
 (add-to-list 'pretty-symbol-patterns '(402 kdm-custom "\\<function\\>\\|\\<defun\\>\\|\\<def\\>" (text-mode prog-mode ess-mode)))
