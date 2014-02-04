@@ -1,8 +1,12 @@
 (setq default-frame-alist (append default-frame-alist '((minibuffer . nil))))
+(setq minibuffer-auto-raise t)
+(setq minibuffer-frame-alist (quote ((width . 150) (height . 2) (background-color . "#303") (foreground-color . "#eee"))))
+(run-with-idle-timer 1 t 'raise-frame)
+(run-with-idle-timer 1 nil 'select-frame-by-name "emacs@localhost")
+
 (add-hook 'exit-minibuffer-hook 'raise-frame)
 (add-hook 'echo-area-clear-hook 'raise-frame)
 
-(global-set-key [f11] 'toggle-mode-line)
 (define-key global-map [?\A-k] 'cua-scroll-down)
 (define-key global-map [?\A-u] [(backspace)])
 (define-key global-map [?\A-ü] 'previous-line)
