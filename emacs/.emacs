@@ -104,6 +104,7 @@ inherited by a parent headline."
  '(font-use-system-font nil)
  '(fringe-mode (quote (0)) nil (fringe))
  '(global-whitespace-mode t)
+ '(gnus-init-file "~/.emacs.d/gnus.el")
  '(hc-other-chars (quote ("~,.!?{}[]():;»«›‹-_/\\+&")))
  '(hc-other-chars-font-lock-override (quote keep))
  '(hfy-ignored-properties nil)
