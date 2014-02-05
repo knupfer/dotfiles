@@ -79,7 +79,12 @@ inherited by a parent headline."
  ;; If there is more than one, they won't work right.
  '(LilyPond-indent-level 4)
  '(blink-cursor-mode nil)
- '(c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
+ '(c-default-style
+   (quote
+    ((c-mode . "stroustrup")
+     (java-mode . "java")
+     (awk-mode . "awk")
+     (other . "gnu"))))
  '(column-number-mode t)
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
@@ -87,7 +92,8 @@ inherited by a parent headline."
  '(display-time-24hr-format t)
  '(display-time-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
- '(eshell-banner-message "
+ '(eshell-banner-message
+   "
   #############
   #
   #  +----------------------------+
@@ -96,7 +102,9 @@ inherited by a parent headline."
   #
 ")
  '(eshell-cmpl-compare-entry-function (quote string-lessp))
- '(eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix)))
+ '(eshell-modules-list
+   (quote
+    (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix)))
  '(eshell-plain-grep-behavior t)
  '(ess-default-style (quote C++))
  '(ess-fancy-comments nil)
@@ -108,29 +116,44 @@ inherited by a parent headline."
  '(hc-other-chars (quote ("~,.!?{}[]():;»«›‹-_/\\+&")))
  '(hc-other-chars-font-lock-override (quote keep))
  '(hfy-ignored-properties nil)
- '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
+ '(hl-paren-colors
+   (quote
+    ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(hs-hide-comments-when-hiding-all nil)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-local-dictionary "de_DE")
  '(ispell-program-name "aspell")
+ '(mail-user-agent (quote gnus-user-agent))
  '(menu-bar-mode nil)
  '(normal-erase-is-backspace t)
- '(org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t))))
+ '(org-babel-load-languages
+   (quote
+    ((python . t)
+     (ditaa . t)
+     (sh . t)
+     (lilypond . t)
+     (R . t)
+     (emacs-lisp . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar")
  '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
  '(org-edit-src-content-indentation 0)
  '(org-export-headline-levels 4)
- '(org-export-html-xml-declaration (quote (("html" . "--- ---") ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+ '(org-export-html-xml-declaration
+   (quote
+    (("html" . "--- ---")
+     ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
  '(org-hierarchical-todo-statistics nil)
  '(org-html-doctype "xhtml-strict")
  '(org-html-head " ")
  '(org-image-actual-width 200)
  '(org-list-indent-offset 2)
  '(org-log-done (quote time))
- '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
+ '(org-publish-project-alist
+   (quote
+    (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
  '(org-replace-disputed-keys t)
  '(org-src-fontify-natively t)
  '(org-startup-align-all-tables t)
@@ -142,12 +165,45 @@ inherited by a parent headline."
  '(org-todo-keyword-faces (quote (("FAILED" . "#f00") ("CANCELED" . "#ee3"))))
  '(org-todo-keywords (quote ((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))))
  '(pretty-symbol-categories (lambda relational logical kdm-custom))
- '(pretty-symbol-patterns (quote ((955 lambda "\\<lambda\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode python-mode inferior-python-mode prog-mode)) (402 lambda "\\<function\\>" (js-mode)) (8800 relational "!=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode)) (8800 relational "/=" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8805 relational ">=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode ess-mode)) (8804 relational "<=" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode ess-mode)) (8743 logical "&&" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode)) (8743 logical "\\<and\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (8744 logical "||" (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode)) (8744 logical "\\<or\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)) (172 logical "\\<not\\>" (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)))))
+ '(pretty-symbol-patterns
+   (quote
+    ((955 lambda "\\<lambda\\>"
+          (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode python-mode inferior-python-mode prog-mode))
+     (402 lambda "\\<function\\>"
+          (js-mode))
+     (8800 relational "!="
+           (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode))
+     (8800 relational "/="
+           (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode))
+     (8805 relational ">="
+           (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode ess-mode))
+     (8804 relational "<="
+           (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode ess-mode))
+     (8743 logical "&&"
+           (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode))
+     (8743 logical "\\<and\\>"
+           (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode))
+     (8744 logical "||"
+           (c-mode c++-mode go-mode java-mode js-mode perl-mode cperl-mode ruby-mode python-mode inferior-python-mode ess-mode))
+     (8744 logical "\\<or\\>"
+           (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode))
+     (172 logical "\\<not\\>"
+          (emacs-lisp-mode inferior-lisp-mode lisp-mode scheme-mode)))))
  '(scroll-bar-mode nil)
  '(sml/hidden-modes (quote (" hl-p" " hs+" " WS" " ws")))
  '(sml/mode-width (quote full))
  '(sml/name-width 15)
- '(sml/replacer-regexp-list (quote (("^~/Org/" ":Org:") ("^~/\\.emacs\\.d/" ":ED:") ("^/sudo:.*:" ":SU:") ("^~/Documents/" ":Doc:") ("^~/Dropbox/" ":DB:") ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:") ("^~/[Gg]it/" ":G:") ("^~/[Gg]it[Hh]ub/" ":Git:") ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:"))))
+ '(sml/replacer-regexp-list
+   (quote
+    (("^~/Org/" ":Org:")
+     ("^~/\\.emacs\\.d/" ":ED:")
+     ("^/sudo:.*:" ":SU:")
+     ("^~/Documents/" ":Doc:")
+     ("^~/Dropbox/" ":DB:")
+     ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:")
+     ("^~/[Gg]it/" ":G:")
+     ("^~/[Gg]it[Hh]ub/" ":Git:")
+     ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:"))))
  '(tab-width 4)
  '(tool-bar-mode nil)
  '(tool-bar-position (quote right))
@@ -157,13 +213,20 @@ inherited by a parent headline."
  '(whitespace-display-mappings (quote ((space-mark 32 [124] [46]))))
  '(whitespace-empty-at-eob-regexp "^ *\\( \\) \\{20\\}")
  '(whitespace-hspace-regexp "^ *\\(\\( \\)\\) \\{7\\}")
- '(whitespace-indentation-regexp (quote ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ *\\( \\) \\{19\\}")))
+ '(whitespace-indentation-regexp
+   (quote
+    ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ *\\( \\) \\{19\\}")))
  '(whitespace-line-column 200)
- '(whitespace-space-after-tab-regexp (quote ("^a*\\(\\( \\)\\) \\{19\\}" . "^ *\\( \\) \\{15\\}")))
+ '(whitespace-space-after-tab-regexp
+   (quote
+    ("^a*\\(\\( \\)\\) \\{19\\}" . "^ *\\( \\) \\{15\\}")))
  '(whitespace-space-before-tab-regexp "^ *\\(\\( \\)\\) \\{3\\}")
- '(whitespace-style (quote (face tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation)))
+ '(whitespace-style
+   (quote
+    (face tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation)))
  '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
- '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\|\\<nil\\>\\)")
+ '(whitespace-trailing-regexp
+   "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\|\\<nil\\>\\)")
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
