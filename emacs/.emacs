@@ -9,6 +9,7 @@
 
 (require 'org-install)
 (require 'hideshow-org)
+(require 'ess-site)
 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
