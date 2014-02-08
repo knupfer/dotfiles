@@ -288,3 +288,4 @@ inherited by a parent headline."
 (load "knu-hooks.el")
 
 (sml/setup)
+(flyspell-lazy-mode)
