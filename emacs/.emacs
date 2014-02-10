@@ -87,7 +87,7 @@ inherited by a parent headline."
  '(column-number-mode t)
  '(completion-auto-show-delay (quote ((t . 5))))
  '(completion-max-candidates (quote ((t . 5))))
- '(completion-ui-use-echo (quote ((predictive))))
+ '(completion-ui-use-echo nil)
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
  '(custom-enabled-themes (quote (deeper-blue)))
@@ -177,7 +177,8 @@ inherited by a parent headline."
  '(whitespace-style (quote (face tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation)))
  '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
  '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\|\\<nil\\>\\)")
- '(word-wrap t))
+ '(word-wrap t)
+ '(x-gtk-use-system-tooltips nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -206,7 +207,7 @@ inherited by a parent headline."
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(org-todo ((t (:foreground "#faa" :weight ultra-bold))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
