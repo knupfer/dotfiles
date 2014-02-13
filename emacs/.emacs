@@ -67,13 +67,16 @@ inherited by a parent headline."
     (setq mode-line-format (default-value 'mode-line-format))
     (redraw-display)
             ))
+(defun switch-to-previous-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (load "pretty-symbols.el")
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cm" 'magit-status)
-(global-set-key [f12] 'toggle-mode-line)
+(define-key global-map (kbd "`") 'switch-to-previous-buffer)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -242,3 +245,4 @@ inherited by a parent headline."
 (sml/setup)
 (flyspell-lazy-mode)
 (icicle-mode)
+
