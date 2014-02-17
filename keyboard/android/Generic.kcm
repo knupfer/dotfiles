@@ -1,0 +1,617 @@
+# Copyright (C) 2010 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#
+# Generic key character map for full alphabetic US English PC style external keyboards.
+#
+# This file is intentionally very generic and is intended to support a broad rang of keyboards.
+# Do not edit the generic key character map to support a specific keyboard; instead, create
+# a new key character map file with the required keyboard configuration.
+#
+
+type FULL
+
+### Basic QWERTY keys ###
+
+key A {
+#    label:                              'A'
+#    base:                               '\u00bb'
+#    shift:                    '\u00ab'
+#    fn:                               '\u203a'
+#    shift+fn:                    '\u2039'
+
+    label:                              'S'
+    base:                               'x'
+    shift, capslock:                    'X'
+    ralt:                               fallback BACK
+    fn:                              '#'
+
+}
+
+# key B {
+#   label:                              'B'
+#  base:                               fallback SHIFT_LEFT
+# }
+
+# key C {
+#   label:                              'C'
+#  base:                               fallback SEARCH
+# }
+
+key D {
+#    label:                              'D'
+#    base:                               'y'
+#    shift:                               'Y'
+#    ralt:                               '\u20ac'
+#    fn:                               '$'
+
+    label:                              'F'
+    base:                               '\u00f6'
+    shift:                               '\u00d6'
+    ralt:                               '\u20ac'
+    fn:                           '|'
+
+}
+
+key E {
+#    label:                              'E'
+#    base:                               'i'
+#    shift, capslock:                    'I'
+#    ralt:                                fallback DPAD_LEFT
+#    fn:                                '/'
+
+    label:                              'R'
+    base:                               'e'
+    shift, capslock:                    'E'
+    ralt:                               fallback DPAD_DOWN
+    fn:                                '{'
+
+}
+
+key F {
+#    label:                              'F'
+#    base:                               '\u00f6'
+#    shift:                               '\u00d6'
+#    ralt:                               '\t'
+#    fn:                           '|'
+
+    label:                              'G'
+    base:                               ','
+    shift:                               '\u2013'
+    ralt:                               fallback ENTER
+    fn:                              '~'
+
+}
+
+key G {
+#    label:                              'G'
+#    base:                               ','
+#    shift:                               '\u2013'
+#    ralt:                               fallback ENTER
+#    fn:                              '~'
+
+    label:                              'H'
+    base:                               'q'
+    shift, capslock:                    'Q'
+    ralt:                           '\u2111'
+}
+
+key H {
+    label:                              'H'
+    base:                               'q'
+    shift, capslock:                    'Q'
+}
+
+key I {
+    label:                              'I'
+    base:                               't'
+    shift, capslock:                    'T'
+    ralt:                                '4'
+    fn:                                '('
+}
+
+key J {
+    label:                              'J'
+    base:                               'b'
+    shift, capslock:                    'B'
+}
+
+key K {
+    label:                              'K'
+    base:                               'p'
+    shift, capslock:                    'P'
+    ralt:                               '1'
+    fn:                              '%'
+}
+
+key L {
+    label:                              'L'
+    base:                               'w'
+    shift, capslock:                    'W'
+    ralt:                               '2'
+    fn:                            '\"'
+}
+
+key M {
+    label:                              'M'
+    base:                               ' '
+    ralt:                    '0'
+}
+
+# key N {
+  #  label:                              'N'
+  #  base:                               fallback CTRL_LEFT
+# }
+
+key O {
+    label:                              'O'
+    base:                               'r'
+    shift, capslock:                    'R'
+    ralt:                               '5'
+    fn:                                ')'
+}
+
+key P {
+    label:                              'P'
+    base:                               'n'
+    shift, capslock:                    'N'
+    ralt:                               '6'
+    fn:                                '-'
+
+}
+
+key Q {
+#    label:                              'Q'
+#    base:                               'k'
+#    shift, capslock:                    'K'
+#    fn:                                   '^'
+
+    label:                              'W'
+    base:                               'h'
+    shift, capslock:                    'H'
+    ralt:                               fallback MOVE_HOME
+    fn:                                '\\'
+
+}
+
+key R {
+#    label:                              'R'
+#    base:                               'e'
+#    shift, capslock:                    'E'
+#    ralt:                               fallback DPAD_DOWN
+#    fn:                                '{'
+
+    label:                              'T'
+    base:                               'a'
+    shift, capslock:                     'A'
+    ralt:                               fallback DPAD_RIGHT
+    fn:                                '}'
+
+
+}
+
+key S {
+ #    label:                              'S'
+ #    base:                               'x'
+ #    shift, capslock:                    'X'
+ #    ralt:                               fallback BACK
+ #    fn:                              '#'
+
+    label:                              'D'
+    base:                               'y'
+    shift:                               'Y'
+    ralt:                               '\t'
+    fn:                               '$'
+
+}
+
+key T {
+#    label:                              'T'
+#    base:                               'a'
+#    shift, capslock:                     'A'
+#    ralt:                               fallback DPAD_RIGHT
+#    fn:                                '}'
+
+    label:                              'Y'
+    base:                               'o'
+    shift, capslock:                    'O'
+    ralt:                               fallback MOVE_END
+    fn:                                '*'
+
+
+}
+
+key U {
+    label:                              'U'
+    base:                               'd'
+    shift, capslock:                    'D'
+    ralt:                                '\u0308'
+    fn:                                '?'
+
+}
+
+# key V {
+  #  label:                              'V'
+  #  base:                               fallback ALT_LEFT
+# }
+
+key W {
+#    label:                              'W'
+#    base:                               'h'
+#    shift, capslock:                    'H'
+#    ralt:                               fallback MOVE_HOME
+#    fn:                                '\\'
+
+    label:                              'E'
+    base:                               'i'
+    shift, capslock:                    'I'
+    ralt:                                fallback DPAD_LEFT
+    fn:                                '/'
+
+
+}
+
+# key X {
+   # label:                              'X'
+   # base:                               fallback BACK
+# }
+
+key Y {
+    label:                              'Y'
+    base:                               'o'
+    shift, capslock:                    'O'
+    ralt:                               fallback MOVE_END
+    fn:                                '*'
+
+}
+
+# key Z {
+   # label:                              'Z'
+  #  base:                               fallback HOME
+# }
+
+key 0 {
+    label:                              '0'
+    base:                               'l'
+    shift:                              'L'
+    ralt:                               '9'
+    fn:                                '='
+}
+
+key 1 {
+    label:                              '1'
+    base:                               '\u00df'
+    shift:                              '\u1e9e'
+
+  #  base:                               '1'
+   # shift:                              '!'
+ }
+
+key 2 {
+    label:                              '2'
+    base:                               'k'
+    shift, capslock:                    'K'
+    ralt:                               fallback PAGE_UP
+}
+
+# key 3 {
+   # label:                              '3'
+  #  base:                               '3'
+   # shift:                              '#'
+# }
+
+key 3 {
+    label:                              '3'
+    base:                               'u'
+    shift:                               'U'
+    ralt:                               fallback DEL
+    fn:                                 '_'
+}
+
+key 4 {
+    label:                              '4'
+    base:                               '\u00fc'
+    shift:                               '\u00dc'
+    ralt:                               fallback DPAD_UP
+    fn:                                '['
+}
+
+key 5 {
+    label:                              '5'
+    base:                               '.'
+    shift:                               '.'
+    ralt:                          fallback FORWARD_DEL
+    fn:                                ']'
+}
+
+key 6 {
+    label:                              '6'
+
+    base:                               '\u00e4'
+    shift, capslock:                    '\u00c4'
+    ralt:                               fallback PAGE_DOWN
+    fn:                                ']'
+}
+
+
+key 7 {
+    label:                              '7'
+    base:                               'v'
+    shift:                               'V'
+    ralt:                               fallback PAGE_DOWN
+    fn:                                '!'
+}
+
+key 8 {
+    label:                              '8'
+    base:                               'g'
+    shift:                              'G'
+    ralt:                               '7'
+    fn:                                '<'
+}
+
+key 9 {
+    label:                              '9'
+    base:                               'c'
+    shift:                              'C'
+    ralt:                               '8'
+    fn:                                '>'
+}
+
+key SPACE {
+   label:                              ' '
+   base:                               fallback LANGUAGE_SWITCH
+   alt, meta:                          fallback SEARCH
+   ctrl:                               fallback LANGUAGE_SWITCH
+}
+
+key ENTER {
+    label:                              '\n'
+    base:                               '\n'
+}
+
+key TAB {
+    label:                              '\t'
+    base:                               '\t'
+}
+
+key COMMA {
+    label:                              ','
+    base:                               ','
+    shift:                              '<'
+}
+
+key PERIOD {
+    label:                              '.'
+    base:                               '.'
+    shift:                              '>'
+}
+
+key SLASH {
+    label:                              '/'
+    base:                               '/'
+    shift:                              '?'
+}
+
+key GRAVE {
+    label:                              '`'
+    base:                               '`'
+    shift:                              '~'
+    alt:                                '\u0300'
+    alt+shift:                          '\u0303'
+}
+
+key MINUS {
+    label:                              '-'
+#    base:                               '\u00df'
+#    shift:                              '\u1e9e'
+
+    base:                               'z'
+    shift:                              'Z'
+    ralt:                               '+'
+    fn:                                '&'
+#    fn:                              '\u017f'
+#    ralt:                                  '-'
+}
+
+key EQUALS {
+    label:                              '='
+    base:                               'f'
+    shift:                              'F'
+    fn:                             '@'
+
+}
+
+key LEFT_BRACKET {
+    label:                              '['
+    base:                               's'
+    shift:                              'S'
+    fn:                                ':'
+}
+
+key RIGHT_BRACKET {
+    label:                              ']'
+    base:                               'f'
+    shift:                              'F'
+    fn:                             '@'
+}
+
+key BACKSLASH {
+    label:                              '\\'
+    base:                               '\u2019'
+    shift:                              '\u0301'
+    ralt:                              '\u0300'
+}
+
+key SEMICOLON {
+    label:                              ';'
+    base:                               'm'
+    shift:                              'M'
+    ralt:                              '3'
+    fn:                            '\''
+
+}
+
+key APOSTROPHE {
+    label:                              '\''
+    base:                               'j'
+    shift:                              'J'
+    ralt:                                ';'
+}
+
+### Numeric keypad ###
+
+key NUMPAD_0 {
+    label:                              '0'
+    base:                               fallback INSERT
+    numlock:                            '0'
+}
+
+key NUMPAD_1 {
+    label:                              '1'
+    base:                               fallback MOVE_END
+    numlock:                            '1'
+}
+
+key NUMPAD_2 {
+    label:                              '2'
+    base:                               fallback DPAD_DOWN
+    numlock:                            '2'
+}
+
+key NUMPAD_3 {
+    label:                              '3'
+    base:                               fallback PAGE_DOWN
+    numlock:                            '3'
+}
+
+key NUMPAD_4 {
+    label:                              '4'
+    base:                               fallback DPAD_LEFT
+    numlock:                            '4'
+}
+
+key NUMPAD_5 {
+    label:                              '5'
+    base:                               fallback DPAD_CENTER
+    numlock:                            '5'
+}
+
+key NUMPAD_6 {
+    label:                              '6'
+    base:                               fallback DPAD_RIGHT
+    numlock:                            '6'
+}
+
+key NUMPAD_7 {
+    label:                              '7'
+    base:                               fallback MOVE_HOME
+    numlock:                            '7'
+}
+
+key NUMPAD_8 {
+    label:                              '8'
+    base:                               fallback DPAD_UP
+    numlock:                            '8'
+}
+
+key NUMPAD_9 {
+    label:                              '9'
+    base:                               fallback PAGE_UP
+    numlock:                            '9'
+}
+
+key NUMPAD_LEFT_PAREN {
+    label:                              '('
+    base:                               '('
+}
+
+key NUMPAD_RIGHT_PAREN {
+    label:                              ')'
+    base:                               ')'
+}
+
+key NUMPAD_DIVIDE {
+    label:                              '/'
+    base:                               '/'
+}
+
+key NUMPAD_MULTIPLY {
+    label:                              '*'
+    base:                               '*'
+}
+
+key NUMPAD_SUBTRACT {
+    label:                              '-'
+    base:                               '-'
+}
+
+key NUMPAD_ADD {
+    label:                              '+'
+    base:                               '+'
+}
+
+key NUMPAD_DOT {
+    label:                              '.'
+    base:                               fallback FORWARD_DEL
+    numlock:                            '.'
+}
+
+key NUMPAD_COMMA {
+    label:                              ','
+    base:                               ','
+}
+
+key NUMPAD_EQUALS {
+    label:                              '='
+    base:                               '='
+}
+
+key NUMPAD_ENTER {
+    label:                              '\n'
+    base:                               '\n' fallback ENTER
+    ctrl, alt, meta:                    none fallback ENTER
+}
+
+### Special keys on phones ###
+
+key AT {
+    label:                              '@'
+    base:                               '@'
+}
+
+key STAR {
+    label:                              '*'
+    base:                               '*'
+}
+
+key POUND {
+    label:                              '#'
+    base:                               '#'
+}
+
+key PLUS {
+    label:                              '+'
+    base:                               '+'
+}
+
+### Non-printing keys ###
+
+key ESCAPE {
+    base:                               fallback BACK
+    alt, meta:                          fallback HOME
+    ctrl:                               fallback MENU
+}
+
+### Ga
