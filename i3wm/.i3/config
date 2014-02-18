@@ -152,6 +152,8 @@ mode "i3wm" {
         bindsym Ctrl+i mode "default"; bar mode invisible
 }
 
+
+bindsym --release Mod1+z exec --no-startup-id xdotool type '+'
 bindsym --release Mod1+p exec --no-startup-id xdotool type '1'
 bindsym --release Mod1+w exec --no-startup-id xdotool type '2'
 bindsym --release Mod1+m exec --no-startup-id xdotool type '3'
