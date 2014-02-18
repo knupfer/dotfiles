@@ -95,7 +95,7 @@ mode "i3wm" {
         # change container layout (stacked, tabbed, toggle split)
         bindsym s layout stacking
         bindsym t layout tabbed
-        bindsym e layout toggle split
+        bindsym g layout toggle split
 
         # toggle tiling / floating
         bindsym Shift+space floating toggle
@@ -107,7 +107,7 @@ mode "i3wm" {
         bindsym p focus parent
 
         # focus the child container
-        #bindsym $M+d focus child
+        bindsym c focus child
 
         # move the currently focused window to the scratchpad
         bindsym Shift+n move scratchpad
@@ -117,28 +117,26 @@ mode "i3wm" {
         bindsym n scratchpad show
 
         # switch to workspace
-        bindsym 1 workspace 1
-        bindsym 2 workspace 2
-        bindsym 3 workspace 3
-        bindsym 4 workspace 4
-        bindsym 5 workspace 5
-        bindsym 6 workspace 6
-        bindsym 7 workspace 7
-        bindsym 8 workspace 8
-        bindsym 9 workspace 9
-        bindsym 0 workspace 10
+        bindsym Mod1+p workspace 1
+        bindsym Mod1+w workspace 2
+        bindsym Mod1+m workspace 3
+        bindsym Mod1+t workspace 4
+        bindsym Mod1+r workspace 5
+        bindsym Mod1+n workspace 6
+        bindsym Mod1+g workspace 7
+        bindsym Mod1+c workspace 8
+        bindsym Mod1+l workspace 9
 
         # move focused container to workspace
-        bindsym Shift+1 move container to workspace 1
-        bindsym Shift+2 move container to workspace 2
-        bindsym Shift+3 move container to workspace 3
-        bindsym Shift+4 move container to workspace 4
-        bindsym Shift+5 move container to workspace 5
-        bindsym Shift+6 move container to workspace 6
-        bindsym Shift+7 move container to workspace 7
-        bindsym Shift+8 move container to workspace 8
-        bindsym Shift+9 move container to workspace 9
-        bindsym Shift+0 move container to workspace 10
+        bindsym Shift+Mod1+p move container to workspace 1
+        bindsym Shift+Mod1+w move container to workspace 2
+        bindsym Shift+Mod1+m move container to workspace 3
+        bindsym Shift+Mod1+t move container to workspace 4
+        bindsym Shift+Mod1+r move container to workspace 5
+        bindsym Shift+Mod1+n move container to workspace 6
+        bindsym Shift+Mod1+g move container to workspace 7
+        bindsym Shift+Mod1+c move container to workspace 8
+        bindsym Shift+Mod1+l move container to workspace 9
 
         bindsym r mode "resize"
                 
