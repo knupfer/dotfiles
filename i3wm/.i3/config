@@ -149,10 +149,21 @@ mode "i3wm" {
         bindsym Shift+r restart
 
         # exit i3 (logs you out of your X session)
-        bindsym Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+        bindsym Ctrl+Mod1+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
         bindsym Ctrl+i mode "default"; bar mode invisible
 }
+
+bindsym --release Mod1+p exec --no-startup-id xdotool key --clearmodifiers 1
+bindsym --release Mod1+w exec --no-startup-id xdotool key --clearmodifiers 2
+bindsym --release Mod1+m exec --no-startup-id xdotool key --clearmodifiers 3
+bindsym --release Mod1+t exec --no-startup-id xdotool key --clearmodifiers 4
+bindsym --release Mod1+r exec --no-startup-id xdotool key --clearmodifiers 5
+bindsym --release Mod1+n exec --no-startup-id xdotool key --clearmodifiers 6
+bindsym --release Mod1+g exec --no-startup-id xdotool key --clearmodifiers 7
+bindsym --release Mod1+c exec --no-startup-id xdotool key --clearmodifiers 8
+bindsym --release Mod1+l exec --no-startup-id xdotool key --clearmodifiers 9
+bindsym --release Mod1+space exec --no-startup-id xdotool key --clearmodifiers 0
 
 new_window 1pixel
 hide_edge_borders both
