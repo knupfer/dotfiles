@@ -1,1 +1,1 @@
-(load "knu-key-map.el")
+(load "knu-tablet-key-map.el")
