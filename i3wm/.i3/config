@@ -163,7 +163,15 @@ bindsym --release Mod1+c exec --no-startup-id xdotool type '8'
 bindsym --release Mod1+l exec --no-startup-id xdotool type '9'
 bindsym --release Mod1+space exec --no-startup-id xdotool type '0'
 
-new_window 1pixel
+# class                 border  backgr. text    indicator
+client.focused          #4c7899 #2855bb #ffffff #994428
+client.focused_inactive #333333 #5f676a #ffffff #984e50
+client.unfocused        #333333 #444444 #888888 #292d2e
+client.urgent           #2f343a #900000 #ffffff #900000
+
+focus_follows_mouse no
+
+new_window pixel 2
 hide_edge_borders both
 
 # Start i3bar to display a workspace bar (plus the system information i3status
