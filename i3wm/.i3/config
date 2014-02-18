@@ -154,16 +154,16 @@ mode "i3wm" {
         bindsym Ctrl+i mode "default"; bar mode invisible
 }
 
-bindsym --release Mod1+p exec --no-startup-id xdotool key --clearmodifiers 1
-bindsym --release Mod1+w exec --no-startup-id xdotool key --clearmodifiers 2
-bindsym --release Mod1+m exec --no-startup-id xdotool key --clearmodifiers 3
-bindsym --release Mod1+t exec --no-startup-id xdotool key --clearmodifiers 4
-bindsym --release Mod1+r exec --no-startup-id xdotool key --clearmodifiers 5
-bindsym --release Mod1+n exec --no-startup-id xdotool key --clearmodifiers 6
-bindsym --release Mod1+g exec --no-startup-id xdotool key --clearmodifiers 7
-bindsym --release Mod1+c exec --no-startup-id xdotool key --clearmodifiers 8
-bindsym --release Mod1+l exec --no-startup-id xdotool key --clearmodifiers 9
-bindsym --release Mod1+space exec --no-startup-id xdotool key --clearmodifiers 0
+bindsym --release Mod1+p exec --no-startup-id xdotool type '1'
+bindsym --release Mod1+w exec --no-startup-id xdotool type '2'
+bindsym --release Mod1+m exec --no-startup-id xdotool type '3'
+bindsym --release Mod1+t exec --no-startup-id xdotool type '4'
+bindsym --release Mod1+r exec --no-startup-id xdotool type '5'
+bindsym --release Mod1+n exec --no-startup-id xdotool type '6'
+bindsym --release Mod1+g exec --no-startup-id xdotool type '7'
+bindsym --release Mod1+c exec --no-startup-id xdotool type '8'
+bindsym --release Mod1+l exec --no-startup-id xdotool type '9'
+bindsym --release Mod1+space exec --no-startup-id xdotool type '0'
 
 new_window 1pixel
 hide_edge_borders both
