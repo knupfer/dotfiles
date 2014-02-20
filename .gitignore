@@ -7,3 +7,6 @@ emacs/.emacs.d/session.*
 emacs/.emacs.d/auto-save-list/
 *~
 /emacs/.emacs.d/lisp/knu-device.el
+/i3wm/.i3/state
+/emacs/.emacs.d/elpa/mc-extras-readme.txt
+/i3wm/.i3/config
