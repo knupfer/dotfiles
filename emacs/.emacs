@@ -243,5 +243,4 @@ inherited by a parent headline."
 
 (sml/setup)
 (flyspell-lazy-mode)
-(icicle-mode)
 
