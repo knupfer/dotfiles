@@ -1,11 +1,3 @@
-;; and or etc.
-;(add-to-list 'pretty-symbol-patterns '(8743 kdm-custom "\\<u?U?nd\\>\\|\\<a?A?nd\\>" (text-mode prog-mode ess-mode)))  
-;(add-to-list 'pretty-symbol-patterns '(8744 kdm-custom "\\<o?O?r\\>\\|\\<oder\\>\\|\\<Oder\\>" (text-mode prog-mode ess-mode)))  
-;(add-to-list 'pretty-symbol-patterns '(172 kdm-custom "\\<nicht\\>-?\\|\\<not\\>" (text-mode prog-mode ess-mode)))
-;(add-to-list 'pretty-symbol-patterns '(?∀ kdm-custom "\\<a?A?lle.?\\>" (text-mode prog-mode ess-mode)))
-;(add-to-list 'pretty-symbol-patterns '(?∃ kdm-custom "\\<E?e?s gibt\\>\\|\\<m?M?anche\\>\\|\\<e?E?inige\\>" (text-mode prog-mode ess-mode)))
-;(add-to-list 'pretty-symbol-patterns '(?Ø kdm-custom "\\<d?D?urchschnittliche?.?\\>" (text-mode prog-mode ess-mode)))
-
 ;; org-mode
 (add-to-list 'pretty-symbol-patterns '(?α kdm-custom "#\\+BEGIN_SRC" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?β kdm-custom "#\\+END_SRC" (org-mode)))
@@ -14,60 +6,11 @@
 (add-to-list 'pretty-symbol-patterns '(?▷ kdm-custom "- \\[X]" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?δ kdm-custom "#\\+BEGIN_COMMENT" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?ξ kdm-custom "#\\+END_COMMENT" (org-mode)))
-
 (add-to-list 'pretty-symbol-patterns '(?▶ kdm-custom "\\*\\*? TO\\|\\*\\*? DO" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?▶ kdm-custom "DO\\>\\|NE\\>" (org-mode)))
-
 (add-to-list 'pretty-symbol-patterns '(?x kdm-custom "\\*\\*? FA\\|\\*\\*? CAN" (org-mode)))
 (add-to-list 'pretty-symbol-patterns '(?x kdm-custom "ILED\\>\\|CELED\\>" (org-mode)))
 
-;; functions
-(add-to-list 'pretty-symbol-patterns '(402 kdm-custom "\\<function\\>\\|\\<defun\\>\\|\\<def\\>" (text-mode prog-mode ess-mode)))
-(add-to-list 'pretty-symbol-patterns '(?✠ kdm-custom "\\<return\\>\\|..RESULTS" (text-mode prog-mode ess-mode)))
-(add-to-list 'pretty-symbol-patterns '(?∅ kdm-custom "\\<NULL\\>\\|\\<nil\\>\\|\\<None\\>" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?∀ kdm-custom "\\<for\\>" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?⬊ kdm-custom "\\<if\\>" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?↯ kdm-custom "\\<else\\>" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?↺ kdm-custom "\\<while\\>" (text-mode prog-mode ess-mode))) 
-(add-to-list 'pretty-symbol-patterns '(?⚓ kdm-custom "hook" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?⛁ kdm-custom "\\<library\\>" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?∵ kdm-custom "\\<weil\\>\\|\\<wegen\\>\\|\\<because\\>" (text-mode prog-mode ess-mode))) 
-;(add-to-list 'pretty-symbol-patterns '(?∴ kdm-custom "\\<deswegen\\>\\|\\<therefore\\>\\|\\<folglich\\>\\|\\<also\\>" (text-mode prog-mode ess-mode))) 
-
-
-;U+2234 (8756) ∴      THEREFORE                       folglich                                     
-;U+2235 (8757) ∵∵      BECAUSE                         weil                                         
-
-
-;;  ⬀ | ⬁ | ⬂ | ⬃ | ⬄ | ⬅ | ⬆ | ⬇ | ⬈ | ⬉ | ⬊ | ⬋ | ⬌ | ⬍ | ⬎ | ⬏ | ∄
-
-;; superscripts                                      
-;(add-to-list 'pretty-symbol-patterns '(?² kdm-custom "\\*\\*2" (python-mode inferior-python-mode)))      
-;(add-to-list 'pretty-symbol-patterns '(?³ kdm-custom "\\*\\*3" (python-mode inferior-python-mode)))      
-;(add-to-list 'pretty-symbol-patterns '(?ⁿ kdm-custom "\\*\\*n" (python-mode inferior-python-mode)))      
-
-;; subscripts
-;(add-to-list 'pretty-symbol-patterns '(?₀ kdm-custom "_0\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?₁ kdm-custom "_1\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?₂ kdm-custom "_2\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?₃ kdm-custom "_3\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))
-;(add-to-list 'pretty-symbol-patterns '(?₄ kdm-custom "_4\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;;; (add-to-list 'pretty-symbol-patterns '(?₅ kdm-custom "_5\\>" (python-mode inferior-python-mode)))     
-;;; (add-to-list 'pretty-symbol-patterns '(?₆ kdm-custom "_6\\>" (python-mode inferior-python-mode)))     
-;;; (add-to-list 'pretty-symbol-patterns '(?₇ kdm-custom "_7\\>" (python-mode inferior-python-mode)))     
-;;; (add-to-list 'pretty-symbol-patterns '(?₈ kdm-custom "_8\\>" (python-mode inferior-python-mode)))     
-;;; (add-to-list 'pretty-symbol-patterns '(?₉ kdm-custom "_9\\>" (python-mode inferior-python-mode)))     
-;(add-to-list 'pretty-symbol-patterns '(?ᵢ kdm-custom "_i\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?ⱼ kdm-custom "_j\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?ᵣ kdm-custom "_r\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?ᵤ kdm-custom "_u\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?ᵥ kdm-custom "_v\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?ᵪ kdm-custom "_x\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;(add-to-list 'pretty-symbol-patterns '(?ᵧ kdm-custom "_y\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))        
-;;; python specific                                                                             
-(add-to-list 'pretty-symbol-patterns '(?∑ kdm-custom "\\<sum\\>" (python-mode inferior-python-mode prog-mode ess-mode text-mode)))    
-(add-to-list 'pretty-symbol-patterns '(?∑ kdm-custom "\\<nansum\\>" (python-mode inferior-python-mode))) 
-(add-to-list 'pretty-symbol-patterns '(?√ kdm-custom "sqrt" (python-mode inferior-python-mode prog-mode text-mode ess-mode)))         
 ;; Greek
 (add-to-list 'pretty-symbol-patterns '(?α kdm-custom "\\<alpha\\>" (fundamental-mode inferior-python-mode text-mode prog-mode ess-mode)))  
 (add-to-list 'pretty-symbol-patterns '(?Α kdm-custom "\\<Alpha\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))  
@@ -118,4 +61,4 @@
 (add-to-list 'pretty-symbol-patterns '(?ψ kdm-custom "\\<psi\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))    
 (add-to-list 'pretty-symbol-patterns '(?Ψ kdm-custom "\\<Psi\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))    
 (add-to-list 'pretty-symbol-patterns '(?ω kdm-custom "\\<omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))  
-(add-to-list 'pretty-symbol-patterns '(?Ω kdm-custom "\\<Omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))   
+(add-to-list 'pretty-symbol-patterns '(?Ω kdm-custom "\\<Omega\\>" (python-mode inferior-python-mode text-mode prog-mode ess-mode)))
