@@ -1,15 +1,6 @@
 ### BEGIN_GENERIC
 
 # i3 config file (v4)
-#
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
-#
-# This config file uses keycodes (bindsym) and was written for the QWERTY
-# layout.
-#
-# To get a config file with the same key positions, but for your current
-# layout, use the i3-config-wizard
-#
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -19,31 +10,27 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
-exec sh ~/.i3/script.sh ACTIVE; 
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
+# Start in command mode an update config.
+exec sh ~/.i3/script.sh ACTIVE; 
+
+# Resize windows.
+mode "resize" {
         bindsym i           resize shrink width 10 px or 10 ppt
         bindsym e           resize grow height 10 px or 10 ppt
         bindsym udiaeresis           resize shrink height 10 px or 10 ppt
         bindsym a   resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
         bindsym Left        resize shrink width 10 px or 10 ppt
         bindsym Down        resize grow height 10 px or 10 ppt
         bindsym Up          resize shrink height 10 px or 10 ppt
         bindsym Right       resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
         bindsym r mode "default";
         bindsym Ctrl+i mode "default"; exec sh ~/.i3/script.sh INACTIVE
 }
 
+# Bind numbers for universal use.
 bindsym --release Mod1+z exec --no-startup-id xdotool type '+'
 bindsym --release Mod1+p exec --no-startup-id xdotool type '1'
 bindsym --release Mod1+w exec --no-startup-id xdotool type '2'
@@ -56,135 +43,141 @@ bindsym --release Mod1+c exec --no-startup-id xdotool type '8'
 bindsym --release Mod1+l exec --no-startup-id xdotool type '9'
 bindsym --release Mod1+space exec --no-startup-id xdotool type '0'
 
-# class                 border  backgr. text    indicator
-#client.focused          #4c7899 #2855bb #ffffff #994428
-#client.focused_inactive #333333 #5f676a #ffffff #984e50
-#client.unfocused        #333333 #444444 #888888 #292d2e
-#client.urgent           #2f343a #900000 #ffffff #900000
-
 focus_follows_mouse no
-
-
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
 
 ### END_GENERIC
 
+
 ### BEGIN_ACTIVE
+
+# class                 border  backgr. text    indicator
+client.focused          #4c7899 #22aabb #ffffff #aaa0dd
+client.focused_inactive #333333 #555544 #ffffff #555544
+client.unfocused        #333333 #555544 #ffffff #555544
+client.urgent           #2f343a #900000 #ffffff #900000
+
+# Show the windows clearly with all borders to simplify splitting.
 new_window pixel 3
 hide_edge_borders none
 
-# start a terminal
+# Start a terminal. (Perhaps I will change this to python.)
 bindsym Return exec i3-sensible-terminal
+
+# Deactivate command mode and change config.
 bindsym Ctrl+i exec sh ~/.i3/script.sh INACTIVE
 
-# kill focused window
+# Kill focused window.
 bindsym q kill
 
-# start dmenu (a program launcher)
+# Start dmenu (a program launcher).
 bindsym d exec dmenu_run
-        # There also is the (new) i3-dmenu-desktop which only displays applications
-        # shipping a .desktop file. It is a wrapper around dmenu, so you need that
-        # installed.
-        # bindsym $M+d exec --no-startup-id i3-dmenu-desktop
+# There also is the (new) i3-dmenu-desktop which only displays applications
+# shipping a .desktop file. It is a wrapper around dmenu, so you need that
+# installed.
+# bindsym $M+d exec --no-startup-id i3-dmenu-desktop
 
-        # change focus
-        bindsym i focus left
-        bindsym e focus down
-        bindsym udiaeresis focus up
-        bindsym a focus right
-        # alternatively, you can use the cursor keys:
-        bindsym Left focus left
-        bindsym Down focus down
-        bindsym Up focus up
-        bindsym Right focus right
+# Change focus.
+bindsym i focus left
+bindsym e focus down
+bindsym udiaeresis focus up
+bindsym a focus right
+bindsym Left focus left
+bindsym Down focus down
+bindsym Up focus up
+bindsym Right focus right
 
-        # move focused window
-        bindsym Shift+i move left
-        bindsym Shift+e move down
-        bindsym Shift+udiaeresis move up
-        bindsym Shift+a move right
+# Move focused window.
+bindsym Shift+i move left
+bindsym Shift+e move down
+bindsym Shift+udiaeresis move up
+bindsym Shift+a move right
+bindsym Shift+Left move left
+bindsym Shift+Down move down
+bindsym Shift+Up move up
+bindsym Shift+Right move right
 
-        # alternatively, you can use the cursor keys:
-        bindsym Shift+Left move left
-        bindsym Shift+Down move down
-        bindsym Shift+Up move up
-        bindsym Shift+Right move right
+# Split in horizontal orientation.
+bindsym h split h
 
-        # split in horizontal orientation
-        bindsym h split h
+# Split in vertical orientation.
+bindsym v split v
+bindsym g layout toggle split
 
-        # split in vertical orientation
-        bindsym v split v
+# Enter fullscreen mode for the focused container.
+bindsym f fullscreen
 
-        # enter fullscreen mode for the focused container
-        bindsym f fullscreen
+# Change container layout (stacked, tabbed).
+bindsym s layout stacking
+bindsym t layout tabbed
 
-        # change container layout (stacked, tabbed, toggle split)
-        bindsym s layout stacking
-        bindsym t layout tabbed
-        bindsym g layout toggle split
+# Toggle tiling / floating.
+bindsym Shift+space floating toggle
 
-        # toggle tiling / floating
-        bindsym Shift+space floating toggle
+# Change focus between tiling / floating windows.
+bindsym space focus mode_toggle
 
-        # change focus between tiling / floating windows
-        bindsym space focus mode_toggle
+# Focus the parent container.
+bindsym p focus parent
 
-        # focus the parent container
-        bindsym p focus parent
+# Focus the child container.
+bindsym c focus child
 
-        # focus the child container
-        bindsym c focus child
+# Move the currently focused window to the scratchpad.
+bindsym Shift+n move scratchpad
 
-        # move the currently focused window to the scratchpad
-        bindsym Shift+n move scratchpad
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym n scratchpad show
 
-        # Show the next scratchpad window or hide the focused scratchpad window.
-        # If there are multiple scratchpad windows, this command cycles through them.
-        bindsym n scratchpad show
+# Switch to workspace.
+bindsym Mod1+p workspace 1
+bindsym Mod1+w workspace 2
+bindsym Mod1+m workspace 3
+bindsym Mod1+t workspace 4
+bindsym Mod1+r workspace 5
+bindsym Mod1+n workspace 6
+bindsym Mod1+g workspace 7
+bindsym Mod1+c workspace 8
+bindsym Mod1+l workspace 9
 
-        # switch to workspace
-        bindsym Mod1+p workspace 1
-        bindsym Mod1+w workspace 2
-        bindsym Mod1+m workspace 3
-        bindsym Mod1+t workspace 4
-        bindsym Mod1+r workspace 5
-        bindsym Mod1+n workspace 6
-        bindsym Mod1+g workspace 7
-        bindsym Mod1+c workspace 8
-        bindsym Mod1+l workspace 9
+# Move focused container to workspace.
+bindsym Shift+Mod1+p move container to workspace 1
+bindsym Shift+Mod1+w move container to workspace 2
+bindsym Shift+Mod1+m move container to workspace 3
+bindsym Shift+Mod1+t move container to workspace 4
+bindsym Shift+Mod1+r move container to workspace 5
+bindsym Shift+Mod1+n move container to workspace 6
+bindsym Shift+Mod1+g move container to workspace 7
+bindsym Shift+Mod1+c move container to workspace 8
+bindsym Shift+Mod1+l move container to workspace 9
 
-        # move focused container to workspace
-        bindsym Shift+Mod1+p move container to workspace 1
-        bindsym Shift+Mod1+w move container to workspace 2
-        bindsym Shift+Mod1+m move container to workspace 3
-        bindsym Shift+Mod1+t move container to workspace 4
-        bindsym Shift+Mod1+r move container to workspace 5
-        bindsym Shift+Mod1+n move container to workspace 6
-        bindsym Shift+Mod1+g move container to workspace 7
-        bindsym Shift+Mod1+c move container to workspace 8
-        bindsym Shift+Mod1+l move container to workspace 9
+bindsym r mode "resize"
 
-        bindsym r mode "resize"
-                
-        # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-        bindsym Shift+r restart
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3).
+bindsym Shift+r restart
 
-        # exit i3 (logs you out of your X session)
-        bindsym Ctrl+Mod1+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# Exit i3 (logs you out of your X session)
+bindsym Ctrl+Mod1+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 bar {
-    mode dock
+        mode dock
 }
+
 ### END_ACTIVE
 
+
 ### BEGIN_INACTIVE
+
+# class                 border  backgr. text    indicator
+client.focused          #4c7899 #22aabb #ffffff #22aabb
+client.focused_inactive #333333 #555544 #ffffff #555544
+client.unfocused        #333333 #555544 #ffffff #555544
+client.urgent           #2f343a #900000 #ffffff #900000
+
 bar {
     mode invisible
 }
-#bindsym Ctrl+i exec sh ~/.i3/script.sh ACTIVE; restart
+
 hide_edge_borders both
 new_window pixel 1
 bindsym Ctrl+i exec sh ~/.i3/script.sh ACTIVE
