@@ -1,6 +1,6 @@
 (setq default-frame-alist (append default-frame-alist '((minibuffer . nil))))
 (setq minibuffer-auto-raise t)
-(setq minibuffer-frame-alist (quote ((width . 150) (height . 2) (background-color . "#303") (foreground-color . "#eee"))))
+(setq minibuffer-frame-alist (quote ((width . 150) (top . 0) (height . 1) (left-fringe . 0) (right-fringe . 0) (background-color . "#303") (foreground-color . "#eee"))))
 
 (run-with-idle-timer 0.5 t '(lambda () (if (equal (current-message) nil) (raise-frame) ())))
 (add-hook 'post-command-hook '(lambda () (when (equal (current-message) "predictive") (message "") (raise-frame))))
