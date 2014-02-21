@@ -31,6 +31,7 @@ mode "resize" {
 }
 
 focus_follows_mouse no
+exec sh ~/.i3/git-fetch.sh 
 
 ### END_GENERIC
 
@@ -149,6 +150,7 @@ bindsym Ctrl+Mod1+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut
 bar {
         mode dock
 }
+
 
 ### END_ACTIVE
 
