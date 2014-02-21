@@ -31,7 +31,6 @@ mode "resize" {
 }
 
 focus_follows_mouse no
-exec sh ~/.i3/git-fetch.sh 
 
 ### END_GENERIC
 
