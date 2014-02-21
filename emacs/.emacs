@@ -20,6 +20,11 @@
   "Runs my script, which does a bit cosmetic and cleanup."
   (eshell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
   )
+(defun knu/git-auto-fetch ()
+  "Runs a script to fetch every directory in ~/git"
+  (interactive)
+  (eshell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh &")
+)
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
   (interactive)
@@ -70,6 +75,10 @@ inherited by a parent headline."
 (defun switch-to-previous-buffer ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+;; Fetches git repos after an hour idle time.
+(run-with-idle-timer 3600 t 'knu/git-autofetch)
+(run-with-idle-timer 1 nil 'knu/git-autofetch)
 
 (load "pretty-symbols.el")
 
