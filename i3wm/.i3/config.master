@@ -14,6 +14,8 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Start in command mode an update config.
 exec sh ~/.i3/change-mode.sh ACTIVE; 
 
+floating_minimum_size 10 x 17
+
 # Resize windows.
 mode "resize" {
         bindsym i           resize shrink width 10 px or 10 ppt
@@ -48,7 +50,7 @@ new_window pixel 3
 hide_edge_borders none
 
 # Start a terminal.
-bindsym Return exec i3-sensible-terminal
+bindsym Return exec xterm -b 0
 
 # Deactivate command mode and change config.
 bindsym Ctrl+i exec sh ~/.i3/change-mode.sh INACTIVE
