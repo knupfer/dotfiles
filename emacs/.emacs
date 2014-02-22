@@ -12,6 +12,7 @@
 (require 'hideshow-org)
 (require 'ess-site)
 (require 'predictive)
+(require 'multiple-cursors)
 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
