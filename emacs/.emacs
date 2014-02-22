@@ -87,12 +87,14 @@ inherited by a parent headline."
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cm" 'magit-status)
 (define-key global-map (kbd "`") 'switch-to-previous-buffer)
+(define-key global-map (kbd "C-\>") "∴")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Info-default-directory-list (quote ("/root/git/dotfiles/emacs/.emacs.d/elpa/ess-20140120.43/doc/info/" "/usr/share/info/emacs-24/" "/usr/share/info/")))
  '(LilyPond-indent-level 4)
  '(auto-completion-syntax-alist (quote ((t accept . word))))
  '(blink-cursor-mode nil)
@@ -145,13 +147,15 @@ inherited by a parent headline."
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar")
  '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
- '(org-edit-src-content-indentation 0)
+ '(org-edit-src-content-indentation 4)
  '(org-export-headline-levels 4)
  '(org-export-html-xml-declaration (quote (("html" . "--- ---") ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
  '(org-hierarchical-todo-statistics nil)
  '(org-html-doctype "xhtml-strict")
  '(org-html-head " ")
  '(org-image-actual-width 200)
+ '(org-indent-indentation-per-level 4)
+ '(org-list-empty-line-terminates-plain-lists t)
  '(org-list-indent-offset 2)
  '(org-log-done (quote time))
  '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
@@ -219,7 +223,7 @@ inherited by a parent headline."
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(org-todo ((t (:foreground "#faa" :weight ultra-bold))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
