@@ -77,8 +77,8 @@ inherited by a parent headline."
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 ;; Fetches git repos after an hour idle time.
-(run-with-idle-timer 3600 t 'knu/git-autofetch)
-(run-with-idle-timer 1 nil 'knu/git-autofetch)
+(run-with-idle-timer 3600 t 'knu/git-auto-fetch)
+(run-with-idle-timer 1 nil 'knu/git-auto-fetch)
 
 (load "pretty-symbols.el")
 
