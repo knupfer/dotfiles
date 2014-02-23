@@ -14,8 +14,15 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Start in command mode an update config.
 exec sh ~/.i3/change-mode.sh ACTIVE; 
 
-floating_minimum_size 10 x 17
 
+
+focus_follows_mouse no
+
+### END_GENERIC
+
+
+### BEGIN_ACTIVE
+floating_minimum_size 10 x 17
 # Resize windows.
 mode "resize" {
         bindsym i           resize shrink width 10 px or 10 ppt
@@ -32,13 +39,23 @@ mode "resize" {
         bindsym Ctrl+i mode "default"; exec sh ~/.i3/change-mode.sh INACTIVE
 }
 
-focus_follows_mouse no
 
-### END_GENERIC
+mode "nethack" {
+        bindsym --release Mod1+i exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+e exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+a exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+udiaeresis exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+u exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+odiaeresis exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+period exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+comma exec --no-startup-id xdotool type '+'
+        bindsym --release Mod1+y exec --no-startup-id xdotool type '+'
 
+        bindsym Ctrl+n mode "default"
+        bindsym Ctrl+i mode "default"; exec sh ~/.i3/change-mode.sh INACTIVE
+}
 
-### BEGIN_ACTIVE
-
+bindsym Ctrl+n mode "nethack"
 # class                 border  backgr. text    indicator
 client.focused          #4c7899 #22aabb #ffffff #aaa0dd
 client.focused_inactive #333333 #555544 #ffffff #555544
