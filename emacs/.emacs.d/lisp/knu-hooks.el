@@ -43,7 +43,7 @@
 (add-hook 'prog-mode-hook '(lambda () 
                              (pretty-symbols-mode)
                              ))
-(add-hook 'python-mode-hook '(lambda ()
+(add-hook 'prog-mode-hook '(lambda ()
                                (whitespace-mode)
                                ))
 (add-hook 'text-mode-hook 'pretty-symbols-mode)
