@@ -119,6 +119,10 @@ inherited by a parent headline."
  '(display-time-24hr-format t)
  '(display-time-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
+ '(erc-nick "quxbam")
+ '(erc-prompt ">>>")
+ '(erc-prompt-for-password nil)
+ '(erc-system-name "foobar")
  '(eshell-banner-message "
   #############
   #
@@ -213,6 +217,7 @@ inherited by a parent headline."
  '(completion-highlight-face ((t (:background "#033" :foreground "#0ff" :weight ultra-bold))))
  '(completion-popup-tip-face ((t (:background "black" :foreground "#77d"))))
  '(cursor ((t (:background "#709"))))
+ '(erc-prompt-face ((t (:background "Black" :foreground "lightBlue2" :weight bold))))
  '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
  '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))))
  '(fringe ((t (:background "black" :foreground "#0ff"))))
@@ -232,7 +237,7 @@ inherited by a parent headline."
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(org-todo ((t (:foreground "#faa" :weight ultra-bold))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
