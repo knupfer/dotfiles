@@ -19,12 +19,12 @@
 
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
-  (eshell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
+  (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
   )
 (defun knu/git-auto-fetch ()
   "Runs a script to fetch every directory in ~/git"
   (interactive)
-  (eshell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh &")
+  (shell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh &")
 )
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
