@@ -13,6 +13,9 @@
 (require 'ess-site)
 (require 'predictive)
 (require 'multiple-cursors)
+(require 'dired-async)
+
+
 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
@@ -21,11 +24,15 @@
   "Runs my script, which does a bit cosmetic and cleanup."
   (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
   )
+
 (defun knu/git-auto-fetch ()
   "Runs a script to fetch every directory in ~/git"
   (interactive)
-  (shell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh &")
-)
+  (async-start
+   ;; What to do in the child process
+   (lambda () (shell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh"))
+   'ignore))
+
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
   (interactive)
@@ -33,10 +40,12 @@
   (unless (org-at-heading-p) (error "Not at an headline"))
   (save-excursion (while (ignore-errors (org-move-subtree-down))))
   )
+
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry do DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states) ; turn off logging
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
 (defun dmj/org-remove-redundant-tags ()
   "Remove redundant tags of headlines in current buffer.
 
@@ -106,6 +115,7 @@ inherited by a parent headline."
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
  '(custom-enabled-themes (quote (deeper-blue)))
+ '(dired-async-mode t)
  '(display-time-24hr-format t)
  '(display-time-mode t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
@@ -223,7 +233,7 @@ inherited by a parent headline."
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(org-todo ((t (:foreground "#faa" :weight ultra-bold))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
  '(region ((t (:background "#505"))))
  '(tool-bar ((t (:background "grey95" :foreground "black"))))
  '(trailing-whitespace ((t (:background "VioletRed4"))))
