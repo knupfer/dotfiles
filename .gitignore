@@ -10,3 +10,5 @@ emacs/.emacs.d/auto-save-list/
 /i3wm/.i3/state
 /emacs/.emacs.d/elpa/mc-extras-readme.txt
 /i3wm/.i3/config
+/emacs/.emacs.d/global-emacs-emacsen
+/emacs/.emacs.d/global-emacs-kills.el
