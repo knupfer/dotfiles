@@ -47,6 +47,6 @@
 ;                   ("X-Troll" "Emacs is better than Vi")
 ;                   )))))
 
-(setq mm-text-html-renderer 'w3m)
+;(setq mm-text-html-renderer 'w3m)
 
 ;sehr gutes Nachschlagewerk:  http://blog.binchen.org/?p=403
