@@ -1,5 +1,5 @@
-(add-hook 'kill-emacs-hook '(lambda () (defun gnus-y-or-n-p (yes) yes)
-                              (gnus-group-exit)))
+(add-hook 'kill-emacs-hook '(lambda () (when (fboundp 'gnus-group-exit) (defun gnus-y-or-n-p (yes) yes)
+                              (gnus-group-exit))))
 (add-hook 'after-change-major-mode-hook '(lambda () 
                                            (highlight-parentheses-mode)
                                            ))
