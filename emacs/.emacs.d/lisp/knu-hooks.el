@@ -27,4 +27,5 @@
 (add-hook 'w3m-mode-hook '(lambda ()
                             (load "w3m-config.el")
                             ))
-
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'eshell-mode-hook 'paredit-mode)
