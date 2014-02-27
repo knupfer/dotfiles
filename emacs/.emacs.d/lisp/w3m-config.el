@@ -1,64 +1,5 @@
 
 (require 'w3m)
-;(require 'remember)
-(setq w3m-icon-directory "/usr/share/pixmaps/w3m-el")
-(setq browse-url-browser-function
-      '(("blogs.tap.ibm.com" . w3m-browse-url)
-        ("ibm.com" . browse-url-firefox)
-        ("." . w3m-browse-url)))
-(global-set-key "\C-xm" 'browse-url-at-point)
-
-(defun sacha/toggle-w3m ()
-  (interactive)
-  (let ((list (buffer-list))
-        found
-        (from-w3m (equal major-mode 'w3m-mode)))
-    (while list
-      (when (with-current-buffer (car list)
-              (if from-w3m
-                  (not (equal major-mode 'w3m-mode))
-                (equal major-mode 'w3m-mode)))
-        (setq found (car list))
-        (pop-to-buffer (car list))
-        (setq list nil))
-      (setq list (cdr list)))
-    (unless (or from-w3m found)
-      (call-interactively 'w3m))))
-
-;; http://www.mit.edu/afs/sipb/contrib/emacs/packages/w3m_el-1.2.8/w3m-filter.el
-(defun sacha/w3m-filter-google (url &rest ignore)
-  "Add <LINK> tag to search results of www.google.com."
-  (goto-char (point-max))
-  (let ((next (when (re-search-backward
-                     "<a href=\\([^>]+\\)><img src=/\\(intl/[^/]+/\\)?nav_next.gif"
-                     nil t)
-                (match-string 1)))
-        (prev (when (re-search-backward
-                     "<a href=\\([^>]+\\)><img src=/\\(intl/[^/]+/\\)?nav_previous.gif"
-                     nil t)
-                (match-string 1))))
-    (goto-char (point-min))
-    (when (search-forward "<head>" nil t)
-      (when prev (insert "\n<link rel=\"prev\" href=\"" prev "\">"))
-      (when next (insert "\n<link rel=\"next\" href=\"" next "\">")))
-    t))
-
-(defun sacha/w3m-filter-clientcopia (url &rest ignore)
-  "Add <LINK> tag to search results of www.clientcopia.com."
-  (goto-char (point-max))
-  (let* ((next (when (re-search-backward
-                     "\\(quotes.php.id=[0-9]+\\).*NEXT"
-                     nil t)
-                (match-string 1)))
-         (prev (when (re-search-backward
-                     "<a href=\\(quotes.php.id=[0-9]+\\).*BACK"
-                     nil t)
-                (match-string 1))))
-    (goto-char (point-min))
-    (when (search-forward "<head>" nil t)
-      (when prev (insert "\n<link rel=\"prev\" href=\"" prev "\">"))
-      (when next (insert "\n<link rel=\"next\" href=\"" next "\">")))
-    t))
 
 ;; Guessed
 (defun w3m-filter-find-relationships (url next previous)
@@ -84,17 +25,6 @@
           (set-process-sentinel proc (lambda (proc str)
                                        (message "wget download done"))))
       (message "Nothing to get"))))
-
-(autoload 'w3m "w3m" "Visit the WWW page using w3m" t)
-(autoload 'w3m-find-file "w3m" "Find a local file using emacs-w3m." t)
-(autoload 'w3m-browse-url "w3m" "Ask emacs-w3m to show a URL." t)
-(autoload 'w3m-antenna "w3m-antenna" "Report changes of web sites." t)
-(autoload 'w3m-bookmark-view "w3m-bookmark" "Show bookmarks." t)
-(autoload 'w3m-dtree "w3m-dtree" "Display a directory tree." t)
-(autoload 'w3m-namazu "w3m-namazu" "Search files with Namazu." t)
-(autoload 'w3m-perldoc "w3m-perldoc" "View Perl documents" t)
-(autoload 'w3m-search "w3m-search" "Search words using emacs-w3m." t)
-(autoload 'w3m-weather "w3m-weather" "Display a weather report." t)
 
 (defvar sacha/w3m-mirror-directory nil "*Directory where my files are mirrored.")
 
@@ -124,40 +54,13 @@ If prefix argument RECURSIVE is non-nil, recurse into subdirectories."
   (interactive "P")
   (sacha/w3m-mirror-current-page (w3m-anchor) recursive))
 
-(defun sacha/w3m-rename-buffer (url)
-  "Suitable for adding to `w3m-display-hook'."
-  (rename-buffer (format "*w3m %s (%s)*"
-                         (or w3m-current-title "")
-                         (or w3m-current-url "")) t))
-(add-hook 'w3m-display-hook 'sacha/w3m-rename-buffer)
 
-;; From http://www.emacswiki.org/cgi-bin/wiki/WThreeMDelicious
-(defun sacha/delicious-url ()
-  "Bookmark this page with del.icio.us."
-  (interactive)
-  (w3m-goto-url
-   (concat "http://del.icio.us/sachac?"
-           "url="    (w3m-url-encode-string w3m-current-url)
-           "&title=" (w3m-url-encode-string w3m-current-title))))
-
-(defadvice w3m-browse-url (around sacha activate)
-  "Always start a new session."
-  (ad-set-arg 1 t)
-  ad-do-it)
-
-(defadvice switch-to-buffer (after sacha activate)
-  "Update w3m tabs."
-  (when (and (interactive-p)
-             (eq major-mode 'w3m-mode)
-             header-line-format)
-    (w3m-force-window-update)))
-
-(defadvice switch-to-buffer-other-window (after sacha activate)
-  "Update w3m tabs."
-  (when (and (interactive-p)
-             (eq major-mode 'w3m-mode)
-             header-line-format)
-    (w3m-force-window-update)))
+;(defadvice switch-to-buffer (after sacha activate)
+;  "Update w3m tabs."
+;  (when (and (interactive-p)
+;           (eq major-mode 'w3m-mode)
+;           header-line-format)
+;    (w3m-force-window-update)))
 
 (defun sacha/w3m-setup-keymap ()
   "Use my heavily customized map."
@@ -225,6 +128,9 @@ If prefix argument RECURSIVE is non-nil, recurse into subdirectories."
  ; (define-key w3m-mode-map "id" 'sacha/dogear-url)
  ; (define-key w3m-mode-map "f" 'sacha/w3m-open-in-firefox)
 
+
+  (define-key w3m-mode-map (kbd "M-RET") 'w3m-view-this-url-new-session)
+
   (define-key w3m-mode-map [(left)] 'backward-char)
   (define-key w3m-mode-map [(right)] 'forward-char)
   (define-key w3m-mode-map [(up)] 'previous-line)
@@ -241,30 +147,9 @@ If prefix argument RECURSIVE is non-nil, recurse into subdirectories."
 
   )
 
-  ;; I don't really redisplay stuff; I can use refresh for that
-  ;(define-key w3m-mode-map "r" 'remember))
-
-(setq w3m-keep-arrived-urls 5000)
-(add-hook 'w3m-mode-hook 'sacha/w3m-setup-keymap)
-(sacha/w3m-setup-keymap)
-
 (defun sacha/w3m-open-in-firefox ()
   (interactive)
   (browse-url-firefox w3m-current-url))
-
-
-(defadvice browse-url (around sacha activate)
-  (if current-prefix-arg
-      (save-window-excursion
-        ad-do-it)
-    ad-do-it))
-
-;; Focus on new tabs
-;(setq w3m-view-this-url-new-session-in-background nil)
-
-
-;;_+ quick searches
-
 
 ;; Don't know if it's the best way , but it seemed to work. (Requires emacs >= 20)
 (defun browse-apropos-url (text &optional new-window)
@@ -326,4 +211,5 @@ If prefix argument RECURSIVE is non-nil, recurse into subdirectories."
          "http://www.glyphweb.com/arda/")
          
          ))
+
 (provide 'w3m-config)
