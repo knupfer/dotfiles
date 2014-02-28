@@ -395,7 +395,7 @@ inherited by a parent headline."
 (load "knu-device.el" t)
 ;; The hooks should be loaded at the end.
 (load "knu-hooks.el")
-
+(load "knu-lisp.el")
 (sml/setup)
 (flyspell-lazy-mode)
 
