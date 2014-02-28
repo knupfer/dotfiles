@@ -12,6 +12,7 @@
 (define-key emacs-lisp-mode-map (kbd "<RET>") 'paredit-newline)
 (define-key paredit-mode-map (kbd "C-k") 'paredit-kill-and-join-forward)
 (define-key paredit-mode-map (kbd "<delete>") 'paredit-del-and-join-forward)
+(define-key paredit-mode-map (kbd "<backspace>") 'paredit-del-backward-and-join)
 
 (defun paredit-del-and-join-forward (&optional arg)
   (interactive "P") 
@@ -25,4 +26,8 @@
       (delete-indentation t)
     (paredit-kill arg)))
 
-
+(defun paredit-del-backward-and-join (&optional arg)
+  (interactive "P") 
+  (if (looking-back "\\(^ *\\)")
+      (delete-indentation)
+    (paredit-backward-delete arg)))
