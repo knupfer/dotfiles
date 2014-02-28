@@ -10,9 +10,10 @@
 (define-key emacs-lisp-mode-map (kbd "<tab>") 'completion-at-point)
 (define-key lisp-interaction-mode-map (kbd "<RET>") 'paredit-newline)
 (define-key emacs-lisp-mode-map (kbd "<RET>") 'paredit-newline)
-(define-key paredit-mode-map (kbd "C-k") 'paredit-kill-and-join-forward)
+(add-hook 'paredit-mode-hook '(lambda () (define-key paredit-mode-map (kbd "C-k") 'paredit-kill-and-join-forward)
 (define-key paredit-mode-map (kbd "<delete>") 'paredit-del-and-join-forward)
 (define-key paredit-mode-map (kbd "<backspace>") 'paredit-del-backward-and-join)
+))
 
 (defun paredit-del-and-join-forward (&optional arg)
   (interactive "P") 
