@@ -77,6 +77,9 @@ hide_edge_borders none
 # Start a terminal.
 bindsym Return exec xterm -b 0
 
+# Start emacs.
+bindsym Ctrl+e exec emacs -u root
+
 # Deactivate command mode and change config.
 bindsym Ctrl+i exec sh ~/.i3/change-mode.sh INACTIVE
 
