@@ -17,11 +17,11 @@
                             (define-key org-mode-map (kbd "C-c C-x a") 'knu/org-archive)
                             ))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-(add-hook 'prog-mode-hook '(lambda () 
-                             (pretty-symbols-mode)
-                             ))
+
+
 (add-hook 'prog-mode-hook '(lambda ()
-                             (whitespace-mode)
+                             (when (not  (or (equal major-mode 'emacs-lisp-mode)
+                                          (equal major-mode 'lisp-interaction-mode))) (whitespace-mode))
                              ))
 (add-hook 'text-mode-hook 'pretty-symbols-mode)
 (add-hook 'w3m-mode-hook '(lambda ()
