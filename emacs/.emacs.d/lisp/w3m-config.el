@@ -147,6 +147,8 @@ If prefix argument RECURSIVE is non-nil, recurse into subdirectories."
 
   )
 
+(define-key w3m-mode-map (kbd "S-SPC") 'ace-jump-mode)
+
 (defun sacha/w3m-open-in-firefox ()
   (interactive)
   (browse-url-firefox w3m-current-url))
