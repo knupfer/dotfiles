@@ -20,6 +20,8 @@
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
   (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
