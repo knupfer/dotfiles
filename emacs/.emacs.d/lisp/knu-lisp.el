@@ -1,3 +1,5 @@
+(defvar buffer-undo-list-tmp nil)
+
 (defun auto-indent-sexps ()
   (save-excursion (paredit-indent-sexps)))
 
@@ -22,8 +24,10 @@
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'eshell-mode-hook 'paredit-mode)
 (add-hook 'post-command-hook '(lambda () (when (or (equal major-mode 'emacs-lisp-mode)
-                                             (equal major-mode 'lisp-interaction-mode))
-                                      (auto-indent-sexps))))
+                                             (equal major-mode 'lisp-interaction-mode)) 
+                                      (when (not (equal buffer-undo-list-tmp buffer-undo-list))
+                                        (auto-indent-sexps)
+                                        (setq buffer-undo-list-tmp buffer-undo-list)))))
 (add-hook 'paredit-mode-hook '(lambda () (define-key paredit-mode-map (kbd "C-k") 'paredit-kill-and-join-forward)
                                 (define-key paredit-mode-map (kbd "<delete>") 'paredit-del-and-join-forward)
                                 (define-key paredit-mode-map (kbd "<backspace>") 'paredit-del-backward-and-join)))
