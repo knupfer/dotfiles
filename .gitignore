@@ -12,3 +12,5 @@ emacs/.emacs.d/auto-save-list/
 /i3wm/.i3/config
 /emacs/.emacs.d/global-emacs-emacsen
 /emacs/.emacs.d/global-emacs-kills.el
+/emacs/.emacs.d/ge-emacsen
+/emacs/.emacs.d/ge-kills.el
