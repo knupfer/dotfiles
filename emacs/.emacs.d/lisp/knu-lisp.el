@@ -36,3 +36,11 @@
 (define-key emacs-lisp-mode-map (kbd "<tab>") 'completion-at-point)
 (define-key lisp-interaction-mode-map (kbd "<RET>") 'paredit-newline)
 (define-key emacs-lisp-mode-map (kbd "<RET>") 'paredit-newline)
+(define-key lisp-interaction-mode-map [?\A-j] 'paredit-semicolon)
+(define-key emacs-lisp-mode-map [?\A-j] 'paredit-semicolon)
+
+(define-key lisp-interaction-mode-map [?\A-\C-u] 'paredit-backward-kill-word)
+(define-key emacs-lisp-mode-map [?\A-\C-u] 'paredit-backward-kill-word)
+(define-key lisp-interaction-mode-map [?\A-\C-.] 'paredit-forward-kill-word)
+(define-key emacs-lisp-mode-map [?\A-\C-.] 'paredit-forward-kill-word)
+
