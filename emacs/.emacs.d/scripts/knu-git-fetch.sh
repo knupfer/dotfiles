@@ -5,6 +5,6 @@ cd ~/git
 for FOO in */
 do
     cd $FOO
-    git fetch
+    git pull
     cd ..
 done
