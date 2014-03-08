@@ -9,12 +9,7 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
-(require 'org-install)
-(require 'hideshow-org)
-(require 'ess-site)
 (require 'predictive)
-(require 'multiple-cursors)
-(require 'dired-async)
 (require 'global-emacs) 
 
 (defvar hcz-set-cursor-color-color "")
