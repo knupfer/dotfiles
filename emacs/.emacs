@@ -102,6 +102,8 @@ inherited by a parent headline."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(LilyPond-indent-level 4)
+ '(Man-notify-method (quote pushy))
+ '(Man-width 80)
  '(blink-cursor-mode nil)
  '(c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
  '(column-number-mode t)
@@ -223,7 +225,7 @@ inherited by a parent headline."
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(org-todo ((t (:foreground "#faa" :weight ultra-bold))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
  '(region ((t (:background "#505"))))
  '(w3m-arrived-anchor ((t (:foreground "#8888ee"))))
  '(w3m-current-anchor ((t (:weight ultra-bold))))
