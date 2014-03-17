@@ -11,7 +11,7 @@
 
 (require 'predictive)
 (require 'global-emacs) 
-
+(global-emacs-mode t)
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 
@@ -134,7 +134,6 @@ inherited by a parent headline."
  '(ess-default-style (quote C++))
  '(font-use-system-font nil)
  '(fringe-mode (quote (0)) nil (fringe))
- '(global-emacs-mode t)
  '(gnus-init-file "~/.emacs.d/gnus.el")
  '(hfy-ignored-properties nil)
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
@@ -254,4 +253,3 @@ inherited by a parent headline."
 (load "knu-lisp.el")
 (sml/setup)
 (flyspell-lazy-mode)
-
