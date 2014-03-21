@@ -217,7 +217,7 @@ inherited by a parent headline."
  '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
  '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))))
  '(fringe ((t (:background "black" :foreground "#0ff"))))
- '(hl-line ((t (:overline "#077" :underline "#077"))))
+ '(hl-line ((t (:overline "#707" :underline "#707"))))
  '(hl-paren-face ((t (:weight ultra-bold))) t)
  '(magit-header ((t (:background "#044" :foreground "#5fe"))))
  '(mode-line ((t (:background "#033" :foreground "#9bb" :box nil))))
