@@ -4,7 +4,7 @@
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
@@ -14,12 +14,9 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Start in command mode an update config.
 exec sh ~/.i3/change-mode.sh ACTIVE; 
 
-
-
 focus_follows_mouse no
 
 ### END_GENERIC
-
 
 ### BEGIN_ACTIVE
 floating_minimum_size 10 x 17
@@ -38,7 +35,6 @@ mode "resize" {
         bindsym r mode "default";
         bindsym Ctrl+i mode "default"; exec sh ~/.i3/change-mode.sh INACTIVE
 }
-
 
 mode "nethack" {
         bindsym --release Mod1+i exec --no-startup-id xdotool type 'h'
@@ -180,9 +176,7 @@ bar {
         mode dock
 }
 
-
 ### END_ACTIVE
-
 
 ### BEGIN_INACTIVE
 
