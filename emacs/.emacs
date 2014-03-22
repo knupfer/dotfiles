@@ -72,6 +72,7 @@ inherited by a parent headline."
              (string= color hcz-set-cursor-color-color)
              (string= (buffer-name) hcz-set-cursor-color-buffer))
       (set-cursor-color (setq hcz-set-cursor-color-color color))
+      (set-face-attribute 'hl-line nil :overline color :underline color)
       (setq hcz-set-cursor-color-buffer (buffer-name)))))
 (defun toggle-mode-line () 
   (interactive)
