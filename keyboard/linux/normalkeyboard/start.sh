@@ -1,1 +1,1 @@
-setxkbmap lv && xmodmap xmodmapneo && xset -r 51
+setxkbmap de && xmodmap xmodmapneo
