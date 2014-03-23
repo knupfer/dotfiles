@@ -144,8 +144,10 @@ If prefix argument RECURSIVE is non-nil, recurse into subdirectories."
   (define-key w3m-mode-map "\C-i" 'w3m-previous-anchor)
   (define-key w3m-mode-map "\M-a" 'w3m-next-buffer)
   (define-key w3m-mode-map "\M-i" 'w3m-previous-buffer)
-
+  
   )
+
+(sacha/w3m-setup-keymap)
 
 (define-key w3m-mode-map (kbd "S-SPC") 'ace-jump-mode)
 
