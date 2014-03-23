@@ -79,9 +79,9 @@ keycode 59 =  ISO_Group_Shift ISO_Group_Shift ISO_First_Group  NoSymbol
 ! Mod4(rechts)+Mod4(links) lässt Mod4 einrasten (Mod4Lock)
 ! das funktioniert nur in dieser Reihenfolge, da Mod4(rechts) (=Qwertz-AltGr) nur 4 Ebenen hat
 ! Der Lock lässt sich durch ein weiteres Mod4 lösen.
-! keysym less = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
-! keysym ISO_Level3_Shift = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
-keycode 55 = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
+ keysym less = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
+ keysym ISO_Level3_Shift = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
+keycode 54 = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
 
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -266,7 +266,7 @@ keycode 48 = 	j		J		semicolon	Greek_theta	semicolon	NoSymbol	Greek_THETA	Greek_T
 !		ü		Ü		#								∪
  keycode 53 =  c		C	dollar		U03F5		Tab		ISO_Left_Tab	intersection	NoSymbol
 !		ö		Ö		$		ϵ						∩
- keycode 54 =  v		V	bar		Greek_eta	Insert		Insert		U2135		NoSymbol
+! keycode 54 =  v		V	bar		Greek_eta	Insert		Insert		U2135		NoSymbol
 !		ä		Ä		|		η						ℵ
 ! keycode 54 = 	p		P		asciitilde	Greek_pi	Return		Return		Greek_PI	Greek_PI
 !						~		π						Π		Π
