@@ -14,6 +14,7 @@ font fixed
 
 # Start in command mode an update config.
 exec sh ~/.i3/change-mode.sh ACTIVE; 
+exec i3-msg 'rename workspace to "a"'
 
 focus_follows_mouse no
 
@@ -144,26 +145,16 @@ bindsym Shift+n move scratchpad
 bindsym n scratchpad show
 
 # Switch to workspace.
-bindsym Mod1+p workspace 1
-bindsym Mod1+w workspace 2
-bindsym Mod1+m workspace 3
-bindsym Mod1+t workspace 4
-bindsym Mod1+r workspace 5
-bindsym Mod1+n workspace 6
-bindsym Mod1+g workspace 7
-bindsym Mod1+c workspace 8
-bindsym Mod1+l workspace 9
+bindsym Ctrl+a workspace a
+bindsym Ctrl+b workspace b
+bindsym Ctrl+c workspace c
+bindsym Ctrl+d workspace d
 
 # Move focused container to workspace.
-bindsym Shift+Mod1+p move container to workspace 1
-bindsym Shift+Mod1+w move container to workspace 2
-bindsym Shift+Mod1+m move container to workspace 3
-bindsym Shift+Mod1+t move container to workspace 4
-bindsym Shift+Mod1+r move container to workspace 5
-bindsym Shift+Mod1+n move container to workspace 6
-bindsym Shift+Mod1+g move container to workspace 7
-bindsym Shift+Mod1+c move container to workspace 8
-bindsym Shift+Mod1+l move container to workspace 9
+bindsym Ctrl+Shift+a move container to workspace a
+bindsym Ctrl+Shift+b move container to workspace b
+bindsym Ctrl+Shift+c move container to workspace c
+bindsym Ctrl+Shift+d move container to workspace d
 
 bindsym r mode "resize"
 
@@ -186,19 +177,6 @@ client.focused          #4c7899 #22aabb #ffffff #22aabb
 client.focused_inactive #333333 #555544 #ffffff #555544
 client.unfocused        #333333 #555544 #ffffff #555544
 client.urgent           #2f343a #900000 #ffffff #900000
-
-# Bind numbers for universal use.
-bindsym --release Mod1+z exec --no-startup-id xdotool type '+'
-bindsym --release Mod1+p exec --no-startup-id xdotool type '1'
-bindsym --release Mod1+w exec --no-startup-id xdotool type '2'
-bindsym --release Mod1+m exec --no-startup-id xdotool type '3'
-bindsym --release Mod1+t exec --no-startup-id xdotool type '4'
-bindsym --release Mod1+r exec --no-startup-id xdotool type '5'
-bindsym --release Mod1+n exec --no-startup-id xdotool type '6'
-bindsym --release Mod1+g exec --no-startup-id xdotool type '7'
-bindsym --release Mod1+c exec --no-startup-id xdotool type '8'
-bindsym --release Mod1+l exec --no-startup-id xdotool type '9'
-bindsym --release Mod1+space exec --no-startup-id xdotool type '0'
 
 bar {
     mode invisible
