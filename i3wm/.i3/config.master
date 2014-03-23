@@ -73,7 +73,7 @@ new_window pixel 3
 hide_edge_borders none
 
 # Start a terminal.
-bindsym Return exec xterm -rv -b 0
+bindsym Return exec xterm -rv -b 0 -w 0
 
 # Start emacs.
 bindsym Ctrl+e exec emacs -u root
