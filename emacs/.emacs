@@ -5,22 +5,23 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/.emacs.d/predict/")
 (add-to-list 'load-path "~/git/global-emacs/")
+(add-to-list 'load-path "~/git/indentation-tree.el/")
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (require 'predictive)
-(require 'global-emacs) 
-(global-emacs-mode t)
+(require 'global-emacs)
+(require 'indentation-tree) 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
+(global-emacs-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defun knu/publish () 
   "Runs my script, which does a bit cosmetic and cleanup."
-  (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh")
-  )
+  (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
 
 (defun knu/git-auto-fetch ()
   "Runs a script to fetch every directory in ~/git"
@@ -35,8 +36,7 @@
   (interactive)
   (org-toggle-archive-tag)
   (unless (org-at-heading-p) (error "Not at an headline"))
-  (save-excursion (while (ignore-errors (org-move-subtree-down))))
-  )
+  (save-excursion (while (ignore-errors (org-move-subtree-down)))))
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry do DONE when all subentries are done, to TODO otherwise."
@@ -45,7 +45,6 @@
 
 (defun dmj/org-remove-redundant-tags ()
   "Remove redundant tags of headlines in current buffer.
-
 A tag is considered redundant if it is local to a headline and
 inherited by a parent headline."
   (interactive)
@@ -61,6 +60,7 @@ inherited by a parent headline."
             (dolist (tag local)
               (if (member tag inherited) (org-toggle-tag tag 'off)))))
        t nil))))
+
 (defun hcz-set-cursor-color-according-to-mode ()
   "change cursor color according to some minor modes."
   ;; set-cursor-color is somewhat costly, so we only call it when needed:
@@ -72,14 +72,8 @@ inherited by a parent headline."
              (string= color hcz-set-cursor-color-color)
              (string= (buffer-name) hcz-set-cursor-color-buffer))
       (set-cursor-color (setq hcz-set-cursor-color-color color))
-      (set-face-attribute 'hl-line nil :overline color :underline color)
       (setq hcz-set-cursor-color-buffer (buffer-name)))))
-(defun toggle-mode-line () 
-  (interactive)
-  (when (equal mode-line-format nil)
-    (setq mode-line-format (default-value 'mode-line-format))
-    (redraw-display)
-    ))
+
 (defun switch-to-previous-buffer ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
@@ -88,13 +82,8 @@ inherited by a parent headline."
 (run-with-idle-timer 3600 t 'knu/git-auto-fetch)
 (run-with-idle-timer 1 nil 'knu/git-auto-fetch)
 
-(load "pretty-symbols.el")
-
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cm" 'magit-status)
 (define-key global-map (kbd "`") 'switch-to-previous-buffer)
-(define-key global-map (kbd "C-\>") "∴")
 (define-key global-map (kbd "S-SPC") 'ace-jump-mode)
 
 (custom-set-variables
@@ -108,39 +97,23 @@ inherited by a parent headline."
  '(blink-cursor-mode nil)
  '(c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu"))))
  '(column-number-mode t)
- '(completion-auto-show-delay (quote ((t . 5))))
- '(completion-max-candidates (quote ((t . 5))))
- '(completion-ui-use-echo nil)
  '(cua-mode t nil (cua-base))
  '(cua-normal-cursor-color "black")
  '(custom-enabled-themes (quote (deeper-blue)))
  '(display-time-24hr-format t)
  '(display-time-mode t)
- '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(erc-nick "quxbam")
  '(erc-prompt ">>>")
  '(erc-prompt-for-password nil)
  '(erc-system-name "foobar")
- '(eshell-banner-message "
-  #############
-  #
-  #  +----------------------------+
-  #  | Welcome to the Emacs shell |
-  #  +----------------------------+
-  #
-")
  '(eshell-cmpl-compare-entry-function (quote string-lessp))
  '(eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix)))
  '(eshell-plain-grep-behavior t)
  '(ess-default-style (quote C++))
  '(font-use-system-font nil)
  '(fringe-mode (quote (0)) nil (fringe))
- '(global-hl-line-mode t)
- '(global-hl-line-sticky-flag t)
  '(gnus-init-file "~/.emacs.d/gnus.el")
- '(hfy-ignored-properties nil)
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
- '(hs-hide-comments-when-hiding-all nil)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(ispell-highlight-face (quote flyspell-incorrect))
@@ -156,10 +129,7 @@ inherited by a parent headline."
  '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
  '(org-edit-src-content-indentation 4)
  '(org-export-headline-levels 4)
- '(org-export-html-xml-declaration (quote (("html" . "--- ---") ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
  '(org-hierarchical-todo-statistics nil)
- '(org-html-doctype "xhtml-strict")
- '(org-html-head " ")
  '(org-image-actual-width 200)
  '(org-indent-indentation-per-level 4)
  '(org-list-empty-line-terminates-plain-lists t)
@@ -176,7 +146,6 @@ inherited by a parent headline."
  '(org-support-shift-select (quote always))
  '(org-todo-keyword-faces (quote (("FAILED" . "#f00") ("CANCELED" . "#ee3"))))
  '(org-todo-keywords (quote ((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))))
- '(overline-margin 0)
  '(python-shell-interpreter "python3")
  '(scroll-bar-mode nil)
  '(sml/hidden-modes (quote (" hl-p" " hs+" " WS" " ws")))
@@ -190,19 +159,18 @@ inherited by a parent headline."
 </DIV>")) (nil ("Remove ADV in http://*.hp.infoseek.co.jp/*" "http://*.hp.infoseek.co.jp/* で広告を取り除きます") "\\`http://[a-z]+\\.hp\\.infoseek\\.co\\.jp/" (w3m-filter-delete-regions "<!-- start AD -->" "<!-- end AD -->")) (nil ("Remove ADV in http://linux.ascii24.com/linux/*" "http://linux.ascii24.com/linux/* で広告を取り除きます") "\\`http://linux\\.ascii24\\.com/linux/" (w3m-filter-delete-regions "<!-- DAC CHANNEL AD START -->" "<!-- DAC CHANNEL AD END -->")) (nil "A filter for Google" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." w3m-filter-google) (nil "A filter for Amazon" "\\`https?://\\(?:www\\.\\)?amazon\\.\\(?:com\\|co\\.\\(?:jp\\|uk\\)\\|fr\\|de\\)/" w3m-filter-amazon) (nil ("A filter for Mixi.jp" "ミクシィ用フィルタ") "\\`https?://mixi\\.jp" w3m-filter-mixi) (nil "A filter for http://eow.alc.co.jp/*/UTF-8*" "\\`http://eow\\.alc\\.co\\.jp/[^/]+/UTF-8" w3m-filter-alc) (nil ("A filter for Asahi Shimbun" "朝日新聞用フィルタ") "\\`http://www\\.asahi\\.com/" w3m-filter-asahi-shimbun) (nil "A filter for http://imepita.jp/NUM/NUM*" "\\`http://imepita\\.jp/[0-9]+/[0-9]+" w3m-filter-imepita) (nil "A filter for http://allatanys.jp/*" "\\`http://allatanys\\.jp/" w3m-filter-allatanys) (t "A filter for Wikipedia" "\\`http://.*\\.wikipedia\\.org/" w3m-filter-wikipedia) (nil ("Remove inline frames in all pages" "すべてのページでインラインフレームを取り除きます") "" w3m-filter-iframe) (t "Remove googles header noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<b class=gb1>Search</b>" "<div id=\"topstuff\"></div>")) (t "Remove googles footer noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<p class=\"flc\" id=\"bfl\"" ")</script>")) (t "Remove Wikipedia headers" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"siteSub\">" "class=\"mw-content-ltr\">")) (t "Remove Wikipedia footer1" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"mw-navigation\">" "<div class=\"portal\" role=\"navigation\" id='p-lang' aria-labelledby='p-lang-label'>")) (t "Remove Wikipedia footer2" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<li class=\"uls-p-lang-dummy\">" "</html>")))))
  '(w3m-session-load-crashed-sessions nil)
  '(whitespace-display-mappings nil)
- '(whitespace-empty-at-eob-regexp "^ *\\( \\) \\{22\\}")
- '(whitespace-hspace-regexp "^ \\{4\\}\\(\\( \\)\\) \\{3\\}")
- '(whitespace-indentation-regexp (quote ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ \\{16\\}\\( \\) \\{3\\}")))
+ '(whitespace-empty-at-eob-regexp "^ *\\( \\) \\{20\\}")
+ '(whitespace-hspace-regexp "^ *\\(\\( \\)\\) \\{7\\}")
+ '(whitespace-indentation-regexp (quote ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ *\\( \\) \\{19\\}")))
  '(whitespace-line-column 200)
- '(whitespace-space-after-tab-regexp (quote ("^a*\\(\\( \\)\\) \\{19\\}" . "^ \\{12\\}\\( \\) \\{3\\}")))
- '(whitespace-space-before-tab-regexp "^\\(\\( \\)\\) \\{3\\}")
+ '(whitespace-space-after-tab-regexp (quote ("^a*\\(\\( \\)\\) \\{19\\}" . "^ *\\( \\) \\{15\\}")))
+ '(whitespace-space-before-tab-regexp "^ *\\(\\( \\)\\) \\{3\\}")
  '(whitespace-space-regexp "[^ 
 ]+\\( +$\\)")
  '(whitespace-style (quote (tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation face)))
- '(whitespace-tab-regexp "^ \\{8\\}\\(\\( \\)\\) \\{3\\}")
- '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\|\\<nil\\>\\)")
- '(word-wrap t)
- '(x-underline-at-descent-line t))
+ '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
+ '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\|\\<nil\\>\\)"))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -210,14 +178,11 @@ inherited by a parent headline."
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 165 :width normal :foundry "unknown" :family "Source Code Pro"))))
  '(ace-jump-face-foreground ((t (:foreground "green" :weight bold))) t)
- '(completion-highlight-face ((t (:background "#033" :foreground "#0ff" :weight ultra-bold))))
- '(completion-popup-tip-face ((t (:background "black" :foreground "#77d"))))
  '(cursor ((t (:background "#709"))))
  '(erc-prompt-face ((t (:background "Black" :foreground "lightBlue2" :weight bold))) t)
  '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))) t)
  '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))) t)
  '(fringe ((t (:background "black" :foreground "#0ff"))))
- '(hl-line ((t (:overline "#707" :underline "#707"))))
  '(hl-paren-face ((t (:weight ultra-bold))) t)
  '(magit-header ((t (:background "#044" :foreground "#5fe"))) t)
  '(mode-line ((t (:background "#033" :foreground "#9bb" :box nil))))
@@ -239,22 +204,21 @@ inherited by a parent headline."
  '(w3m-tab-unselected ((t (:background "Gray30" :foreground "Black"))) t)
  '(w3m-tab-unselected-retrieving ((t (:background "#aa4444" :foreground "Black"))) t)
  '(w3m-tab-unselected-unseen ((t (:background "Gray90" :foreground "Black"))) t)
- '(whitespace-hspace ((t (:background "#022"))))
- '(whitespace-indentation ((t (:background "#301"))))
- '(whitespace-line ((t (:background "#250025"))))
- '(whitespace-space ((t (:background "PaleGreen3"))))
- '(whitespace-space-after-tab ((t (:background "#201"))))
- '(whitespace-space-before-tab ((t (:background "#033"))))
- '(whitespace-tab ((t (:background "#011"))))
- '(whitespace-trailing ((t (:foreground "#008888")))))
+ '(whitespace-hspace ((t (:background "#022"))) t)
+ '(whitespace-indentation ((t (:background "#301"))) t)
+ '(whitespace-line ((t (:background "#250025"))) t)
+ '(whitespace-space ((t (:background "PaleGreen3"))) t)
+ '(whitespace-space-after-tab ((t (:background "#201"))) t)
+ '(whitespace-space-before-tab ((t (:background "#033"))) t)
+ '(whitespace-tab ((t (:background "#011"))) t)
+ '(whitespace-trailing ((t (:foreground "#008888"))) t))
 
 ;(load "knu-testing.el" t)
-;(load "knu-pretty-symbol.el")
+;; This file must be created and pointing to the apropriate file.
+;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
+(load "knu-device.el" t)
 ;; The hooks should be loaded at the end.
 (load "knu-hooks.el")
 (load "knu-lisp.el")
 (sml/setup)
 (flyspell-lazy-mode)
-;; This file must be created and pointing to the apropriate file.
-;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
-(load "knu-device.el" t)
