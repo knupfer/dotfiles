@@ -214,12 +214,10 @@ inherited by a parent headline."
  '(whitespace-tab ((t (:background "#011"))) t)
  '(whitespace-trailing ((t (:foreground "#008888"))) t))
 
-;(load "knu-testing.el" t)
-;; This file must be created and pointing to the apropriate file.
-;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
-(load "knu-device.el" t)
-;; The hooks should be loaded at the end.
 (load "knu-hooks.el")
 (load "knu-lisp.el")
 (sml/setup)
 (flyspell-lazy-mode)
+;; This file must be created and pointing to the apropriate file.
+;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
+(load "knu-device.el" t)
