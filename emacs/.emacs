@@ -158,19 +158,7 @@ inherited by a parent headline."
  '(w3m-filter-configuration (quote ((t ("Strip Google's click-tracking code from link urls" "Google の click-tracking コードをリンクの url から取り除きます") "\\`https?://[a-z]+\\.google\\." w3m-filter-google-click-tracking) (t ("Align table columns vertically to shrink the table width in Google" "Google 検索結果のテーブルを縦方向で揃えて幅を狭めます") "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." w3m-filter-google-shrink-table-width) (t ("Add name anchors that w3m can handle in all pages" "すべてのページに w3m が扱える name アンカーを追加します") "" w3m-filter-add-name-anchors) (t ("Substitute disabled attr with readonly attr in forms" "フォーム中の disabled 属性を readonly 属性で代用します") "" w3m-filter-subst-disabled-with-readonly) (nil ("Render <tfoot>...</tfoot> after <tbody>...</tbody>" "テーブル内の <tfoot> を <tbody> の後に描画します") "" w3m-filter-fix-tfoot-rendering) (nil ("Remove garbage in http://www.geocities.co.jp/*" "http://www.geocities.co.jp/* でゴミを取り除きます") "\\`http://www\\.geocities\\.co\\.jp/" (w3m-filter-delete-regions "<DIV ALIGN=CENTER>
 <!--*/GeoGuide/*-->" "<!--*/GeoGuide/*-->
 </DIV>")) (nil ("Remove ADV in http://*.hp.infoseek.co.jp/*" "http://*.hp.infoseek.co.jp/* で広告を取り除きます") "\\`http://[a-z]+\\.hp\\.infoseek\\.co\\.jp/" (w3m-filter-delete-regions "<!-- start AD -->" "<!-- end AD -->")) (nil ("Remove ADV in http://linux.ascii24.com/linux/*" "http://linux.ascii24.com/linux/* で広告を取り除きます") "\\`http://linux\\.ascii24\\.com/linux/" (w3m-filter-delete-regions "<!-- DAC CHANNEL AD START -->" "<!-- DAC CHANNEL AD END -->")) (nil "A filter for Google" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." w3m-filter-google) (nil "A filter for Amazon" "\\`https?://\\(?:www\\.\\)?amazon\\.\\(?:com\\|co\\.\\(?:jp\\|uk\\)\\|fr\\|de\\)/" w3m-filter-amazon) (nil ("A filter for Mixi.jp" "ミクシィ用フィルタ") "\\`https?://mixi\\.jp" w3m-filter-mixi) (nil "A filter for http://eow.alc.co.jp/*/UTF-8*" "\\`http://eow\\.alc\\.co\\.jp/[^/]+/UTF-8" w3m-filter-alc) (nil ("A filter for Asahi Shimbun" "朝日新聞用フィルタ") "\\`http://www\\.asahi\\.com/" w3m-filter-asahi-shimbun) (nil "A filter for http://imepita.jp/NUM/NUM*" "\\`http://imepita\\.jp/[0-9]+/[0-9]+" w3m-filter-imepita) (nil "A filter for http://allatanys.jp/*" "\\`http://allatanys\\.jp/" w3m-filter-allatanys) (t "A filter for Wikipedia" "\\`http://.*\\.wikipedia\\.org/" w3m-filter-wikipedia) (nil ("Remove inline frames in all pages" "すべてのページでインラインフレームを取り除きます") "" w3m-filter-iframe) (t "Remove googles header noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<b class=gb1>Search</b>" "<div id=\"topstuff\"></div>")) (t "Remove googles footer noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<p class=\"flc\" id=\"bfl\"" ")</script>")) (t "Remove Wikipedia headers" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"siteSub\">" "class=\"mw-content-ltr\">")) (t "Remove Wikipedia footer1" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"mw-navigation\">" "<div class=\"portal\" role=\"navigation\" id='p-lang' aria-labelledby='p-lang-label'>")) (t "Remove Wikipedia footer2" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<li class=\"uls-p-lang-dummy\">" "</html>")))))
- '(w3m-session-load-crashed-sessions nil)
- '(whitespace-display-mappings nil)
- '(whitespace-empty-at-eob-regexp "^ *\\( \\) \\{20\\}")
- '(whitespace-hspace-regexp "^ *\\(\\( \\)\\) \\{7\\}")
- '(whitespace-indentation-regexp (quote ("^a*\\(\\(a\\{%d\\}\\)+\\)" . "^ *\\( \\) \\{19\\}")))
- '(whitespace-line-column 200)
- '(whitespace-space-after-tab-regexp (quote ("^a*\\(\\( \\)\\) \\{19\\}" . "^ *\\( \\) \\{15\\}")))
- '(whitespace-space-before-tab-regexp "^ *\\(\\( \\)\\) \\{3\\}")
- '(whitespace-space-regexp "[^ 
-]+\\( +$\\)")
- '(whitespace-style (quote (tabs space-before-tab space-after-tab tab-mark spaces space-mark trailing indentation face)))
- '(whitespace-tab-regexp "^ *\\(\\( \\)\\) \\{11\\}")
- '(whitespace-trailing-regexp "\\([^ *äöüßÄÖÜA-Za-z0-9]\\|\\<and\\>\\|\\<or\\>\\|\\<und\\>\\|\\<oder\\>\\|\\<not\\>\\|\\<nicht\\>\\|\\<nil\\>\\)"))
+ '(w3m-session-load-crashed-sessions nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -204,15 +192,7 @@ inherited by a parent headline."
  '(w3m-tab-selected-retrieving ((t (:background "#dd6666" :foreground "Black"))) t)
  '(w3m-tab-unselected ((t (:background "Gray30" :foreground "Black"))) t)
  '(w3m-tab-unselected-retrieving ((t (:background "#aa4444" :foreground "Black"))) t)
- '(w3m-tab-unselected-unseen ((t (:background "Gray90" :foreground "Black"))) t)
- '(whitespace-hspace ((t (:background "#022"))) t)
- '(whitespace-indentation ((t (:background "#301"))) t)
- '(whitespace-line ((t (:background "#250025"))) t)
- '(whitespace-space ((t (:background "PaleGreen3"))) t)
- '(whitespace-space-after-tab ((t (:background "#201"))) t)
- '(whitespace-space-before-tab ((t (:background "#033"))) t)
- '(whitespace-tab ((t (:background "#011"))) t)
- '(whitespace-trailing ((t (:foreground "#008888"))) t))
+ '(w3m-tab-unselected-unseen ((t (:background "Gray90" :foreground "Black"))) t))
 
 (load "knu-hooks.el")
 (load "knu-lisp.el")
