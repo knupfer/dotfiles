@@ -6,6 +6,7 @@
 (add-to-list 'load-path "~/.emacs.d/predict/")
 (add-to-list 'load-path "~/git/global-emacs/")
 (add-to-list 'load-path "~/git/indentation-tree.el/")
+(add-to-list 'load-path "~/git/indentation-tree/")
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
