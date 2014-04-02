@@ -1,5 +1,5 @@
-(require 'package)                                                                         
-(package-initialize)                                                                       
+(require 'package)
+(package-initialize)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -13,14 +13,14 @@
 
 (require 'predictive)
 (require 'global-emacs)
-(require 'indentation-tree) 
+(require 'indentation-tree)
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 (global-emacs-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(defun knu/publish () 
+(defun knu/publish ()
   "Runs my script, which does a bit cosmetic and cleanup."
   (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
 
@@ -29,7 +29,8 @@
   (interactive)
   (async-start
    ;; What to do in the child process
-   (lambda () (shell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh"))
+   (lambda ()
+     (shell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh"))
    'ignore))
 
 (defun knu/org-archive ()
@@ -53,7 +54,8 @@ inherited by a parent headline."
     (save-excursion
       (org-map-entries
        '(lambda ()
-          (let ((alltags (split-string (or (org-entry-get (point) "ALLTAGS") "") ":"))
+          (let ((alltags (split-string
+                          (or (org-entry-get (point) "ALLTAGS") "") ":"))
                 local inherited tag)
             (dolist (tag alltags)
               (if (get-text-property 0 'inherited tag)
