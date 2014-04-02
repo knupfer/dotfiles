@@ -1,2 +1,1 @@
-(load "knu-tablet-auto-hide.el")
-
+(set-face-attribute 'default nil :height 120) 
