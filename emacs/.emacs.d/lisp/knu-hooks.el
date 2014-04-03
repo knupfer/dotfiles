@@ -12,5 +12,6 @@
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'prog-mode-hook '(lambda () (num3-mode)
                              (whitespace-mode)
-                             (indentation-tree-mode)))
+                             (indentation-tree-mode)
+			     (hs-minor-mode)))
 (add-hook 'w3m-mode-hook '(lambda () (load "w3m-config.el")))
