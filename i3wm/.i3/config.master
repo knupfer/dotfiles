@@ -11,10 +11,10 @@ font fixed
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
-exec i3-msg 'rename workspace to "a"'
 # Start in command mode an update config.
-exec sh ~/.i3/change-mode.sh ACTIVE; 
+exec i3-msg 'rename workspace to "a"'
 
+exec sh ~/.i3/change-mode.sh ACTIVE; 
 
 focus_follows_mouse no
 
@@ -78,7 +78,7 @@ hide_edge_borders none
 bindsym Return exec xfce4-terminal; exec sh ~/.i3/change-mode.sh INACTIVE
 
 # Start emacs.
-bindsym Ctrl+e exec emacs -u root; exec sh ~/.i3/change-mode.sh INACTIVE
+bindsym Ctrl+e exec emacsclient -c -a ""; exec sh ~/.i3/change-mode.sh INACTIVE
 
 # Deactivate command mode and change config.
 bindsym Ctrl+i exec sh ~/.i3/change-mode.sh INACTIVE
