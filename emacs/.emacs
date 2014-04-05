@@ -126,6 +126,8 @@ inherited by a parent headline."
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-local-dictionary "de_DE")
  '(ispell-program-name "aspell")
+ '(keyfreq-autosave-mode t)
+ '(keyfreq-mode t)
  '(kill-do-not-save-duplicates t)
  '(mail-user-agent (quote gnus-user-agent))
  '(menu-bar-mode nil)
