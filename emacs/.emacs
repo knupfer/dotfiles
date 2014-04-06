@@ -174,6 +174,7 @@ inherited by a parent headline."
 </DIV>")) (nil ("Remove ADV in http://*.hp.infoseek.co.jp/*" "http://*.hp.infoseek.co.jp/* で広告を取り除きます") "\\`http://[a-z]+\\.hp\\.infoseek\\.co\\.jp/" (w3m-filter-delete-regions "<!-- start AD -->" "<!-- end AD -->")) (nil ("Remove ADV in http://linux.ascii24.com/linux/*" "http://linux.ascii24.com/linux/* で広告を取り除きます") "\\`http://linux\\.ascii24\\.com/linux/" (w3m-filter-delete-regions "<!-- DAC CHANNEL AD START -->" "<!-- DAC CHANNEL AD END -->")) (nil "A filter for Google" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." w3m-filter-google) (nil "A filter for Amazon" "\\`https?://\\(?:www\\.\\)?amazon\\.\\(?:com\\|co\\.\\(?:jp\\|uk\\)\\|fr\\|de\\)/" w3m-filter-amazon) (nil ("A filter for Mixi.jp" "ミクシィ用フィルタ") "\\`https?://mixi\\.jp" w3m-filter-mixi) (nil "A filter for http://eow.alc.co.jp/*/UTF-8*" "\\`http://eow\\.alc\\.co\\.jp/[^/]+/UTF-8" w3m-filter-alc) (nil ("A filter for Asahi Shimbun" "朝日新聞用フィルタ") "\\`http://www\\.asahi\\.com/" w3m-filter-asahi-shimbun) (nil "A filter for http://imepita.jp/NUM/NUM*" "\\`http://imepita\\.jp/[0-9]+/[0-9]+" w3m-filter-imepita) (nil "A filter for http://allatanys.jp/*" "\\`http://allatanys\\.jp/" w3m-filter-allatanys) (t "A filter for Wikipedia" "\\`http://.*\\.wikipedia\\.org/" w3m-filter-wikipedia) (nil ("Remove inline frames in all pages" "すべてのページでインラインフレームを取り除きます") "" w3m-filter-iframe) (t "Remove googles header noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<b class=gb1>Search</b>" "<div id=\"topstuff\"></div>")) (t "Remove googles footer noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<p class=\"flc\" id=\"bfl\"" ")</script>")) (t "Remove Wikipedia headers" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"siteSub\">" "class=\"mw-content-ltr\">")) (t "Remove Wikipedia footer1" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"mw-navigation\">" "<div class=\"portal\" role=\"navigation\" id='p-lang' aria-labelledby='p-lang-label'>")) (t "Remove Wikipedia footer2" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<li class=\"uls-p-lang-dummy\">" "</html>")))))
  '(w3m-home-page "about:blank")
  '(w3m-session-load-crashed-sessions nil)
+ '(w3m-use-title-buffer-name t)
  '(whitespace-style (quote (face lines-tail trailing))))
 
 (custom-set-faces
@@ -182,7 +183,7 @@ inherited by a parent headline."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 165 :width normal :foundry "unknown" :family "Source Code Pro"))))
- '(ace-jump-face-foreground ((t (:background "black" :foreground "green" :weight bold))) t)
+ '(ace-jump-face-foreground ((t (:background "black" :foreground "green" :weight bold))))
  '(cursor ((t (:background "#709"))))
  '(erc-prompt-face ((t (:background "Black" :foreground "lightBlue2" :weight bold))) t)
  '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
