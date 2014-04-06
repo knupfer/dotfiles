@@ -219,4 +219,5 @@ inherited by a parent headline."
 ;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
 (load "knu-device.el" t)
 (eshell)
-(w3m)
+;;(w3m)
+
