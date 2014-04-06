@@ -15,11 +15,11 @@
   (interactive)
   (let ((url (or (w3m-anchor) (w3m-image))))
     (if url
-        (let ((proc (start-process "wget" (format "*wget %s*" url)
-                                   "wget" "-x" "--passive-ftp" "-nv"
-                                   "-P" "~/downloads" url)))
-          (with-current-buffer (process-buffer proc)
-            (erase-buffer))
+        (let ((proc (start-process "wget" "*wget*" ;;(format "*wget %s*" url)
+                                   "wget" "-nv"
+                                   "-P" "/home/android/downloads" url)))
+          (message "Download started")
+          (with-current-buffer (process-buffer proc) (insert "\n"))
           (set-process-sentinel proc (lambda (proc str)
                                        (message "wget download done"))))
       (message "Nothing to get"))))
