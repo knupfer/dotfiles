@@ -17,7 +17,7 @@
     (if url
         (let ((proc (start-process "wget" (format "*wget %s*" url)
                                    "wget" "-x" "--passive-ftp" "-nv"
-                                   "-P" "/root/downloads" url)))
+                                   "-P" "~/downloads" url)))
           (with-current-buffer (process-buffer proc)
             (erase-buffer))
           (set-process-sentinel proc (lambda (proc str)
