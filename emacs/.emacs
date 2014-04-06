@@ -14,6 +14,11 @@
 (require 'predictive)
 (require 'global-emacs)
 (require 'indentation-tree)
+
+(require 'emms-setup)
+(emms-standard)
+(emms-default-players)
+
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 (global-emacs-mode t)
@@ -159,12 +164,11 @@ inherited by a parent headline."
  '(sml/mode-width (quote full))
  '(sml/name-width 15)
  '(sml/replacer-regexp-list (quote (("^~/Org/" ":Org:") ("^~/\\.emacs\\.d/" ":ED:") ("^/sudo:.*:" ":SU:") ("^~/Documents/" ":Doc:") ("^~/Dropbox/" ":DB:") ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:") ("^~/[Gg]it/" ":G:") ("^~/[Gg]it[Hh]ub/" ":Git:") ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:"))))
- '(split-height-threshold 999)
- '(split-width-threshold 80)
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil right-curly-arrow)))
  '(volume-amixer-default-channel "Speaker")
  '(volume-backend (quote volume-amixer-backend))
+ '(volume-electric-mode t)
  '(w3m-filter-configuration (quote ((t ("Strip Google's click-tracking code from link urls" "Google の click-tracking コードをリンクの url から取り除きます") "\\`https?://[a-z]+\\.google\\." w3m-filter-google-click-tracking) (t ("Align table columns vertically to shrink the table width in Google" "Google 検索結果のテーブルを縦方向で揃えて幅を狭めます") "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." w3m-filter-google-shrink-table-width) (t ("Add name anchors that w3m can handle in all pages" "すべてのページに w3m が扱える name アンカーを追加します") "" w3m-filter-add-name-anchors) (t ("Substitute disabled attr with readonly attr in forms" "フォーム中の disabled 属性を readonly 属性で代用します") "" w3m-filter-subst-disabled-with-readonly) (nil ("Render <tfoot>...</tfoot> after <tbody>...</tbody>" "テーブル内の <tfoot> を <tbody> の後に描画します") "" w3m-filter-fix-tfoot-rendering) (nil ("Remove garbage in http://www.geocities.co.jp/*" "http://www.geocities.co.jp/* でゴミを取り除きます") "\\`http://www\\.geocities\\.co\\.jp/" (w3m-filter-delete-regions "<DIV ALIGN=CENTER>
 <!--*/GeoGuide/*-->" "<!--*/GeoGuide/*-->
 </DIV>")) (nil ("Remove ADV in http://*.hp.infoseek.co.jp/*" "http://*.hp.infoseek.co.jp/* で広告を取り除きます") "\\`http://[a-z]+\\.hp\\.infoseek\\.co\\.jp/" (w3m-filter-delete-regions "<!-- start AD -->" "<!-- end AD -->")) (nil ("Remove ADV in http://linux.ascii24.com/linux/*" "http://linux.ascii24.com/linux/* で広告を取り除きます") "\\`http://linux\\.ascii24\\.com/linux/" (w3m-filter-delete-regions "<!-- DAC CHANNEL AD START -->" "<!-- DAC CHANNEL AD END -->")) (nil "A filter for Google" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." w3m-filter-google) (nil "A filter for Amazon" "\\`https?://\\(?:www\\.\\)?amazon\\.\\(?:com\\|co\\.\\(?:jp\\|uk\\)\\|fr\\|de\\)/" w3m-filter-amazon) (nil ("A filter for Mixi.jp" "ミクシィ用フィルタ") "\\`https?://mixi\\.jp" w3m-filter-mixi) (nil "A filter for http://eow.alc.co.jp/*/UTF-8*" "\\`http://eow\\.alc\\.co\\.jp/[^/]+/UTF-8" w3m-filter-alc) (nil ("A filter for Asahi Shimbun" "朝日新聞用フィルタ") "\\`http://www\\.asahi\\.com/" w3m-filter-asahi-shimbun) (nil "A filter for http://imepita.jp/NUM/NUM*" "\\`http://imepita\\.jp/[0-9]+/[0-9]+" w3m-filter-imepita) (nil "A filter for http://allatanys.jp/*" "\\`http://allatanys\\.jp/" w3m-filter-allatanys) (t "A filter for Wikipedia" "\\`http://.*\\.wikipedia\\.org/" w3m-filter-wikipedia) (nil ("Remove inline frames in all pages" "すべてのページでインラインフレームを取り除きます") "" w3m-filter-iframe) (t "Remove googles header noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<b class=gb1>Search</b>" "<div id=\"topstuff\"></div>")) (t "Remove googles footer noise" "\\`http://\\(www\\|images\\|news\\|maps\\|groups\\)\\.google\\." (w3m-filter-delete-regions "<p class=\"flc\" id=\"bfl\"" ")</script>")) (t "Remove Wikipedia headers" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"siteSub\">" "class=\"mw-content-ltr\">")) (t "Remove Wikipedia footer1" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<div id=\"mw-navigation\">" "<div class=\"portal\" role=\"navigation\" id='p-lang' aria-labelledby='p-lang-label'>")) (t "Remove Wikipedia footer2" "\\`http://.*\\.wikipedia\\.org/" (w3m-filter-delete-regions "<li class=\"uls-p-lang-dummy\">" "</html>")))))
@@ -181,11 +185,11 @@ inherited by a parent headline."
  '(ace-jump-face-foreground ((t (:background "black" :foreground "green" :weight bold))) t)
  '(cursor ((t (:background "#709"))))
  '(erc-prompt-face ((t (:background "Black" :foreground "lightBlue2" :weight bold))) t)
- '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))) t)
- '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))) t)
+ '(flyspell-duplicate ((t (:underline (:color "gold1" :style wave)))))
+ '(flyspell-incorrect ((t (:underline (:color "firebrick3" :style wave)))))
  '(fringe ((t (:background "black" :foreground "#0ff"))))
  '(hl-paren-face ((t (:weight ultra-bold))) t)
- '(magit-header ((t (:background "#044" :foreground "#5fe"))) t)
+ '(magit-header ((t (:background "#044" :foreground "#5fe"))))
  '(mode-line ((t (:background "#033" :foreground "#9bb" :box nil))))
  '(mode-line-buffer-id ((t (:foreground "#99dddd" :box nil :weight bold))))
  '(mode-line-inactive ((t (:inherit mode-line :background "gray32" :foreground "black" :box nil :weight light))))
@@ -209,7 +213,7 @@ inherited by a parent headline."
 
 (load "knu-hooks.el")
 (load "knu-lisp.el")
-(sml/setup)
+;;(sml/setup)
 (flyspell-lazy-mode)
 ;; This file must be created and pointing to the apropriate file.
 ;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
