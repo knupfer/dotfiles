@@ -180,7 +180,7 @@ client.focused_inactive #333333 #555544 #ffffff #555544
 client.unfocused        #333333 #555544 #ffffff #555544
 client.urgent           #2f343a #900000 #ffffff #900000
 
-bar {e
+bar {
     mode invisible
 }
 
