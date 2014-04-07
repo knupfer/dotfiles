@@ -34,7 +34,7 @@
   (define-key w3m-mode-map (kbd "C-w") 'w3m-delete-buffer)
   (define-key w3m-mode-map [(shift return)] 'w3m-view-this-url)
   (define-key w3m-mode-map (kbd "<tab>") 'w3m-next-buffer)
-  (define-key w3m-mode-map (kbd "S-<tab>") 'w3m-previous-buffer)
+  (define-key w3m-mode-map (kbd "<S-iso-lefttab>") 'w3m-previous-buffer)
   (define-key w3m-mode-map "d" 'w3m-download-with-wget)
 
   (define-key w3m-mode-map (kbd "C-h") 'w3m-history)
