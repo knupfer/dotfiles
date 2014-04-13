@@ -37,7 +37,6 @@
   (define-key w3m-mode-map (kbd "<S-iso-lefttab>") 'w3m-previous-buffer)
   (define-key w3m-mode-map "d" 'w3m-download-with-wget)
 
-  (define-key w3m-mode-map (kbd "C-h") 'w3m-history)
   (define-key w3m-mode-map "g" 'w3m-goto-url)
   (define-key w3m-mode-map "G" 'w3m-goto-url-new-session)
   (define-key w3m-mode-map (kbd "C-f") 'sacha/w3m-open-in-firefox)
