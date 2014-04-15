@@ -35,15 +35,21 @@
  gnus-summary-mark-below -100
  gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
 
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 (setq gnus-face-5 'font-lock-comment-face)
 (copy-face 'bold 'my-gnus-face-6)
-(copy-face 'default 'my-gnus-mouse-face-6)
-(set-face-foreground 'my-gnus-face-6 "#9ee")
 (set-face-background 'my-gnus-face-6 "#333")
-(set-face-background 'my-gnus-mouse-face-6 "#993")
+(set-face-foreground 'my-gnus-face-6 "#9ee")
 (setq gnus-face-6 'my-gnus-face-6)
+
+(copy-face 'default 'my-gnus-mouse-face-6)
+(set-face-background 'my-gnus-mouse-face-6 "#993")
 (setq gnus-mouse-face-6 'my-gnus-mouse-face-6)
+
+(copy-face 'bold 'my-gnus-face-7)
+(set-face-background 'my-gnus-face-7 "#333")
+(set-face-foreground 'my-gnus-face-7 "#9ee")
+(set-face-attribute 'my-gnus-face-7 nil :box '(:line-width -1 :color "#555"))
+(setq gnus-face-7 'my-gnus-face-7)
 
 (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
       gnus-thread-sort-functions '((not gnus-thread-sort-by-date))
@@ -55,13 +61,13 @@
       gnus-sum-thread-tree-root "• "
       gnus-sum-thread-tree-single-leaf "└─▶ "
       gnus-sum-thread-tree-vertical "│"
-      gnus-group-line-format "%M%S%p%P%5y:%B%(%G%)
-")
+      gnus-group-line-format "%M%S%p%P%5y:%B%(%G%)\n"
+      gnus-posting-styles '((message-news-p
+                             (name "quxbam")
+                             (address "no@news.invalid"))))
 
 (setq gnus-use-adaptive-scoring t)
 
-(setq gnus-permanently-visible-groups ".*Gesendet")
-
-(setq gnus-parameters
-      '((".*Gesendet"
-         (display . all))))
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+(setq gnus-topic-display-empty-topics nil
+      gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
