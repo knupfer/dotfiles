@@ -68,6 +68,15 @@
 
 (setq gnus-use-adaptive-scoring t)
 
+;;(add-to-list 'gnus-button-alist '("Wahr\\(scheinlich\\)" 0 t gnus-button-url 1)) ;; add links as buttons for wiki
+
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-(setq gnus-topic-display-empty-topics nil
+(setq nnml-use-compressed-files t
+      gnus-topic-display-empty-topics nil
       gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
+(setq gnus-parameters
+      '(("WIKI"
+         (gnus-article-sort-functions '(gnus-article-sort-by-author gnus-article-sort-by-subject gnus-article-sort-by-score))
+         (gnus-show-threads nil)))) 
