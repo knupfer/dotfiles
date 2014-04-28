@@ -55,7 +55,11 @@ clear Mod5
 ! Eigentlich (siehe Referenz) sollte hier ein CapsLock stehen.
 ! keycode 50 =  Shift_L Shift_Lock
 ! keycode 62 =  Shift_R Shift_Lock
-keycode 56 =  Shift_L Shift_Lock
+keycode 55 =  Shift_L Shift_Lock
+keycode 56 =  Control_L Control_L Control_L Control_L Control_L Control_L Control_L Control_L
+add Control = Control_L
+keycode 57 =  Control_R Control_R Control_R Control_R Control_R Control_R Control_R Control_R
+add Control = Control_R
 keycode 10 =  Shift_L Shift_Lock
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -108,7 +112,8 @@ keycode 54 = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shi
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Tab key
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keycode 23 = Tab  ISO_Left_Tab  Multi_key  ISO_Level3_Lock
+keycode 23 = Alt_L Alt_L
+keycode 35 = Alt_R Alt_R
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Space and Return key
