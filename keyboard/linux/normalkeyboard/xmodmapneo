@@ -18,43 +18,43 @@
 !! To load the layout in this file at X startup, simply store it as
 !! ~/.xmodmap
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Modifier definition
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 clear Lock
 clear Mod2
 clear Mod3
 clear Mod5
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Shift
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 55 =  Shift_L Shift_L Shift_L Shift_L Shift_L Shift_L Shift_L Shift_L
 keycode 56 =  Control_L Control_L Control_L Control_L Control_L Control_L Control_L Control_L
 add Control = Control_L
 keycode 57 =  Control_R Control_R Control_R Control_R Control_R Control_R Control_R Control_R
 add Control = Control_R
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Mod3
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keycode 59 =  ISO_Group_Shift ISO_Group_Shift ISO_First_Group  NoSymbol
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+keycode 59 =  ISO_Group_Shift ISO_Group_Shift ISO_First_Group NoSymbol
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Mod4
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keysym less = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
-keysym ISO_Level3_Shift = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
-keycode 54 = ISO_Level3_Shift  ISO_Level3_Shift  ISO_Group_Shift   ISO_Group_Shift  ISO_Level3_Lock  NoSymbol
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+keysym less = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift ISO_Level3_Lock NoSymbol
+keysym ISO_Level3_Shift = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift ISO_Level3_Lock NoSymbol
+keycode 54 = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift ISO_Level3_Lock NoSymbol
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Alt key
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 23 = Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L
 keycode 35 = Alt_R Alt_R Alt_R Alt_R Alt_R Alt_R Alt_R Alt_R
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Space and Return key
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 58 = space		space		space		nobreakspace	0		0		U202F		NoSymbol
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The first row (number Row)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 10 = ssharp		U1E9E   	U017F   	Greek_finalsmallsigma  U2212	NoSymbol	jot		NoSymbol
 keycode 11 = k          	K               ellipsis	Greek_kappa	Prior		Prior   	Greek_XI        Greek_XI
 keycode 12 = u   		U		underscore	NoSymbol	BackSpace	BackSpace	radical		NoSymbol
@@ -67,10 +67,10 @@ keycode 18 = c   		C		greater		Greek_chi	8		8		Greek_GAMMA	Greek_GAMMA
 keycode 19 = l   		L		equal		Greek_lambda	9		9		Greek_PHI	Greek_PHI
 keycode 20 = z   		Z		ampersand	Greek_zeta	KP_Add		KP_Add		U211A		NoSymbol
 keycode 21 = f   		F		at		Greek_phi	period		KP_Decimal	nabla		NoSymbol
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The upper row
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keycode 24 = h   		H		backslash	NoSymbol	Home		Home		includedin	NoSymbol
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+keycode 24 = h   		H		backslash	Greek_psi	Home		Home		includedin	NoSymbol
 keycode 25 = i  		I		slash		Greek_iota	Left		Left		integral	NoSymbol
 keycode 26 = e  		E		braceleft	Greek_epsilon	Down		Down		U2200		NoSymbol
 keycode 27 = a  		A		braceright	Greek_alpha	Right		Right		U2203		NoSymbol
@@ -80,9 +80,9 @@ keycode 31 = t  		T		parenleft	Greek_tau	4		4		U2115		NoSymbol
 keycode 32 = r  		R		parenright	Greek_rho	5		5		U211D		NoSymbol
 keycode 33 = n  		N		minus		Greek_nu	6		6		partialderivative NoSymbol
 keycode 34 = s  		S		colon		Greek_sigma	KP_Separator	comma		Greek_DELTA	Greek_DELTA
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The home row (middle row)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 38 = x  		X		numbersign	Greek_xi	Escape		Escape		union		NoSymbol
 keycode 39 = y  		Y		dollar		U03F5		Tab		ISO_Left_Tab	intersection	NoSymbol
 keycode 40 = odiaeresis		Odiaeresis	bar		Greek_eta	Insert		Insert		U2135		NoSymbol
@@ -93,5 +93,4 @@ keycode 45 = p  		P		percent		Greek_pi	1		1		Greek_PI	Greek_PI
 keycode 46 = w  		W		quotedbl	Greek_omega	2		2		Greek_OMEGA	Greek_OMEGA
 keycode 47 = m  	   	M       	apostrophe	Greek_mu	3		3		U21A6		NoSymbol
 keycode 48 = j  		J		semicolon	Greek_theta	semicolon	NoSymbol	Greek_THETA	Greek_THETA
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
