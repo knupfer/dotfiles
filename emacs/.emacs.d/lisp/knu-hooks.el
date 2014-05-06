@@ -7,8 +7,11 @@
 (add-hook 'org-mode-hook '(lambda () (flyspell-mode)
                             (num3-mode)
                             (whitespace-mode)
-                            (define-key org-mode-map
-                              (kbd "C-c C-x a") 'knu/org-archive)))
+                            (pretty-symbols-mode)
+                            (when (not (boundp 'knu-org-mode-map))
+                              (define-key org-mode-map
+                                (kbd "C-c C-x a") 'knu/org-archive)
+                              (load "knu-org-mode-map.el"))))
 (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
 (add-hook 'prog-mode-hook '(lambda () (num3-mode)
                              (whitespace-mode)
