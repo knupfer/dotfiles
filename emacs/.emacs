@@ -186,7 +186,7 @@ inherited by a parent headline."
  '(w3m-session-load-crashed-sessions nil)
  '(w3m-use-title-buffer-name t)
  '(whitespace-style (quote (face lines-tail trailing tabs)))
- '(whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\)"))
+ '(whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\)"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
