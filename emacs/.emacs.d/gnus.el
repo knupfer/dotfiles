@@ -32,7 +32,7 @@
                       (nnimap-stream ssl)))
 
 (setq-default
- gnus-summary-mark-below -100
+ gnus-summary-mark-below -300
  gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
 
 (setq gnus-face-5 'font-lock-comment-face)
@@ -66,9 +66,7 @@
                              (name "quxbam")
                              (address "no@news.invalid"))))
 
-(setq gnus-use-adaptive-scoring t)
-
-;;(add-to-list 'gnus-button-alist '("Wahr\\(scheinlich\\)" 0 t gnus-button-url 1)) ;; add links as buttons for wiki
+(setq gnus-use-adaptive-scoring '(word))
 
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 (setq nnml-use-compressed-files t
@@ -78,5 +76,7 @@
 
 (setq gnus-parameters
       '(("WIKI"
+         (gnus-summary-line-format
+          "%U%R %5{│%}%6{ %5,5i %}%5{│%}%* %-40,40f %5{│ %s%}\\n")
          (gnus-article-sort-functions '(gnus-article-sort-by-author gnus-article-sort-by-subject gnus-article-sort-by-score))
-         (gnus-show-threads nil)))) 
+         (gnus-show-threads nil))))
