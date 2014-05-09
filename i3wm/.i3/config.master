@@ -53,11 +53,11 @@ bindsym Ctrl+i exec sh ~/.i3/change-mode.sh INACTIVE
 bindsym q kill; exec sh ~/.i3/change-mode.sh INACTIVE
 
 # Start dmenu (a program launcher).
-bindsym Shift+d exec dmenu_run
+bindsym Shift+d exec --no-startup-id i3-dmenu-desktop
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym d exec sh ~/.i3/change-mode.sh INACTIVE; exec --no-startup-id i3-dmenu-desktop
+bindsym d exec sh ~/.i3/change-mode.sh INACTIVE; exec dmenu_run
 
 # Change focus.
 bindsym i focus left
@@ -150,8 +150,8 @@ mode "C-i:" {
   bindsym r mode "resize"
   bindsym Return exec xfce4-terminal; mode "default"
   bindsym q kill; mode "default"
-  bindsym Shift+d exec dmenu_run; mode "default"
-  bindsym d exec --no-startup-id i3-dmenu-desktop; mode "default"
+  bindsym d exec dmenu_run; mode "default"
+  bindsym Shift+d exec --no-startup-id i3-dmenu-desktop; mode "default"
   bindsym i focus left; mode "default"
   bindsym e focus down; mode "default"
   bindsym udiaeresis focus up; mode "default"
