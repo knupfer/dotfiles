@@ -5,6 +5,7 @@
 (add-hook 'LilyPond-mode-hook '(lambda () (highlight-parentheses-mode)))
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 (add-hook 'org-mode-hook '(lambda () (flyspell-mode)
+                            (auto-fill-mode)
                             (num3-mode)
                             (whitespace-mode)
                             (pretty-symbols-mode)
