@@ -71,4 +71,7 @@
 (add-to-list 'pretty-symbol-patterns '(?↷ knu-custom "\\\\curvearrowright" (org-mode latex-mode)))
 (add-to-list 'pretty-symbol-patterns '(?⟷ knu-custom "\\\\leftrightarrow" (org-mode latex-mode)))
 (add-to-list 'pretty-symbol-patterns '(?d knu-custom "\\\\mathrm{d}" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∞ knu-custom "\\\\infty" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∂ knu-custom "\\\\partial" (org-mode latex-mode)))
+
 
