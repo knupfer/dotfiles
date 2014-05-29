@@ -6,24 +6,22 @@
   (forward-line -1))
 
 (defun knu-org-auto-preview ()
-  (interactive)
   (setq knu-org-auto-preview-count nil)
   (when (equal mode-name "Org")
     (while-no-input (progn (when (not knu-org-auto-preview-count)
                              (setq knu-org-auto-preview-count t)
                              (knu-org-preview-latex-fragment)
                              (redisplay)
-                             (knu-org-preview-latex-fragment))))
-    (message nil)))
+                             (knu-org-preview-latex-fragment))))))
 
 (defun knu-org-preview-latex-fragment ()
-  (interactive "P")
   (unless buffer-file-name
     (user-error "Can't preview LaTeX fragment in a non-file buffer"))
   (when (display-graphic-p)
     (save-excursion
       (save-restriction
-        (let (beg end at msg)
+        (let (beg end at msg pos)
+          (setq pos (point))
           (setq beg (window-start) end (window-end))
           (narrow-to-region beg end)
           (goto-char beg)
@@ -32,13 +30,10 @@
                                                        (file-name-nondirectory
                                                         buffer-file-name)))
            default-directory 'overlays nil at 'forbuffer
-           org-latex-create-formula-image-program))))))
+           org-latex-create-formula-image-program pos))))))
 
 (defun knu-org-format-latex (prefix &optional dir overlays msg at
-                                    forbuffer processing-type)
-  "Replace LaTeX fragments with links to an image, and produce images.
-Some of the options can be changed using the variable
-`org-format-latex-options'."
+                                    forbuffer processing-type pos)
   (if (and overlays (fboundp 'clear-image-cache)) (clear-image-cache))
   (let* ((prefixnodir (file-name-nondirectory prefix))
          (absprefix (expand-file-name prefix dir))
@@ -62,100 +57,70 @@ Some of the options can be changed using the variable
                          (not (eq (get-char-property (match-beginning n)
                                                      'org-overlay-type)
                                   'org-latex-overlay))))
-            (message "FOOBAR")
-            (cond
-             ((eq processing-type 'verbatim))
-             ((eq processing-type 'mathjax)
-              ;; Prepare for MathJax processing.
-              (setq string (match-string n))
-              (when (member m '("$" "$1"))
-                (save-excursion
-                  (delete-region (match-beginning n) (match-end n))
-                  (goto-char (match-beginning n))
-                  (insert (concat "\\(" (substring string 1 -1) "\\)")))))
-             ((or (eq processing-type 'dvipng)
-                  (eq processing-type 'imagemagick))
-              ;; Process to an image.
-              (setq txt (match-string n)
-                    beg (match-beginning n) end (match-end n)
-                    cnt (1+ cnt))
-              (let ((face (face-at-point))
-                    (fg (plist-get opt :foreground))
-                    (bg (plist-get opt :background))
-                    ;; Ensure full list is printed.
-                    print-length print-level)
-                (when forbuffer
-                  ;; Get the colors from the face at point.
-                  (goto-char beg)
-                  (when (eq fg 'auto)
-                    (setq fg (face-attribute face :foreground nil 'default)))
-                  (when (eq bg 'auto)
-                    (setq bg (face-attribute face :background nil 'default)))
-                  (setq optnew (copy-sequence opt))
-                  (plist-put optnew :foreground fg)
-                  (plist-put optnew :background bg))
-                (setq hash (sha1 (prin1-to-string
-                                  (list org-format-latex-header
-                                        org-latex-default-packages-alist
-                                        org-latex-packages-alist
-                                        org-format-latex-options
-                                        forbuffer txt fg bg)))
-                      linkfile (format "%s_%s.png" prefix hash)
-                      movefile (format "%s_%s.png" absprefix hash)))
-              (setq link (concat block "[[file:" linkfile "]]" block))
-              (message "bar.: %s" cnt)
-              (goto-char beg)
-              (unless checkdir        ; Ensure the directory exists.
-                (setq checkdir t)
-                (or (file-directory-p todir) (make-directory todir t)))
-              (unless (file-exists-p movefile)
-                (org-create-formula-image
-                 txt movefile optnew forbuffer processing-type)
-                (redisplay))
-              (if overlays
-                  (progn
-                    (mapc (lambda (o)
-                            (if (eq (overlay-get o 'org-overlay-type)
-                                    'org-latex-overlay)
-                                (delete-overlay o)))
-                          (overlays-in beg end))
-                    (setq ov (make-overlay beg end))
-                    (overlay-put ov 'org-overlay-type 'org-latex-overlay)
-                    (if (featurep 'xemacs)
-                        (progn
-                          (overlay-put ov 'invisible t)
-                          (overlay-put
-                           ov 'end-glyph
-                           (make-glyph (vector 'png :file movefile))))
-                      (overlay-put
-                       ov 'display
-                       (list 'image :type 'png :file movefile :ascent 'center)))
-                    (push ov org-latex-fragment-image-overlays)
-                    (goto-char end))
-                (delete-region beg end)
-                (insert (org-add-props link
-                            (list 'org-latex-src
-                                  (replace-regexp-in-string
-                                   "\"" "" txt)
-                                  'org-latex-src-embed-type
-                                  (if block-type 'paragraph 'character))))))
-             ((eq processing-type 'mathml)
-              ;; Process to MathML
-              (unless (save-match-data (org-format-latex-mathml-available-p))
-                (user-error "LaTeX to MathML converter not configured"))
-              (setq txt (match-string n)
-                    beg (match-beginning n) end (match-end n)
-                    cnt (1+ cnt))
-              (if msg (message msg cnt))
-              (goto-char beg)
+            (setq txt (match-string n)
+                  beg (match-beginning n) end (match-end n)
+                  cnt (1+ cnt))
+            (let ((face (face-at-point))
+                  (fg (plist-get opt :foreground))
+                  (bg (plist-get opt :background))
+                  ;; Ensure full list is printed.
+                  print-length print-level)
+              (when forbuffer
+                ;; Get the colors from the face at point.
+                (goto-char beg)
+                (when (eq fg 'auto)
+                  (setq fg (face-attribute face :foreground nil 'default)))
+                (when (eq bg 'auto)
+                  (setq bg (face-attribute face :background nil 'default)))
+                (setq optnew (copy-sequence opt))
+                (plist-put optnew :foreground fg)
+                (plist-put optnew :background bg))
+              (setq hash (sha1 (prin1-to-string
+                                (list org-format-latex-header
+                                      org-latex-default-packages-alist
+                                      org-latex-packages-alist
+                                      org-format-latex-options
+                                      forbuffer txt fg bg)))
+                    linkfile (format "%s_%s.png" prefix hash)
+                    movefile (format "%s_%s.png" absprefix hash)))
+            (setq link (concat block "[[file:" linkfile "]]" block))
+            (goto-char beg)
+            (unless checkdir        ; Ensure the directory exists.
+              (setq checkdir t)
+              (or (file-directory-p todir) (make-directory todir t)))
+            (unless (file-exists-p movefile)
+              (org-create-formula-image
+               txt movefile optnew forbuffer processing-type)
+              (save-excursion
+                (goto-char pos)
+                (redisplay)))
+            (if overlays
+                (progn
+                  (mapc (lambda (o)
+                          (if (eq (overlay-get o 'org-overlay-type)
+                                  'org-latex-overlay)
+                              (delete-overlay o)))
+                        (overlays-in beg end))
+                  (setq ov (make-overlay beg end))
+                  (overlay-put ov 'org-overlay-type 'org-latex-overlay)
+                  (if (featurep 'xemacs)
+                      (progn
+                        (overlay-put ov 'invisible t)
+                        (overlay-put
+                         ov 'end-glyph
+                         (make-glyph (vector 'png :file movefile))))
+                    (overlay-put
+                     ov 'display
+                     (list 'image :type 'png :file movefile :ascent 'center)))
+                  (push ov org-latex-fragment-image-overlays)
+                  (goto-char end))
               (delete-region beg end)
-              (insert (org-format-latex-as-mathml
-                       txt block-type prefix dir)))
-             (t
-              (error "Unknown conversion type %s for LaTeX fragments"
-                     processing-type)))))))))
-
-
+              (insert (org-add-props link
+                          (list 'org-latex-src
+                                (replace-regexp-in-string
+                                 "\"" "" txt)
+                                'org-latex-src-embed-type
+                                (if block-type 'paragraph 'character)))))))))))
 
 (run-with-idle-timer 2 t 'knu-org-auto-preview)
 
