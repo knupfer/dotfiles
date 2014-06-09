@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: table-and-R
+# key: tbl
+# binding: direct-keybinding
+# --
+#+CAPTION: $1
+#+NAME: $2
+| $0  |   |
+|---+---|
+|   |   |
+
+#+NAME: $2-code
+#+BEGIN_SRC R :var $2=$2
+#+END_SRC
+

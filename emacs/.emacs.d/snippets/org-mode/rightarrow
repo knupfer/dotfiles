@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: rightarrow
+# key: ->
+# binding: direct-keybinding
+# --
+`(if (org-inside-LaTeX-fragment-p) (message "\\rightarrow ") (message "$\\rightarrow$ "))`$0

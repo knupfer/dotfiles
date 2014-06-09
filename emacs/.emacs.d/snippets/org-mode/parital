@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: parital
+# key: p
+# binding: direct-keybinding
+# --
+\partial $0

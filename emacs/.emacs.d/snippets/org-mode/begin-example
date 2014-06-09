@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: begin-example
+# key: be
+# binding: direct-keybinding
+# --
+\begin{example}
+$0
+\end{example}

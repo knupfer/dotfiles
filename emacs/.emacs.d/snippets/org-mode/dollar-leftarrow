@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: dollar-leftarrow
+# key: $<-
+# binding: direct-keybinding
+# --
+$\leftarrow $0
