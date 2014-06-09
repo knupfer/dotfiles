@@ -1,9 +1,29 @@
 (setq knu-org-mode-map t)
+(run-with-idle-timer 0.7 t 'knu-org-auto-preview)
+(run-with-idle-timer 0.5 t 'knu-org-del-overlay)
+;(file-name-directory buffer-file-name)
+
+
 (defun knu-org-latex-snip ()
   (interactive)
   (insert "\\begin{align*}\n\n")
   (insert "\\end{align*}")
   (forward-line -1))
+
+
+
+
+(defun knu-org-del-overlay ()
+  (when (equal mode-name "Org")
+    (mapc (lambda (o)
+            (if (eq (overlay-get o 'org-overlay-type)
+                    'org-latex-overlay)
+                (delete-overlay o)))
+          (overlays-at (point)))))
+
+;;(defun knu-org-del-overlay ()
+;;(when (equal mode-name "Org")
+;;(mapc 'delete-overlay (overlays-at (point)))))
 
 (defun knu-org-auto-preview ()
   (setq knu-org-auto-preview-count nil)
@@ -12,7 +32,8 @@
                              (setq knu-org-auto-preview-count t)
                              (knu-org-preview-latex-fragment)
                              (redisplay)
-                             (knu-org-preview-latex-fragment))))))
+                             (knu-org-preview-latex-fragment))))
+    (cd (file-name-directory buffer-file-name))))
 
 (defun knu-org-preview-latex-fragment ()
   (unless buffer-file-name
@@ -20,7 +41,9 @@
   (when (display-graphic-p)
     (save-excursion
       (save-restriction
-        (let (beg end at msg pos)
+        (let (beg end at msg pos at-snippet)
+          (setq at-snippet (org-inside-LaTeX-fragment-p))
+          (when (not at-snippet) (setq at-snippet t))
           (setq pos (point))
           (setq beg (window-start) end (window-end))
           (narrow-to-region beg end)
@@ -30,10 +53,10 @@
                                                        (file-name-nondirectory
                                                         buffer-file-name)))
            default-directory 'overlays nil at 'forbuffer
-           org-latex-create-formula-image-program pos))))))
+           org-latex-create-formula-image-program pos at-snippet))))))
 
 (defun knu-org-format-latex (prefix &optional dir overlays msg at
-                                    forbuffer processing-type pos)
+                                    forbuffer processing-type pos at-snippet)
   (if (and overlays (fboundp 'clear-image-cache)) (clear-image-cache))
   (let* ((prefixnodir (file-name-nondirectory prefix))
          (absprefix (expand-file-name prefix dir))
@@ -60,71 +83,74 @@
             (setq txt (match-string n)
                   beg (match-beginning n) end (match-end n)
                   cnt (1+ cnt))
-            (let ((face (face-at-point))
-                  (fg (plist-get opt :foreground))
-                  (bg (plist-get opt :background))
-                  ;; Ensure full list is printed.
-                  print-length print-level)
-              (when forbuffer
-                ;; Get the colors from the face at point.
-                (goto-char beg)
-                (when (eq fg 'auto)
-                  (setq fg (face-attribute face :foreground nil 'default)))
-                (when (eq bg 'auto)
-                  (setq bg (face-attribute face :background nil 'default)))
-                (setq optnew (copy-sequence opt))
-                (plist-put optnew :foreground fg)
-                (plist-put optnew :background bg))
-              (setq hash (sha1 (prin1-to-string
-                                (list org-format-latex-header
-                                      org-latex-default-packages-alist
-                                      org-latex-packages-alist
-                                      org-format-latex-options
-                                      forbuffer txt fg bg)))
-                    linkfile (format "%s_%s.png" prefix hash)
-                    movefile (format "%s_%s.png" absprefix hash)))
-            (setq link (concat block "[[file:" linkfile "]]" block))
-            (goto-char beg)
-            (unless checkdir        ; Ensure the directory exists.
-              (setq checkdir t)
-              (or (file-directory-p todir) (make-directory todir t)))
-            (unless (file-exists-p movefile)
-              (org-create-formula-image
-               txt movefile optnew forbuffer processing-type)
-              (save-excursion
-                (goto-char pos)
-                (redisplay)))
-            (if overlays
-                (progn
-                  (mapc (lambda (o)
-                          (if (eq (overlay-get o 'org-overlay-type)
-                                  'org-latex-overlay)
-                              (delete-overlay o)))
-                        (overlays-in beg end))
-                  (setq ov (make-overlay beg end))
-                  (overlay-put ov 'org-overlay-type 'org-latex-overlay)
-                  (if (featurep 'xemacs)
-                      (progn
-                        (overlay-put ov 'invisible t)
-                        (overlay-put
-                         ov 'end-glyph
-                         (make-glyph (vector 'png :file movefile))))
-                    (overlay-put
-                     ov 'display
-                     (list 'image :type 'png :file movefile :ascent 'center)))
-                  (push ov org-latex-fragment-image-overlays)
-                  (goto-char end))
-              (delete-region beg end)
-              (insert (org-add-props link
-                          (list 'org-latex-src
-                                (replace-regexp-in-string
-                                 "\"" "" txt)
-                                'org-latex-src-embed-type
-                                (if block-type 'paragraph 'character)))))))))))
+            (when (not (and (> (+ pos 1) beg) (< pos end)))
+              (let ((face (face-at-point))
+                    (fg (plist-get opt :foreground))
+                    (bg (plist-get opt :background))
+                    ;; Ensure full list is printed.
+                    print-length print-level)
+                (when forbuffer
+                  ;; Get the colors from the face at point.
+                  (goto-char beg)
+                  (when (eq fg 'auto)
+                    (setq fg (face-attribute face :foreground nil 'default)))
+                  (when (eq bg 'auto)
+                    (setq bg (face-attribute face :background nil 'default)))
+                  (setq optnew (copy-sequence opt))
+                  (plist-put optnew :foreground fg)
+                  (plist-put optnew :background bg))
+                (setq hash (sha1 (prin1-to-string
+                                  (list org-format-latex-header
+                                        org-latex-default-packages-alist
+                                        org-latex-packages-alist
+                                        org-format-latex-options
+                                        forbuffer txt fg bg)))
+                      linkfile (format "%s_%s.png" prefix hash)
+                      movefile (format "%s_%s.png" absprefix hash)))
+              (setq link (concat block "[[file:" linkfile "]]" block))
+              (goto-char beg)
+              (unless checkdir        ; Ensure the directory exists.
+                (setq checkdir t)
+                (or (file-directory-p todir) (make-directory todir t)))
+              (unless (file-exists-p movefile)
+              ;;;; (not (eq at-snippet (org-inside-LaTeX-fragment-p)))
+                (org-create-formula-image
+                 txt movefile optnew forbuffer processing-type)
+                (save-excursion
+                  (goto-char pos)
+                  (redisplay)))
+              (if overlays
+                  (progn
+                    (mapc (lambda (o)
+                            (if (eq (overlay-get o 'org-overlay-type)
+                                    'org-latex-overlay)
+                                (delete-overlay o)))
+                          (overlays-in beg end))
+                    (setq ov (make-overlay beg end))
+                    (overlay-put ov 'org-overlay-type 'org-latex-overlay)
+                    (if (featurep 'xemacs)
+                        (progn
+                          (overlay-put ov 'invisible t)
+                          (overlay-put
+                           ov 'end-glyph
+                           (make-glyph (vector 'png :file movefile))))
+                      (overlay-put
+                       ov 'display
+                       (list 'image :type 'png :file movefile :ascent 'center)))
+                    (push ov org-latex-fragment-image-overlays)
+                    (goto-char end))
+                (delete-region beg end)
+                (insert (org-add-props link
+                                       (list 'org-latex-src
+                                             (replace-regexp-in-string
+                                              "\"" "" txt)
+                                             'org-latex-src-embed-type
+                                             (if block-type 'paragraph 'character))))))))))))
 
-(run-with-idle-timer 2 t 'knu-org-auto-preview)
+
 
 (define-key org-mode-map (kbd "<f5>") 'knu-org-latex-snip)
+(define-key org-mode-map (kbd "<f6>") 'knu-org-del-overlay)
 
 (define-key org-mode-map "α" "\\alpha")
 (define-key org-mode-map "β" "\\beta")
