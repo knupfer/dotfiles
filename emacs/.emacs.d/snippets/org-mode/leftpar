@@ -1,8 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin-align
-# key: ba
+# name: leftpar
+# key: (
 # binding: direct-keybinding
 # --
-\begin{align*}
-$0
-\end{align*}
+\left(
