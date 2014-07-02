@@ -4,7 +4,6 @@
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path "~/.emacs.d/predict/")
-(add-to-list 'load-path "~/git/global-emacs/")
 (add-to-list 'load-path "~/git/indentation-tree.el/")
 (add-to-list 'load-path "~/git/indentation-tree/")
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -12,7 +11,6 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (require 'predictive)
-(require 'global-emacs)
 (require 'indentation-tree)
 (require 'pretty-symbols)
 (require 'yasnippet)
@@ -20,7 +18,6 @@
 
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
-(global-emacs-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -124,6 +121,11 @@ inherited by a parent headline."
  '(fringe-mode (quote (0)) nil (fringe))
  '(gnus-default-adaptive-word-score-alist (quote ((82 . 1) (67 . -1) (75 . -2) (114 . -1))))
  '(gnus-init-file "~/.emacs.d/gnus.el")
+ '(gnus-treat-fill-article t)
+ '(gnus-treat-leading-whitespace t)
+ '(gnus-treat-strip-multiple-blank-lines t)
+ '(gnus-treat-strip-trailing-blank-lines t)
+ '(gnus-treat-unsplit-urls t)
  '(hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
@@ -182,6 +184,7 @@ inherited by a parent headline."
  '(org-latex-classes (quote (("article" "\\documentclass[11pt]{scrartcl}" ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}") ("\\paragraph{%s}" . "\\paragraph*{%s}") ("\\subparagraph{%s}" . "\\subparagraph*{%s}")) ("report" "\\documentclass[11pt]{report}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")) ("book" "\\documentclass[11pt]{book}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))))
  '(org-latex-inactive-timestamp-format "\\\\\\hfill\\textcolor{gray}{\\textbf{%s}}\\\\")
  '(org-latex-preview-ltxpng-directory "~/ltxpreview/")
+ '(org-list-allow-alphabetical t)
  '(org-list-empty-line-terminates-plain-lists t)
  '(org-log-done (quote time))
  '(org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish))))
@@ -189,6 +192,7 @@ inherited by a parent headline."
  '(org-src-fontify-natively t)
  '(org-startup-align-all-tables t)
  '(org-startup-folded (quote content))
+ '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(org-startup-with-inline-images t)
  '(org-support-shift-select (quote always))
