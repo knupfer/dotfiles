@@ -7,5 +7,4 @@
 (when (not (file-exists-p (concat (file-name-directory buffer-file-name) "images/" (car (reverse (directory-files "~/sdcard/Pictures/Drawings"))) )))
 (copy-file (car (reverse (directory-files "/home/android/sdcard/Pictures/Drawings" t))) (concat (file-name-directory buffer-file-name) "images/")))
 (concat "[[./images/" (car (reverse (directory-files "~/sdcard/Pictures/Drawings"))) "]]"))`
-
 $0

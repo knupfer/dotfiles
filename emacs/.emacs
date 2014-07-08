@@ -9,7 +9,7 @@
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
-
+(require 'hl-defined)
 (require 'predictive)
 (require 'indentation-tree)
 (require 'pretty-symbols)
@@ -142,6 +142,7 @@ inherited by a parent headline."
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar")
  '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
+ '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")))
  '(org-edit-src-content-indentation 4)
  '(org-export-headline-levels 4)
  '(org-export-run-in-background t)

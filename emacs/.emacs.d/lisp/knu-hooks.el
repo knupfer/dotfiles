@@ -19,3 +19,4 @@
                              (indentation-tree-mode)
 			     (hs-minor-mode)))
 (add-hook 'w3m-mode-hook '(lambda () (load "w3m-config.el")))
+(add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
