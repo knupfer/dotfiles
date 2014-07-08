@@ -80,3 +80,9 @@
           "%U%R %5{│%}%6{ %5,5i %}%5{│%}%* %-40,40f %5{│ %s%}\\n")
          (gnus-article-sort-functions '(gnus-article-sort-by-author gnus-article-sort-by-subject gnus-article-sort-by-score))
          (gnus-show-threads nil))))
+
+
+(eval-after-load "mm-decode"
+  '(progn
+     (add-to-list 'mm-discouraged-alternatives "text/html")
+     (add-to-list 'mm-discouraged-alternatives "text/richtext")))
