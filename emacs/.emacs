@@ -6,6 +6,7 @@
 (add-to-list 'load-path "~/.emacs.d/predict/")
 (add-to-list 'load-path "~/git/indentation-tree.el/")
 (add-to-list 'load-path "~/git/indentation-tree/")
+(add-to-list 'load-path "~/git/macro-type/")
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
@@ -14,6 +15,7 @@
 (require 'indentation-tree)
 (require 'pretty-symbols)
 (require 'yasnippet)
+(require 'macro-type)
 (yas-global-mode 1)
 
 (defvar hcz-set-cursor-color-color "")
@@ -227,7 +229,7 @@ inherited by a parent headline."
  '(w3m-use-favicon nil)
  '(w3m-use-title-buffer-name t)
  '(whitespace-style (quote (face trailing tabs)))
- '(whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\)"))
+ '(whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\)"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -270,14 +272,14 @@ inherited by a parent headline."
   (set-face-foreground 'mode-line "#b00")
   (set-face-foreground 'mode-line-buffer-id "#ee5555"))
 
-(load "knu-hooks.el")
-(load "knu-lisp.el")
-(load "knu-pretty-symbols.el")
+(load "knu-hooks")
+(load "knu-lisp")
+(load "knu-pretty-symbols")
 ;;(sml/setup)
 (flyspell-lazy-mode)
 ;; This file must be created and pointing to the apropriate file.
 ;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
-(load "knu-device.el" t)
+(load "knu-device" t)
 (eshell)
 ;;(w3m)
 
