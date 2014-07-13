@@ -1,0 +1,12 @@
+#!/bin/sh
+
+exec su android -c "export DISPLAY=:0;
+cd;
+xsetroot -solid '#440000';
+setxkbmap de;
+xmodmap ~/git/dotfiles/keyboard/linux/normalkeyboard/xmodmapneo;
+#ssh-agent nice -n-9 i3 &
+gpg-agent --enable-ssh-support --daemon i3 &
+xsetroot -solid '#002222'"
+
+
