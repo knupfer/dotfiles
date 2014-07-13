@@ -140,7 +140,7 @@ inherited by a parent headline."
  '(mail-user-agent (quote gnus-user-agent))
  '(menu-bar-mode nil)
  '(message-insert-canlock nil)
- '(org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t))))
+ '(org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t) (ledger . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar")
  '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
