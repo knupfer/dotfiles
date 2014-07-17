@@ -180,7 +180,7 @@ inherited by a parent headline."
 \\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
 \\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
 \\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}")
- '(org-format-latex-options (quote (:foreground "#0da" :background default :scale 3.5 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))))
+ '(org-format-latex-options (quote (:foreground "#0da" :background default :scale 2.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-hierarchical-todo-statistics nil)
  '(org-highlight-latex-and-related (quote (latex script entities)))
  '(org-image-actual-width 200)
