@@ -37,6 +37,7 @@ add Control = Control_R
 ! Mod3
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 59 =  ISO_Group_Shift ISO_Group_Shift ISO_First_Group NoSymbol
+keycode 134 =  ISO_Group_Shift ISO_Group_Shift ISO_First_Group NoSymbol
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Mod4
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
