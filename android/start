@@ -1,6 +1,6 @@
 #!/bin/sh
 
-exec su android -c "export DISPLAY=:0;
+exec su quxbar -c "export DISPLAY=:0;
 cd;
 xsetroot -solid '#440000';
 setxkbmap de;
