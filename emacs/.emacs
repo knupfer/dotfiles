@@ -27,15 +27,6 @@
   "Runs my script, which does a bit cosmetic and cleanup."
   (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
 
-(defun knu/git-auto-fetch ()
-  "Runs a script to fetch every directory in ~/git"
-  (interactive)
-  (async-start
-   ;; What to do in the child process
-   (lambda ()
-     (shell-command "sh ~/git/dotfiles/emacs/.emacs.d/scripts/knu-git-fetch.sh"))
-   'ignore))
-
 (defun knu/org-archive ()
   "Moves archived trees to the bottom of the father."
   (interactive)
@@ -83,10 +74,6 @@ inherited by a parent headline."
 (defun switch-to-previous-buffer ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-;; Fetches git repos after an hour idle time.
-(run-with-idle-timer 3600 t 'knu/git-auto-fetch)
-(run-with-idle-timer 1 nil 'knu/git-auto-fetch)
 
 (define-key global-map "\C-cm" 'magit-status)
 (define-key global-map (kbd "`") 'switch-to-previous-buffer)
