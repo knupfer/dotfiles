@@ -1,17 +1,12 @@
 (setq knu-org-mode-map t)
 (run-with-idle-timer 0.7 t 'knu-org-auto-preview)
 (run-with-idle-timer 0.5 t 'knu-org-del-overlay)
-;(file-name-directory buffer-file-name)
-
 
 (defun knu-org-latex-snip ()
   (interactive)
   (insert "\\begin{align*}\n\n")
   (insert "\\end{align*}")
   (forward-line -1))
-
-
-
 
 (defun knu-org-del-overlay ()
   (when (equal mode-name "Org")
