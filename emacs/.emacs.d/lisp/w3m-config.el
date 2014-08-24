@@ -14,10 +14,11 @@
 (defun w3m-download-with-wget ()
   (interactive)
   (let ((url (or (w3m-anchor) (w3m-image))))
+    (cd "~/")
     (if url
         (let ((proc (start-process "wget" "*wget*" ;;(format "*wget %s*" url)
                                    "wget" "-nv"
-                                   "-P" "/home/android/downloads" url)))
+                                   "-P" "Downloads" url)))
           (message "Download started")
           (with-current-buffer (process-buffer proc) (insert "\n"))
           (set-process-sentinel proc (lambda (proc str)
