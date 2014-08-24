@@ -8,6 +8,7 @@
 (add-to-list 'load-path "~/git/indentation-tree/")
 (add-to-list 'load-path "~/git/lilypond-pretty-print/")
 (add-to-list 'load-path "~/git/macro-type/")
+(add-to-list 'load-path "~/git/org-panes/")
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
@@ -25,41 +26,6 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(defun knu/publish ()
-  "Runs my script, which does a bit cosmetic and cleanup."
-  (shell-command "sh ~/git/knupfer.github.io/_org/publish.sh"))
-
-(defun knu/org-archive ()
-  "Moves archived trees to the bottom of the father."
-  (interactive)
-  (org-toggle-archive-tag)
-  (unless (org-at-heading-p) (error "Not at an headline"))
-  (save-excursion (while (ignore-errors (org-move-subtree-down)))))
-
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry do DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states) ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-(defun dmj/org-remove-redundant-tags ()
-  "Remove redundant tags of headlines in current buffer.
-A tag is considered redundant if it is local to a headline and
-inherited by a parent headline."
-  (interactive)
-  (when (eq major-mode 'org-mode)
-    (save-excursion
-      (org-map-entries
-       '(lambda ()
-          (let ((alltags (split-string
-                          (or (org-entry-get (point) "ALLTAGS") "") ":"))
-                local inherited tag)
-            (dolist (tag alltags)
-              (if (get-text-property 0 'inherited tag)
-                  (push tag inherited) (push tag local)))
-            (dolist (tag local)
-              (if (member tag inherited) (org-toggle-tag tag 'off)))))
-       t nil))))
-
 (defun hcz-set-cursor-color-according-to-mode ()
   "change cursor color according to some minor modes."
   ;; set-cursor-color is somewhat costly, so we only call it when needed:
@@ -73,12 +39,7 @@ inherited by a parent headline."
       (set-cursor-color (setq hcz-set-cursor-color-color color))
       (setq hcz-set-cursor-color-buffer (buffer-name)))))
 
-(defun switch-to-previous-buffer ()
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
-
 (define-key global-map "\C-cm" 'magit-status)
-(define-key global-map (kbd "`") 'switch-to-previous-buffer)
 (define-key global-map (kbd "S-SPC") 'ace-jump-mode)
 
 (custom-set-variables
@@ -266,8 +227,7 @@ inherited by a parent headline."
 (load "knu-hooks")
 (load "knu-lisp")
 (load "knu-pretty-symbols")
-;;(sml/setup)
-(flyspell-lazy-mode)
+
 ;; This file must be created and pointing to the apropriate file.
 ;; It may contain e.g. (load "knu-tablet.el") or (load "knu-desktop.el") etc.
 (load "knu-device" t)
