@@ -1,6 +1,7 @@
 (add-hook 'kill-emacs-hook '(lambda () (when (fboundp 'gnus-group-exit)
                                          (defun gnus-y-or-n-p (yes) yes)
                                          (gnus-group-exit))))
+(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
 (add-hook 'after-change-major-mode-hook '(lambda ()
                                            (highlight-parentheses-mode)))
 (add-hook 'LilyPond-mode-hook '(lambda () (highlight-parentheses-mode)
