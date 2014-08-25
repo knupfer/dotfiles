@@ -19,6 +19,7 @@
 (require 'pretty-symbols)
 (require 'yasnippet)
 (require 'macro-type)
+(require 'org-panes)
 (yas-global-mode 1)
 
 (defvar hcz-set-cursor-color-color "")
