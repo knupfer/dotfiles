@@ -22,6 +22,17 @@
 (require 'org-panes)
 (yas-global-mode 1)
 
+(eval-after-load 'paredit
+  '(progn
+     (define-key paredit-mode-map (kbd "<C-right>")
+       nil)
+     (define-key paredit-mode-map (kbd "<C-left>")
+       nil)
+     (define-key paredit-mode-map (kbd "<M-right>")
+       'paredit-forward-slurp-sexp)
+     (define-key paredit-mode-map (kbd "<M-left>")
+       'paredit-forward-barf-sexp)))
+
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 
@@ -93,6 +104,7 @@
  '(menu-bar-mode nil)
  '(message-insert-canlock nil)
  '(org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t) (ledger . t))))
+ '(org-catch-invisible-edits (quote error))
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar")
  '(org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
@@ -157,7 +169,6 @@
  '(proced-format-alist (quote ((short pid tree pcpu time (args comm)) (medium user pid tree pcpu pmem vsize rss ttname state start time (args comm)) (long user euid group pid tree pri nice pcpu pmem vsize rss ttname state start time (args comm)) (verbose user euid group egid pid ppid tree pgrp sess pri nice pcpu pmem state thcount vsize rss ttname tpgid minflt majflt cminflt cmajflt start time utime stime ctime cutime cstime etime (args comm)))))
  '(python-shell-interpreter "python3")
  '(scroll-bar-mode nil)
- '(scroll-conservatively 101)
  '(sml/hidden-modes (quote (" hl-p" " hs+" " WS" " ws")))
  '(sml/mode-width (quote full))
  '(sml/name-width 15)
@@ -208,7 +219,7 @@
  '(org-hide ((t (:foreground "#777"))))
  '(org-indent ((t (:background "black" :foreground "black"))) t)
  '(org-todo ((t (:foreground "#faa" :weight ultra-bold))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))) t)
+ '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "SkyBlue1" :weight bold))))
  '(region ((t (:background "#505"))))
  '(w3m-arrived-anchor ((t (:foreground "#8888ee"))))
  '(w3m-current-anchor ((t (:weight ultra-bold))))
