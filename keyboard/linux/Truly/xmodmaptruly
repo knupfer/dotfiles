@@ -145,9 +145,10 @@ keycode 105 = space             space           space           0    KP_0       
 keysym less = Return            Return          Return          Return          KP_Enter        KP_Enter        Return          Return
 keycode 117 =  Alt_L Meta_L Alt_L Meta_L Alt_L Meta_L Alt_L Meta_L
 keycode 36 =  Control_L
-keycode 64 =  Undo NoSymbol Undo NoSymbol Undo Undo
-keycode 50 = Control_L
-keycode 62 = Control_R
+keycode 64 = Shift_L Shift_R 
+keycode 50 = Alt_L
+keycode 37 = Shift_L Shift_R
+keycode 62 = Alt_L
 clear Control
 add    Control = Control_L Control_R
 clear Shift
