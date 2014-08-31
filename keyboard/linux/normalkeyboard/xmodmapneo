@@ -32,6 +32,7 @@ keycode 55 =  Shift_L Shift_L Shift_L Shift_L Shift_L Shift_L Shift_L Shift_L
 keycode 56 =  Control_L Control_L Control_L Control_L Control_L Control_L Control_L Control_L
 add Control = Control_L
 keycode 57 =  Control_R Control_R Control_R Control_R Control_R Control_R Control_R Control_R
+keycode 65 = Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L
 add Control = Control_R
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Mod3
@@ -47,8 +48,6 @@ keycode 54 = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift I
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Alt key
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keycode 23 = Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L
-keycode 35 = Alt_R Alt_R Alt_R Alt_R Alt_R Alt_R Alt_R Alt_R
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Space and Return key
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -57,7 +56,7 @@ keycode 58 = space		space		space		nobreakspace	0		0		U202F		NoSymbol
 ! The first row (number Row)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 keycode 10 = x  		X       	U017F   	Greek_finalsmallsigma  U2212	NoSymbol	jot		NoSymbol
-keycode 11 = ssharp          	U1E9E           ellipsis	Greek_kappa	Prior		Prior   	Greek_XI        Greek_XI
+keycode 23 = k          	K               ellipsis	Greek_kappa	Prior		Prior   	Greek_XI        Greek_XI
 keycode 12 = u   		U		underscore	NoSymbol	BackSpace	BackSpace	radical		NoSymbol
 keycode 13 = udiaeresis		Udiaeresis	bracketleft	Greek_lambda 	Up		Up		Greek_LAMBDA	Greek_LAMBDA
 keycode 14 = period	        enfilledcircbullet bracketright	Greek_chi	Delete		Delete		U2102		NoSymbol
@@ -66,8 +65,8 @@ keycode 16 = v	        	V		exclam		Greek_kappa	exclamdown	NoSymbol	multiply	NoSy
 keycode 17 = g   		G		less		Greek_gamma	7		7		Greek_PSI	Greek_PSI
 keycode 18 = c   		C		greater		Greek_chi	8		8		Greek_GAMMA	Greek_GAMMA
 keycode 19 = l   		L		equal		Greek_lambda	9		9		Greek_PHI	Greek_PHI
-keycode 20 = j   		J		ampersand	Greek_zeta	KP_Add		KP_Add		U211A		NoSymbol
-keycode 21 = z   		Z		at		Greek_phi	period		KP_Decimal	nabla		NoSymbol
+keycode 21 = j   		J		ampersand	Greek_zeta	KP_Add		KP_Add		U211A		NoSymbol
+keycode 35 = z   		Z		at		Greek_phi	period		KP_Decimal	nabla		NoSymbol
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The upper row
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -84,7 +83,7 @@ keycode 34 = s  		S		colon		Greek_sigma	KP_Separator	comma		Greek_DELTA	Greek_DE
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The home row (middle row)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keycode 38 = k  		K		numbersign	Greek_xi	Escape		Escape		union		NoSymbol
+keycode 38 = x  		X		numbersign	Greek_xi	Escape		Escape		union		NoSymbol
 keycode 39 = y  		Y		dollar		U03F5		Tab		ISO_Left_Tab	intersection	NoSymbol
 keycode 40 = odiaeresis		Odiaeresis	bar		Greek_eta	Insert		Insert		U2135		NoSymbol
 keycode 41 = comma		endash		asciitilde	Greek_pi	Return		Return		Greek_PI	Greek_PI
