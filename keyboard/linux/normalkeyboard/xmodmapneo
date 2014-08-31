@@ -66,7 +66,7 @@ keycode 17 = g   		G		less		Greek_gamma	7		7		Greek_PSI	Greek_PSI
 keycode 18 = c   		C		greater		Greek_chi	8		8		Greek_GAMMA	Greek_GAMMA
 keycode 19 = l   		L		equal		Greek_lambda	9		9		Greek_PHI	Greek_PHI
 keycode 21 = j   		J		ampersand	Greek_zeta	KP_Add		KP_Add		U211A		NoSymbol
-keycode 35 = z   		Z		at		Greek_phi	period		KP_Decimal	nabla		NoSymbol
+keycode 35 = f   		F		at		Greek_phi	period		KP_Decimal	nabla		NoSymbol
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The upper row
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -92,5 +92,5 @@ keycode 44 = b  		B		plus		Greek_beta	colon		NoSymbol	U21D0		NoSymbol
 keycode 45 = p  		P		percent		Greek_pi	1		1		Greek_PI	Greek_PI
 keycode 46 = w  		W		quotedbl	Greek_omega	2		2		Greek_OMEGA	Greek_OMEGA
 keycode 47 = m  	   	M       	apostrophe	Greek_mu	3		3		U21A6		NoSymbol
-keycode 48 = f  		F		semicolon	Greek_theta	semicolon	NoSymbol	Greek_THETA	Greek_THETA
+keycode 48 = z  		Z		semicolon	Greek_theta	semicolon	NoSymbol	Greek_THETA	Greek_THETA
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
