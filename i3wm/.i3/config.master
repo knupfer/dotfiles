@@ -41,7 +41,7 @@ hide_edge_borders none
 
 # Start a terminal.
 # bindsym Return exec xterm -rv -b 0 -w 0 -fa 15
-bindsym Return exec xfce4-terminal; exec sh ~/.i3/change-mode.sh INACTIVE
+bindsym Return exec xterm -rv -b 0 -w 0 -fa 15; exec sh ~/.i3/change-mode.sh INACTIVE
 
 # Start emacs.
 bindsym Ctrl+e exec emacsclient -c -a ""; exec sh ~/.i3/change-mode.sh INACTIVE
@@ -148,7 +148,7 @@ mode "C-i:" {
   bindsym Ctrl+e exec emacsclient -c -a ""; mode "default"
 
   bindsym r mode "resize"
-  bindsym Return exec xfce4-terminal; mode "default"
+  bindsym Return exec xterm -rv -b 0 -w 0 -fa 15; mode "default"
   bindsym q kill; mode "default"
   bindsym d exec dmenu_run; mode "default"
   bindsym Shift+d exec --no-startup-id i3-dmenu-desktop; mode "default"
