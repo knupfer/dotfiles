@@ -45,6 +45,11 @@
      (define-key paredit-mode-map (kbd "<M-delete>")
        'kill-sexp)))
 
+(eval-after-load 'org
+  '(progn
+     (define-key org-mode-map (kbd "<M-left>") nil)
+     (define-key org-mode-map (kbd "<M-right>") nil)))
+
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 
