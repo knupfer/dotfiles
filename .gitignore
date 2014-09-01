@@ -15,3 +15,5 @@ emacs/.emacs.d/auto-save-list/
 /emacs/.emacs.d/ge-emacsen
 /emacs/.emacs.d/ge-kills.el
 /i3wm/.i3/logfile
+/emacs/.emacs.d/init.el
+/emacs/.emacs.d/init.elc

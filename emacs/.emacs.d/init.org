@@ -1,0 +1,524 @@
+# -*- eval: (add-hook 'after-save-hook (lambda () (org-babel-load-file (buffer-file-name) t)) nil t) -*-
+* Packages
+#+BEGIN_SRC emacs-lisp
+(package-initialize)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+#+END_SRC
+
+* Loadpath
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/predict/")
+(add-to-list 'load-path "~/git/indentation-tree.el/")
+(add-to-list 'load-path "~/git/indentation-tree/")
+(add-to-list 'load-path "~/git/lilypond-pretty-print/")
+(add-to-list 'load-path "~/git/macro-type/")
+(add-to-list 'load-path "~/git/org-panes/")
+#+END_SRC
+
+* Require packages
+#+BEGIN_SRC emacs-lisp
+(require 'hl-defined)
+(require 'predictive)
+(require 'indentation-tree)
+(require 'lilypond-pretty-print)
+(require 'pretty-symbols)
+(require 'yasnippet)
+(require 'macro-type)
+(require 'org-panes)
+#+END_SRC
+
+* Email
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Florian Knupfer"
+      user-mail-address "fknupfer@gmail.com"
+      message-generate-headers-first t
+      message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587
+                                   "fknupfer@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      starttls-use-gnutls t)
+ (setq mail-user-agent (quote gnus-user-agent))
+#+END_SRC
+
+* Paredit
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'paredit
+  '(progn
+     (define-key paredit-mode-map (kbd "<C-right>")
+       nil)
+     (define-key paredit-mode-map (kbd "<C-left>")
+       nil)
+     (define-key paredit-mode-map (kbd "<M-right>")
+       'paredit-forward)
+     (define-key paredit-mode-map (kbd "<M-left>")
+       'paredit-backward)
+     (define-key paredit-mode-map (kbd "<C-up>")
+       'paredit-forward-barf-sexp)
+     (define-key paredit-mode-map (kbd "<C-down>")
+       'paredit-forward-slurp-sexp)
+     (define-key paredit-mode-map (kbd "<M-up>")
+       'paredit-backward-slurp-sexp)
+     (define-key paredit-mode-map (kbd "<M-down>")
+       'paredit-backward-barf-sexp)
+     (define-key paredit-mode-map (kbd "<M-backspace>")
+       'backward-kill-sexp)
+     (define-key paredit-mode-map (kbd "<M-delete>")
+       'kill-sexp)))
+#+END_SRC
+
+* Org
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'org
+  '(progn
+     (define-key org-mode-map (kbd "<M-left>") nil)
+     (define-key org-mode-map (kbd "<M-right>") nil)))
+ (setq org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t) (ledger . t)))
+ org-catch-invisible-edits (quote error)
+ org-confirm-babel-evaluate nil
+ org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
+ org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
+ org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT"))
+ org-edit-src-content-indentation 0
+ org-export-backends (quote (ascii html latex odt))
+ org-export-headline-levels 4
+ org-export-run-in-background t
+ org-format-latex-header "\\documentclass{article}
+\\usepackage[usenames]{color}
+\\usepackage{etoolbox}
+\\usepackage{mdframed}
+[PACKAGES]
+[DEFAULT-PACKAGES]
+\\pagestyle{empty}             % do not remove
+% The settings below are copied from fullpage.sty
+\\setlength{\\textwidth}{\\paperwidth}
+\\addtolength{\\textwidth}{-13cm}
+\\setlength{\\oddsidemargin}{1.5cm}
+\\addtolength{\\oddsidemargin}{-2.54cm}
+\\setlength{\\evensidemargin}{\\oddsidemargin}
+\\setlength{\\textheight}{\\paperheight}
+\\addtolength{\\textheight}{-\\headheight}
+\\addtolength{\\textheight}{-\\headsep}
+\\addtolength{\\textheight}{-\\footskip}
+\\addtolength{\\textheight}{-3cm}
+\\setlength{\\topmargin}{1.5cm}
+\\addtolength{\\topmargin}{-2.54cm}
+\\definecolor{bg}{rgb}{0,0.1,0.1}\\definecolor{fg}{rgb}{0.2,1,0.7}
+\\BeforeBeginEnvironment{align*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+\\AfterEndEnvironment{align*}{\\end{mdframed}}
+\\BeforeBeginEnvironment{align}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+\\AfterEndEnvironment{align}{\\end{mdframed}}
+\\BeforeBeginEnvironment{gather*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+\\AfterEndEnvironment{gather*}{\\end{mdframed}}
+\\BeforeBeginEnvironment{gather}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+\\AfterEndEnvironment{gather}{\\end{mdframed}}
+\\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
+\\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
+\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}"
+org-format-latex-options (quote (:foreground "#0da" :background default :scale 2.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+org-hierarchical-todo-statistics nil
+ org-highlight-latex-and-related (quote (latex script entities))
+ org-image-actual-width 200
+ org-latex-classes (quote (("article" "\\documentclass[11pt]{scrartcl}" ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}") ("\\paragraph{%s}" . "\\paragraph*{%s}") ("\\subparagraph{%s}" . "\\subparagraph*{%s}")) ("report" "\\documentclass[11pt]{report}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")) ("book" "\\documentclass[11pt]{book}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+ org-latex-inactive-timestamp-format "\\\\\\hfill\\textcolor{gray}{\\textbf{%s}}\\\\"
+ org-latex-preview-ltxpng-directory "~/ltxpreview/"
+ org-list-allow-alphabetical t
+ org-list-empty-line-terminates-plain-lists t
+ org-log-done (quote time)
+ org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish)))
+ org-replace-disputed-keys t
+ org-src-fontify-natively t
+ org-startup-align-all-tables t
+ org-startup-folded (quote content)
+ org-startup-indented t
+ org-startup-truncated nil
+ org-startup-with-inline-images t
+ org-support-shift-select (quote always)
+ org-todo-keyword-faces (quote (("FAILED" . "#f00") ("CANCELED" . "#ee3")))
+ org-todo-keywords (quote ((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))))
+
+(eval-after-load 'org-mode
+  '(progn
+     (set-face-attribute 'org-archived nil :foreground "#254555")
+     (set-face-attribute 'org-checkbox nil :inherit 'bold :foreground "#2f2")
+     (set-face-attribute 'org-done nil :foreground "#5f5" :weight 'ultra-bold)
+     (set-face-attribute 'org-hide nil :foreground "#777")
+     (set-face-attribute 'org-indent nil :background "black" :foreground "black")
+     (set-face-attribute 'org-todo nil :foreground "#faa" :weight 'ultra-bold)
+     (set-face-attribute 'outline-1 nil :inherit 'font-lock-function-name-face :foreground "SkyBlue1" :weight 'bold)))
+#+END_SRC
+
+* Cursor
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode -1)
+(defvar hcz-set-cursor-color-color "")
+(defvar hcz-set-cursor-color-buffer "")
+(defun hcz-set-cursor-color-according-to-mode ()
+  "change cursor color according to some minor modes."
+  ;; set-cursor-color is somewhat costly, so we only call it when needed:
+  (let ((color (if (and (boundp 'knu-org-mode-map) (org-inside-LaTeX-fragment-p)) "#2a6"
+                 (if buffer-read-only "white"
+                   (if overwrite-mode "#fa0"
+                     "#909")))))
+    (unless (and
+             (string= color hcz-set-cursor-color-color)
+             (string= (buffer-name) hcz-set-cursor-color-buffer))
+      (set-cursor-color (setq hcz-set-cursor-color-color color))
+      (setq hcz-set-cursor-color-buffer (buffer-name)))))
+(set-face-attribute 'cursor nil :background "#709")
+#+END_SRC
+
+* Keymap
+#+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "<M-left>") 'backward-sentence)
+(define-key global-map (kbd "<M-right>") 'forward-sentence)
+(define-key global-map (kbd "<M-backspace>") 'backward-kill-sentence)
+(define-key global-map (kbd "<M-delete>") 'kill-sentence)
+(define-key global-map "\C-cm" 'magit-status)
+(define-key global-map (kbd "S-SPC") 'ace-jump-mode)
+#+END_SRC
+
+* Lilypond
+#+BEGIN_SRC emacs-lisp
+(setq LilyPond-indent-level 4)
+#+END_SRC
+
+* Manpages
+#+BEGIN_SRC emacs-lisp
+(setq
+ Man-notify-method (quote pushy)
+ Man-width 80)
+#+END_SRC
+
+* Theming
+#+BEGIN_SRC emacs-lisp
+ (load-theme 'deeper-blue)
+#+END_SRC
+
+* Erc
+#+BEGIN_SRC emacs-lisp
+ (setq erc-nick "quxbam"
+ erc-prompt ">>>"
+ erc-prompt-for-password nil
+ erc-system-name "foobar"
+ erc-timestamp-right-column 70)
+(eval-after-load 'erc-mode  '(set-face-attribute 'erc-prompt-face nil :background "Black" :foreground "lightBlue2" :weight 'bold))
+#+END_SRC
+
+* Cua
+#+BEGIN_SRC emacs-lisp
+ (cua-mode 1)
+ (setq cua-normal-cursor-color "black")
+#+END_SRC
+
+* Diff
+#+BEGIN_SRC emacs-lisp
+(setq ediff-split-window-function (quote split-window-horizontally)
+ediff-window-setup-function (quote ediff-setup-windows-plain))
+#+END_SRC
+
+* Eshell
+#+BEGIN_SRC emacs-lisp
+ (setq eshell-banner-message ""
+ eshell-cmpl-compare-entry-function (quote string-lessp)
+ eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix))
+ eshell-plain-grep-behavior t)
+#+END_SRC
+
+* Gnus
+#+BEGIN_SRC emacs-lisp
+(setq gnus-default-adaptive-word-score-alist (quote ((82 . 1) (67 . -1) (75 . -2) (114 . -1)))
+ gnus-init-file "~/.emacs.d/gnus.el"
+ gnus-treat-fill-article t
+ gnus-treat-leading-whitespace t
+ gnus-treat-strip-multiple-blank-lines t
+ gnus-treat-strip-trailing-blank-lines t
+ gnus-treat-unsplit-urls t)
+#+END_SRC
+* Tramp
+#+BEGIN_SRC emacs-lisp
+(setq tramp-default-method "ssh"
+ tramp-default-method-alist (quote (("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb") ("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "su") (nil "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp\\." nil "ftp")))
+ tramp-default-proxies-alist (quote (("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:"))))
+#+END_SRC
+
+* Default Layout
+#+BEGIN_SRC emacs-lisp
+(setq font-use-system-font nil)
+(fringe-mode 0)
+(column-number-mode 1)
+(setq inhibit-startup-screen t)
+(menu-bar-mode -1)
+;;(setq message-insert-canlock nil)
+(setq split-height-threshold nil)
+(setq split-width-threshold 80)
+(tool-bar-mode -1)
+(setq truncate-lines t)
+(setq visual-line-fringe-indicators (quote (nil right-curly-arrow)))
+(set-face-attribute 'mode-line nil :background "#033" :foreground "#9bb" :box nil)
+(set-face-attribute 'mode-line-buffer-id nil :foreground "#99dddd" :box nil :weight 'bold)
+(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line :background "gray32" :foreground "black" :box nil :weight 'light)
+(set-face-attribute 'default nil :inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant 'normal :weight 'normal :height 165 :width 'normal :foundry "unknown" :family "Source Code Pro")
+(set-face-attribute 'fringe nil :background "black" :foreground "#0ff")
+#+END_SRC
+
+* w3m
+#+BEGIN_SRC emacs-lisp
+ (setq w3m-enable-google-feeling-lucky nil
+ w3m-home-page "about:blank"
+ w3m-search-default-engine "duckduckgo"
+ w3m-search-engine-alist (quote (("duckduckgo" "https://duckduckgo.com/lite/?q=%s" undecided) ("yahoo" "https://search.yahoo.com/bin/search?p=%s" nil) ("blog" "https://blogsearch.google.com/blogsearch?q=%s&oe=utf-8&ie=utf-8" utf-8) ("blog-en" "https://blogsearch.google.com/blogsearch?q=%s&hl=en&oe=utf-8&ie=utf-8" utf-8) ("google" "https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8) ("google-en" "https://www.google.com/search?q=%s&hl=en&ie=utf-8&oe=utf-8" utf-8) ("google news" "https://news.google.com/news?q=%s&ie=utf-8&oe=utf-8" utf-8) ("google news-en" "https://news.google.com/news?q=%s&hl=en&ie=utf-8&oe=utf-8" nil) ("google groups" "https://groups.google.com/groups?q=%s" nil) ("All the Web" "http://www.alltheweb.com/search?q=%s&web&_sb_lang=en" nil) ("technorati" "http://www.technorati.com/search/%s" utf-8) ("technorati-ja" "http://www.technorati.jp/search/search.html?query=%s&language=ja" utf-8) ("technorati-tag" "http://www.technorati.com/tag/%s" utf-8) ("altavista" "https://altavista.com/sites/search/web?q=\"%s\"&kl=ja&search=Search" nil) ("debian-pkg" "http://packages.debian.org/cgi-bin/search_contents.pl?directories=yes&arch=i386&version=unstable&case=insensitive&word=%s" nil) ("debian-bts" "http://bugs.debian.org/cgi-bin/pkgreport.cgi?archive=yes&pkg=%s" nil) ("amazon" "https://www.amazon.com/exec/obidos/search-handle-form/250-7496892-7797857" iso-8859-1 "url=index=blended&field-keywords=%s") ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" nil) ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s" nil) ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8) ("freshmeat" "http://freshmeat.net/search/?q=%s&section=projects" nil)))
+ w3m-session-load-crashed-sessions nil
+ w3m-uri-replace-alist (quote (("\\`enwi:" w3m-search-uri-replace "en.wikipedia") ("\\`dewi:" w3m-search-uri-replace "de.wikipedia") ("\\`dd:" w3m-search-uri-replace "duckduckgo") ("\\`gg:" w3m-search-uri-replace "google") ("\\`ggg:" w3m-search-uri-replace "google groups") ("\\`ya:" w3m-search-uri-replace "yahoo") ("\\`al:" w3m-search-uri-replace "altavista") ("\\`bts:" w3m-search-uri-replace "debian-bts") ("\\`dpkg:" w3m-search-uri-replace "debian-pkg") ("\\`archie:" w3m-search-uri-replace "iij-archie") ("\\`alc:" w3m-search-uri-replace "alc") ("\\`urn:ietf:rfc:\\([0-9]+\\)" w3m-pattern-uri-replace "http://www.ietf.org/rfc/rfc\\1.txt")))
+ w3m-use-favicon nil
+ w3m-use-title-buffer-name t)
+
+(eval-after-load 'w3m '(progn (set-face-attribute 'w3m-arrived-anchor nil :foreground "#8888ee")
+                              (set-face-attribute 'w3m-current-anchor nil :weight 'ultra-bold)
+                              (set-face-attribute 'w3m-tab-background nil :foreground "#88dddd" :background "black")
+                              (set-face-attribute 'w3m-tab-selected nil :foreground "black" :background "grey75")
+                              (set-face-attribute 'w3m-tab-selected-retrieving nil :foreground "black" :background "#dd6666")
+                              (set-face-attribute 'w3m-tab-unselected nil :foreground "black" :background "grey30")
+                              (set-face-attribute 'w3m-tab-unselected-retrieving nil :foreground "black" :background "#aa4444")
+                              (set-face-attribute 'w3m-tab-unselected-unseen nil :foreground "black" :background "grey90")))
+
+#+END_SRC
+
+* flyspell
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'flyspell '(progn
+  (set-face-attribute 'flyspell-duplicate nil :background "#333300" :box '(:line-width -2 :color "#666600"))
+  (set-face-attribute 'flyspell-incorrect nil :background "#550000" :box '(:line-width -2 :color "#880000"))))
+#+END_SRC
+
+* Misc
+#+BEGIN_SRC emacs-lisp
+(yas-global-mode 1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+ (setq display-time-24hr-format t)
+ (display-time-mode t)
+ (scroll-bar-mode -1)
+(setq
+ pretty-symbol-categories (quote (knu-custom))
+ proced-format-alist (quote ((short pid tree pcpu time (args comm)) (medium user pid tree pcpu pmem vsize rss ttname state start time (args comm)) (long user euid group pid tree pri nice pcpu pmem vsize rss ttname state start time (args comm)) (verbose user euid group egid pid ppid tree pgrp sess pri nice pcpu pmem state thcount vsize rss ttname tpgid minflt majflt cminflt cmajflt start time utime stime ctime cutime cstime etime (args comm))))
+ python-shell-interpreter "python3"
+
+ sml/hidden-modes (quote (" hl-p" " hs+" " WS" " ws"))
+ sml/mode-width (quote full)
+ sml/name-width 15
+ sml/replacer-regexp-list (quote (("^~/Org/" ":Org:") ("^~/\\.emacs\\.d/" ":ED:") ("^/sudo:.*:" ":SU:") ("^~/Documents/" ":Doc:") ("^~/Dropbox/" ":DB:") ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:") ("^~/[Gg]it/" ":G:") ("^~/[Gg]it[Hh]ub/" ":Git:") ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:"))))
+
+
+ (setq c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu")))
+ ess-default-style (quote C++)
+ hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
+ (setq indent-tabs-mode nil)
+ (setq ispell-highlight-face (quote flyspell-incorrect)
+ ispell-local-dictionary "de_DE"
+ ispell-program-name "aspell")
+ (keyfreq-autosave-mode 1)
+ (keyfreq-mode 1)
+ (setq kill-do-not-save-duplicates t)
+
+(eval-after-load 'volume '(progn
+ (setq volume-amixer-default-channel "Speaker"
+ volume-backend (quote volume-amixer-backend))
+ (setq volume-electric-mode t)))
+
+(setq whitespace-style (quote (face trailing tabs))
+      whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\)")
+(eval-after-load 'whitespace '(set-face-attribute 'whitespace-tab nil :background "nil" :foreground "#00eeaa" :weight 'ultra-bold))
+(set-face-attribute 'region nil :background "#505")
+(eval-after-load 'highlight-parentheses '(set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
+#+END_SRC
+
+* got root?
+#+BEGIN_SRC emacs-lisp
+(when (equal (getenv "USER") "root")
+  (set-face-background 'mode-line "#400")
+  (set-face-foreground 'mode-line "#b00")
+  (set-face-foreground 'mode-line-buffer-id "#ee5555"))
+#+END_SRC
+
+* ace-jump
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'ace-jump-mode '(set-face-attribute 'ace-jump-face-foreground nil :background "black" :foreground "green" :weight 'bold))
+#+END_SRC
+
+* num3
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'num3-mode '(set-face-attribute 'num3-face-even nil :foreground "#fa0" :background nil :underline nil))
+#+END_SRC
+
+* magit
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+
+* hooks
+#+BEGIN_SRC emacs-lisp
+(add-hook 'kill-emacs-hook '(lambda ()
+                              (when (fboundp 'gnus-group-exit)
+                                (defun gnus-y-or-n-p (yes) yes)
+                                (gnus-group-exit))))
+(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+(add-hook 'after-change-major-mode-hook '(lambda ()
+                                           (highlight-parentheses-mode)))
+(add-hook 'LilyPond-mode-hook '(lambda () (highlight-parentheses-mode)
+                                 (lilypond-pretty-beat-mode)))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+(add-hook 'org-mode-hook '(lambda ()
+                            (auto-fill-mode)
+                            (num3-mode)
+                            (whitespace-mode)
+                            (pretty-symbols-mode)
+                            (when (not (boundp 'knu-org-mode-map))
+                              (define-key org-mode-map
+                                (kbd "C-c C-x a") 'knu/org-archive)
+                              (load "knu-org-mode-map.el"))))
+(add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
+(add-hook 'prog-mode-hook '(lambda ()
+                             (num3-mode)
+                             (whitespace-mode)
+                             (indentation-tree-mode)
+			     (hs-minor-mode)))
+(add-hook 'w3m-mode-hook '(lambda ()
+                            (load "w3m-config.el")))
+(add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
+#+END_SRC
+* load other stuff
+#+BEGIN_SRC emacs-lisp
+(load "knu-device" t)
+#+END_SRC
+* pretty-sym
+#+BEGIN_SRC emacs-lisp
+;; Greek
+(add-to-list 'pretty-symbol-patterns '(?α knu-custom "\\\\alpha" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Α knu-custom "\\\\Alpha" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?β knu-custom "\\\\beta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Β knu-custom "\\\\Beta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?γ knu-custom "\\\\gamma" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Γ knu-custom "\\\\Gamma" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?δ knu-custom "\\\\delta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Δ knu-custom "\\\\Delta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ε knu-custom "\\\\epsilon" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ε knu-custom "\\\\Epsilon" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ζ knu-custom "\\\\zeta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ζ knu-custom "\\\\Zeta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?η knu-custom "\\\\eta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Η knu-custom "\\\\Eta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?θ knu-custom "\\\\theta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Θ knu-custom "\\\\Theta" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ι knu-custom "\\\\iota" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ι knu-custom "\\\\Iota" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?κ knu-custom "\\\\kappa" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?K knu-custom "\\\\Kappa" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?λ knu-custom "\\\\lambda" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Λ knu-custom "\\\\Lambda" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?μ knu-custom "\\\\mu" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Μ knu-custom "\\\\Mu" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ν knu-custom "\\\\nu" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ν knu-custom "\\\\Nu" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ν knu-custom "\\\\vega" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ν knu-custom "\\\\Vega" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ξ knu-custom "\\\\xi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ξ knu-custom "\\\\Xi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ο knu-custom "\\\\omicron" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ο knu-custom "\\\\Omicron" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?π knu-custom "\\\\pi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Π knu-custom "\\\\Pi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ρ knu-custom "\\\\rho" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ρ knu-custom "\\\\Rho" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?σ knu-custom "\\\\sigma" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Σ knu-custom "\\\\Sigma" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?τ knu-custom "\\\\tau" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Τ knu-custom "\\\\Tau" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?υ knu-custom "\\\\upsilon" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Y knu-custom "\\\\Upsilon" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?φ knu-custom "\\\\phi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Φ knu-custom "\\\\Phi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?χ knu-custom "\\\\chi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Χ knu-custom "\\\\Chi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ψ knu-custom "\\\\psi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ψ knu-custom "\\\\Psi" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?ω knu-custom "\\\\omega" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Ω knu-custom "\\\\Omega" (org-mode latex-mode)))
+;; math
+(add-to-list 'pretty-symbol-patterns '(?∇ knu-custom "\\\\nabla" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∫ knu-custom "\\\\int" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∮ knu-custom "\\\\oint" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?× knu-custom "\\\\times" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?· knu-custom "\\\\cdot" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?Σ knu-custom "\\\\sum" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?± knu-custom "\\\\pm" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∓ knu-custom "\\\\mp" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?≈ knu-custom "\\\\approx" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?≠ knu-custom "\\\\neq" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?≤ knu-custom "\\\\leq" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?≥ knu-custom "\\\\geq" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?⟶ knu-custom "\\\\rightarrow" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?⟵ knu-custom "\\\\leftarrow" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?⟹ knu-custom "\\\\Rightarrow" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?⟸ knu-custom "\\\\Leftarrow" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?⟼ knu-custom "\\\\mapsto" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?↷ knu-custom "\\\\curvearrowright" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?⟷ knu-custom "\\\\leftrightarrow" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?d knu-custom "\\\\mathrm{d}" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∞ knu-custom "\\\\infty" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?∂ knu-custom "\\\\partial" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?≡ knu-custom "\\\\equiv" (org-mode latex-mode)))
+(add-to-list 'pretty-symbol-patterns '(?≪ knu-custom "\\\\ll" (org-mode latex-mode)))
+#+END_SRC
+
+* lisp
+#+BEGIN_SRC emacs-lisp
+(defvar buffer-undo-list-tmp nil)
+
+(defun auto-indent-sexps ()
+  (save-excursion (paredit-indent-sexps)))
+
+(defun paredit-del-and-join-forward (&optional arg)
+  (interactive "P") 
+  (if (and (eolp) (not (bolp)))
+      (delete-indentation t)
+    (paredit-forward-delete arg)))
+
+(defun paredit-kill-and-join-forward (&optional arg)
+  (interactive "P") 
+  (if (and (eolp) (not (bolp)))
+      (delete-indentation t)
+    (paredit-kill arg)))
+
+(defun paredit-del-backward-and-join (&optional arg)
+  (interactive "P") 
+  (if (looking-back "\\(^ *\\)")
+      (delete-indentation)
+    (paredit-backward-delete arg)))
+
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'eshell-mode-hook 'paredit-mode)
+(add-hook 'post-command-hook '(lambda () (when (or (equal major-mode 'emacs-lisp-mode)
+                                             (equal major-mode 'lisp-interaction-mode)) 
+                                      (when (not (equal buffer-undo-list-tmp buffer-undo-list))
+                                        (auto-indent-sexps)
+                                        (setq buffer-undo-list-tmp buffer-undo-list)))))
+(add-hook 'paredit-mode-hook '(lambda () (define-key paredit-mode-map (kbd "C-k") 'paredit-kill-and-join-forward)
+                                (define-key paredit-mode-map (kbd "<delete>") 'paredit-del-and-join-forward)
+                                (define-key paredit-mode-map (kbd "<backspace>") 'paredit-del-backward-and-join)))
+
+(define-key lisp-interaction-mode-map (kbd "<tab>") 'completion-at-point)
+(define-key emacs-lisp-mode-map (kbd "<tab>") 'completion-at-point)
+(define-key lisp-interaction-mode-map (kbd "<RET>") 'paredit-newline)
+(define-key emacs-lisp-mode-map (kbd "<RET>") 'paredit-newline)
+
+(define-key lisp-interaction-mode-map (kbd "<C-backspace>") 'paredit-backward-kill-word)
+(define-key emacs-lisp-mode-map (kbd "<C-backspace>") 'paredit-backward-kill-word)
+(define-key lisp-interaction-mode-map (kbd "<C-delete>") 'paredit-forward-kill-word)
+(define-key emacs-lisp-mode-map (kbd "<C-delete>") 'paredit-forward-kill-word)
+#+END_SRC
+ 
+ 
