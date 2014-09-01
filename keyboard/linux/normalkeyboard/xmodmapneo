@@ -55,7 +55,7 @@ keycode 58 = space		space		space		nobreakspace	0		0		U202F		NoSymbol
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! The first row (number Row)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-keycode 10 = x  		X       	U017F   	Greek_finalsmallsigma  U2212	NoSymbol	jot		NoSymbol
+keycode 10 = ssharp  		X       	U017F   	Greek_finalsmallsigma  Prior	Prior   	jot		NoSymbol
 keycode 23 = k          	K               ellipsis	Greek_kappa	Prior		Prior   	Greek_XI        Greek_XI
 keycode 12 = u   		U		underscore	NoSymbol	BackSpace	BackSpace	radical		NoSymbol
 keycode 13 = udiaeresis		Udiaeresis	bracketleft	Greek_lambda 	Up		Up		Greek_LAMBDA	Greek_LAMBDA
