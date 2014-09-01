@@ -17,3 +17,4 @@ emacs/.emacs.d/auto-save-list/
 /i3wm/.i3/logfile
 /emacs/.emacs.d/init.el
 /emacs/.emacs.d/init.elc
+/emacs/.emacs.d/tramp
