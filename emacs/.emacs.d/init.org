@@ -652,6 +652,44 @@
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'w3m
   '(progn
+     (defun knu-orgify-wikipedia ()
+       (save-excursion
+         (while (re-search-forward " +$" nil t)
+           (replace-match "")))
+       (when (string-match "en\.wikipedia" w3m-current-url)
+         (require 'org)
+         (save-excursion
+           (setq contents nil)
+           (goto-char (point-min))
+           (re-search-forward "\n\nContents\n\n" nil t)
+           (let ((begin (match-beginning 0)))
+             (re-search-forward "^ *$" nil t)
+             (let ((end (point)))
+               (goto-char begin)
+               (while
+                   (re-search-forward "^ +. \\([0-9\.]+\\) \\(.+\\)$" end t)
+                 (add-to-list 'contents (list (/ (1+ (length (match-string-no-properties 1))) 2) (match-string-no-properties 2)) t))
+               (delete-region begin end)))
+           (goto-char (point-min))
+           (while contents
+             (let ((level (caar contents))
+                   (heading (cadr (pop contents))))
+               (when (re-search-forward (concat "\n\n" heading "\\(.*\\)") nil t)
+                 (beginning-of-line)
+                 (set-text-properties (match-beginning 0) (match-end 0) nil)
+                 (when (match-string 1)
+                   (delete-region (match-beginning 1) (match-end 1)))
+                 (insert (concat (make-string level ?*) " ")))))
+           (goto-line 3)
+           (insert "\n* Overview\n")
+           (when (re-search-forward "^* *$" nil t)
+             (replace-match ""))
+           (org-set-font-lock-defaults)
+           (font-lock-add-keywords nil org-font-lock-keywords)
+           (orgstruct-mode 1)
+           (hide-sublevels 10)
+           (font-lock-fontify-keywords-region (point-min) (point-max)))))
+
      (defun w3m-filter-find-relationships (url next previous)
        "Add <LINK> tags if they don't yet exist."
        (let ((case-fold-search t))
@@ -969,6 +1007,7 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
+(add-hook 'w3m-fontify-after-hook 'knu-orgify-wikipedia)
 (add-hook 'kill-emacs-hook (lambda ()
                              (when (fboundp 'gnus-group-exit)
                                (defun gnus-y-or-n-p (yes) yes)
