@@ -1,269 +1,383 @@
 # -*- eval: (add-hook 'after-save-hook (lambda () (org-babel-load-file (buffer-file-name) t)) nil t) -*-
-* Packages
+* initializing
+
+** packages
+
 #+BEGIN_SRC emacs-lisp
 (package-initialize)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" . "http://melpa.milkbox.net/packages/")))
 #+END_SRC
 
-* Loadpath
+** loadpath
+
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(add-to-list 'load-path "~/.emacs.d/predict/")
-(add-to-list 'load-path "~/git/indentation-tree.el/")
-(add-to-list 'load-path "~/git/indentation-tree/")
-(add-to-list 'load-path "~/git/lilypond-pretty-print/")
-(add-to-list 'load-path "~/git/macro-type/")
-(add-to-list 'load-path "~/git/org-panes/")
+(mapc (lambda (x) (add-to-list 'load-path x))
+      '("~/.emacs.d/lisp/"
+        "~/.emacs.d/predict/"
+        "~/git/indentation-tree.el/"
+        "~/git/indentation-tree/"
+        "~/git/lilypond-pretty-print/"
+        "~/git/macro-type/"
+        "~/git/org-panes/"))
 #+END_SRC
 
-* Require packages
+** require packages
+
 #+BEGIN_SRC emacs-lisp
-(require 'hl-defined)
-(require 'predictive)
-(require 'indentation-tree)
-(require 'lilypond-pretty-print)
-(require 'pretty-symbols)
-(require 'yasnippet)
-(require 'macro-type)
-(require 'org-panes)
+(mapc 'require '(hl-defined
+                 predictive
+                 indentation-tree
+                 lilypond-pretty-print
+                 pretty-symbols
+                 yasnippet
+                 macro-type
+                 org-panes))
 #+END_SRC
 
-* Email
+** theming
+
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Florian Knupfer"
-      user-mail-address "fknupfer@gmail.com"
-      message-generate-headers-first t
-      message-send-mail-function 'smtpmail-send-it
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587
-                                   "fknupfer@gmail.com" nil))
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587
-      starttls-use-gnutls t)
- (setq mail-user-agent (quote gnus-user-agent))
+(load-theme 'deeper-blue)
 #+END_SRC
 
-* Paredit
+** default layout
+
+*** modes
+
 #+BEGIN_SRC emacs-lisp
-(eval-after-load 'paredit
-  '(progn
-     (define-key paredit-mode-map (kbd "<C-right>")
-       nil)
-     (define-key paredit-mode-map (kbd "<C-left>")
-       nil)
-     (define-key paredit-mode-map (kbd "<M-right>")
-       'paredit-forward)
-     (define-key paredit-mode-map (kbd "<M-left>")
-       'paredit-backward)
-     (define-key paredit-mode-map (kbd "<C-up>")
-       'paredit-forward-barf-sexp)
-     (define-key paredit-mode-map (kbd "<C-down>")
-       'paredit-forward-slurp-sexp)
-     (define-key paredit-mode-map (kbd "<M-up>")
-       'paredit-backward-slurp-sexp)
-     (define-key paredit-mode-map (kbd "<M-down>")
-       'paredit-backward-barf-sexp)
-     (define-key paredit-mode-map (kbd "<M-backspace>")
-       'backward-kill-sexp)
-     (define-key paredit-mode-map (kbd "<M-delete>")
-       'kill-sexp)))
+(display-time-mode t)
+(scroll-bar-mode -1)
+(fringe-mode 0)
+(column-number-mode 1)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 #+END_SRC
 
-* Org
+*** vars
+
+#+BEGIN_SRC emacs-lisp
+(setq font-use-system-font nil
+      inhibit-startup-screen t
+      split-height-threshold 500
+      truncate-lines t
+      visual-line-fringe-indicators '(nil right-curly-arrow)
+      display-time-24hr-format t)
+#+END_SRC
+
+*** faces
+
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'mode-line nil
+                    :background "#033"
+                    :foreground "#9bb"
+                    :box nil)
+(set-face-attribute 'mode-line-buffer-id nil
+                    :foreground "#99dddd"
+                    :box nil :weight 'bold)
+(set-face-attribute 'mode-line-inactive nil
+                    :inherit 'mode-line
+                    :background "gray32"
+                    :foreground "black"
+                    :box nil
+                    :weight 'light)
+(set-face-attribute 'default nil
+                    :inherit nil
+                    :stipple nil
+                    :background "#000000"
+                    :foreground "#ffffff"
+                    :inverse-video nil
+                    :box nil
+                    :strike-through nil
+                    :overline nil
+                    :underline nil
+                    :slant 'normal
+                    :weight 'normal
+                    :height 100
+                    :width 'normal
+                    :foundry "unknown"
+                    :family "Source Code Pro")
+(set-face-attribute 'fringe nil
+                    :background "black"
+                    :foreground "#0ff")
+(set-face-attribute 'region nil
+                    :background "#505")
+#+END_SRC
+
+** cursor
+
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode -1)
+(defvar hcz-set-cursor-color-color "")
+(defvar hcz-set-cursor-color-buffer "")
+(defun hcz-set-cursor-color-according-to-mode ()
+  "change cursor color according to some minor modes."
+  ;; set-cursor-color is somewhat costly, so we only call it when needed:
+  (let ((color (if (and (boundp 'knu-org-mode-map) (org-inside-LaTeX-fragment-p)) "#2a6"
+                 (if buffer-read-only "white"
+                   (if overwrite-mode "#fa0"
+                     "#909")))))
+    (unless (and
+             (string= color hcz-set-cursor-color-color)
+             (string= (buffer-name) hcz-set-cursor-color-buffer))
+      (set-cursor-color (setq hcz-set-cursor-color-color color))
+      (setq hcz-set-cursor-color-buffer (buffer-name)))))
+(set-face-attribute 'cursor nil :background "#709")
+#+END_SRC
+
+** key-map
+
+#+BEGIN_SRC emacs-lisp
+(mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
+      '(("<M-left>" backward-sentence)
+        ("<M-right>" forward-sentence)
+        ("<M-backspace>" backward-kill-sentence)
+        ("<M-delete>" kill-sentence)
+        ("\C-cm" magit-status)
+        ("S-SPC" ace-jump-mode)))
+#+END_SRC
+
+** got root?
+
+#+BEGIN_SRC emacs-lisp
+(when (equal (getenv "USER") "root")
+  (set-face-background 'mode-line "#400")
+  (set-face-foreground 'mode-line "#b00")
+  (set-face-foreground 'mode-line-buffer-id "#ee5555"))
+#+END_SRC
+
+* major-modes
+
+** python
+#+BEGIN_SRC emacs-lisp
+(setq python-shell-interpreter "python3")
+#+END_SRC
+
+** org
+
+*** key-map
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'org
+     '(mapc (lambda (x) (define-key org-mode-map (kbd (car x)) (cadr x)))
+           '(("<f5>" knu-org-latex-snip) ("<f6>" knu-org-del-overlay)
+             ("<M-left>" nil) ("<M-right>" nil)
+             ("α" "\\alpha") ("β" "\\beta")
+             ("γ" "\\gamma") ("δ" "\\delta")
+             ("ε" "\\epsilon") ("ζ" "\\zeta")
+             ("θ" "\\theta") ("ι" "\\iota")
+             ("κ" "\\kappa") ("λ" "\\lambda")
+             ("μ" "\\mu") ("ν" "\\nu")
+             ("ξ" "\\xi") ("ο" "\\omicron")
+             ("π" "\\pi") ("ρ" "\\rho")
+             ("σ" "\\sigma") ("τ" "\\tau")
+             ("φ" "\\phi") ("χ" "\\chi")
+             ("ψ" "\\psi") ("ω" "\\omega"))))
+#+END_SRC
+
+*** functions
+
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'org
   '(progn
-     (define-key org-mode-map (kbd "<M-left>") nil)
-     (define-key org-mode-map (kbd "<M-right>") nil)
+     (defun knu-org-latex-snip ()
+       (interactive)
+       (insert "\\begin{align*}\n\n")
+       (insert "\\end{align*}")
+       (forward-line -1))
 
-(run-with-idle-timer 0.7 t 'knu-org-auto-preview)
-(run-with-idle-timer 0.5 t 'knu-org-del-overlay)
+     (defun knu-org-del-overlay ()
+       (when (equal mode-name "Org")
+         (mapc (lambda (o)
+                 (if (eq (overlay-get o 'org-overlay-type)
+                         'org-latex-overlay)
+                     (delete-overlay o)))
+               (overlays-at (point)))))
 
-(defun knu-org-latex-snip ()
-  (interactive)
-  (insert "\\begin{align*}\n\n")
-  (insert "\\end{align*}")
-  (forward-line -1))
+     (defun knu-org-auto-preview ()
+       (setq knu-org-auto-preview-count nil)
+       (when (equal mode-name "Org")
+         (while-no-input (progn (when (not knu-org-auto-preview-count)
+                                  (setq knu-org-auto-preview-count t)
+                                  (knu-org-preview-latex-fragment)
+                                  (redisplay)
+                                  (knu-org-preview-latex-fragment))))
+         (cd (file-name-directory buffer-file-name))))
 
-(defun knu-org-del-overlay ()
-  (when (equal mode-name "Org")
-    (mapc (lambda (o)
-            (if (eq (overlay-get o 'org-overlay-type)
-                    'org-latex-overlay)
-                (delete-overlay o)))
-          (overlays-at (point)))))
+     (defun knu-org-preview-latex-fragment ()
+       (unless buffer-file-name
+         (user-error "Can't preview LaTeX fragment in a non-file buffer"))
+       (when (display-graphic-p)
+         (save-excursion
+           (save-restriction
+             (let (beg end at msg pos at-snippet)
+               (setq at-snippet (org-inside-LaTeX-fragment-p))
+               (when (not at-snippet) (setq at-snippet t))
+               (setq pos (point))
+               (setq beg (window-start) end (window-end))
+               (narrow-to-region beg end)
+               (goto-char beg)
+               (knu-org-format-latex
+                (concat org-latex-preview-ltxpng-directory (file-name-sans-extension
+                                                            (file-name-nondirectory
+                                                             buffer-file-name)))
+                default-directory 'overlays nil at 'forbuffer
+                org-latex-create-formula-image-program pos at-snippet))))))
 
-;;(defun knu-org-del-overlay ()
-;;(when (equal mode-name "Org")
-;;(mapc 'delete-overlay (overlays-at (point)))))
+     (defun knu-org-format-latex (prefix &optional dir overlays msg at
+                                         forbuffer processing-type pos at-snippet)
+       (if (and overlays (fboundp 'clear-image-cache)) (clear-image-cache))
+       (let* ((prefixnodir (file-name-nondirectory prefix))
+              (absprefix (expand-file-name prefix dir))
+              (todir (file-name-directory absprefix))
+              (opt org-format-latex-options)
+              (optnew org-format-latex-options)
+              (matchers (plist-get opt :matchers))
+              (re-list org-latex-regexps)
+              (cnt 0) txt hash link beg end re e checkdir
+              string
+              m n block-type block linkfile movefile ov)
+         ;; Check the different regular expressions
+         (while (setq e (pop re-list))
+           (setq m (car e) re (nth 1 e) n (nth 2 e) block-type (nth 3 e)
+                 block (if block-type "\n\n" ""))
+           (when (member m matchers)
+             (goto-char (point-min))
+             (while (re-search-forward re nil t)
+               (when (and (or (not at) (equal (cdr at) (match-beginning n)))
+                          (or (not overlays)
+                              (not (eq (get-char-property (match-beginning n)
+                                                          'org-overlay-type)
+                                       'org-latex-overlay))))
+                 (setq txt (match-string n)
+                       beg (match-beginning n) end (match-end n)
+                       cnt (1+ cnt))
+                 (when (not (and (> (+ pos 1) beg) (< pos end)))
+                   (let ((face (face-at-point))
+                         (fg (plist-get opt :foreground))
+                         (bg (plist-get opt :background))
+                         ;; Ensure full list is printed.
+                         print-length print-level)
+                     (when forbuffer
+                       ;; Get the colors from the face at point.
+                       (goto-char beg)
+                       (when (eq fg 'auto)
+                         (setq fg (face-attribute face :foreground nil 'default)))
+                       (when (eq bg 'auto)
+                         (setq bg (face-attribute face :background nil 'default)))
+                       (setq optnew (copy-sequence opt))
+                       (plist-put optnew :foreground fg)
+                       (plist-put optnew :background bg))
+                     (setq hash (sha1 (prin1-to-string
+                                       (list org-format-latex-header
+                                             org-latex-default-packages-alist
+                                             org-latex-packages-alist
+                                             org-format-latex-options
+                                             forbuffer txt fg bg)))
+                           linkfile (format "%s_%s.png" prefix hash)
+                           movefile (format "%s_%s.png" absprefix hash)))
+                   (setq link (concat block "[[file:" linkfile "]]" block))
+                   (goto-char beg)
+                   (unless checkdir     ; Ensure the directory exists.
+                     (setq checkdir t)
+                     (or (file-directory-p todir) (make-directory todir t)))
+                   (unless (file-exists-p movefile)
+                     (org-create-formula-image
+                      txt movefile optnew forbuffer processing-type)
+                     (save-excursion
+                       (goto-char pos)
+                       (redisplay)))
+                   (if overlays
+                       (progn
+                         (mapc (lambda (o)
+                                 (if (eq (overlay-get o 'org-overlay-type)
+                                         'org-latex-overlay)
+                                     (delete-overlay o)))
+                               (overlays-in beg end))
+                         (setq ov (make-overlay beg end))
+                         (overlay-put ov 'org-overlay-type 'org-latex-overlay)
+                         (if (featurep 'xemacs)
+                             (progn
+                               (overlay-put ov 'invisible t)
+                               (overlay-put
+                                ov 'end-glyph
+                                (make-glyph (vector 'png :file movefile))))
+                           (overlay-put
+                            ov 'display
+                            (list 'image :type 'png :file movefile :ascent 'center)))
+                         (push ov org-latex-fragment-image-overlays)
+                         (goto-char end))
+                     (delete-region beg end)
+                     (insert (org-add-props link
+                                 (list 'org-latex-src
+                                       (replace-regexp-in-string
+                                        "\"" "" txt)
+                                       'org-latex-src-embed-type
+                                       (if block-type 'paragraph 'character))))))))))))))
+#+END_SRC
 
-(defun knu-org-auto-preview ()
-  (setq knu-org-auto-preview-count nil)
-  (when (equal mode-name "Org")
-    (while-no-input (progn (when (not knu-org-auto-preview-count)
-                             (setq knu-org-auto-preview-count t)
-                             (knu-org-preview-latex-fragment)
-                             (redisplay)
-                             (knu-org-preview-latex-fragment))))
-    (cd (file-name-directory buffer-file-name))))
+*** misc
 
-(defun knu-org-preview-latex-fragment ()
-  (unless buffer-file-name
-    (user-error "Can't preview LaTeX fragment in a non-file buffer"))
-  (when (display-graphic-p)
-    (save-excursion
-      (save-restriction
-        (let (beg end at msg pos at-snippet)
-          (setq at-snippet (org-inside-LaTeX-fragment-p))
-          (when (not at-snippet) (setq at-snippet t))
-          (setq pos (point))
-          (setq beg (window-start) end (window-end))
-          (narrow-to-region beg end)
-          (goto-char beg)
-          (knu-org-format-latex
-           (concat org-latex-preview-ltxpng-directory (file-name-sans-extension
-                                                       (file-name-nondirectory
-                                                        buffer-file-name)))
-           default-directory 'overlays nil at 'forbuffer
-           org-latex-create-formula-image-program pos at-snippet))))))
-
-(defun knu-org-format-latex (prefix &optional dir overlays msg at
-                                    forbuffer processing-type pos at-snippet)
-  (if (and overlays (fboundp 'clear-image-cache)) (clear-image-cache))
-  (let* ((prefixnodir (file-name-nondirectory prefix))
-         (absprefix (expand-file-name prefix dir))
-         (todir (file-name-directory absprefix))
-         (opt org-format-latex-options)
-         (optnew org-format-latex-options)
-         (matchers (plist-get opt :matchers))
-         (re-list org-latex-regexps)
-         (cnt 0) txt hash link beg end re e checkdir
-         string
-         m n block-type block linkfile movefile ov)
-    ;; Check the different regular expressions
-    (while (setq e (pop re-list))
-      (setq m (car e) re (nth 1 e) n (nth 2 e) block-type (nth 3 e)
-            block (if block-type "\n\n" ""))
-      (when (member m matchers)
-        (goto-char (point-min))
-        (while (re-search-forward re nil t)
-          (when (and (or (not at) (equal (cdr at) (match-beginning n)))
-                     (or (not overlays)
-                         (not (eq (get-char-property (match-beginning n)
-                                                     'org-overlay-type)
-                                  'org-latex-overlay))))
-            (setq txt (match-string n)
-                  beg (match-beginning n) end (match-end n)
-                  cnt (1+ cnt))
-            (when (not (and (> (+ pos 1) beg) (< pos end)))
-              (let ((face (face-at-point))
-                    (fg (plist-get opt :foreground))
-                    (bg (plist-get opt :background))
-                    ;; Ensure full list is printed.
-                    print-length print-level)
-                (when forbuffer
-                  ;; Get the colors from the face at point.
-                  (goto-char beg)
-                  (when (eq fg 'auto)
-                    (setq fg (face-attribute face :foreground nil 'default)))
-                  (when (eq bg 'auto)
-                    (setq bg (face-attribute face :background nil 'default)))
-                  (setq optnew (copy-sequence opt))
-                  (plist-put optnew :foreground fg)
-                  (plist-put optnew :background bg))
-                (setq hash (sha1 (prin1-to-string
-                                  (list org-format-latex-header
-                                        org-latex-default-packages-alist
-                                        org-latex-packages-alist
-                                        org-format-latex-options
-                                        forbuffer txt fg bg)))
-                      linkfile (format "%s_%s.png" prefix hash)
-                      movefile (format "%s_%s.png" absprefix hash)))
-              (setq link (concat block "[[file:" linkfile "]]" block))
-              (goto-char beg)
-              (unless checkdir        ; Ensure the directory exists.
-                (setq checkdir t)
-                (or (file-directory-p todir) (make-directory todir t)))
-              (unless (file-exists-p movefile)
-              ;;;; (not (eq at-snippet (org-inside-LaTeX-fragment-p)))
-                (org-create-formula-image
-                 txt movefile optnew forbuffer processing-type)
-                (save-excursion
-                  (goto-char pos)
-                  (redisplay)))
-              (if overlays
-                  (progn
-                    (mapc (lambda (o)
-                            (if (eq (overlay-get o 'org-overlay-type)
-                                    'org-latex-overlay)
-                                (delete-overlay o)))
-                          (overlays-in beg end))
-                    (setq ov (make-overlay beg end))
-                    (overlay-put ov 'org-overlay-type 'org-latex-overlay)
-                    (if (featurep 'xemacs)
-                        (progn
-                          (overlay-put ov 'invisible t)
-                          (overlay-put
-                           ov 'end-glyph
-                           (make-glyph (vector 'png :file movefile))))
-                      (overlay-put
-                       ov 'display
-                       (list 'image :type 'png :file movefile :ascent 'center)))
-                    (push ov org-latex-fragment-image-overlays)
-                    (goto-char end))
-                (delete-region beg end)
-                (insert (org-add-props link
-                                       (list 'org-latex-src
-                                             (replace-regexp-in-string
-                                              "\"" "" txt)
-                                             'org-latex-src-embed-type
-                                             (if block-type 'paragraph 'character))))))))))))
-
-
-
-(define-key org-mode-map (kbd "<f5>") 'knu-org-latex-snip)
-(define-key org-mode-map (kbd "<f6>") 'knu-org-del-overlay)
-
-(define-key org-mode-map "α" "\\alpha")
-(define-key org-mode-map "β" "\\beta")
-(define-key org-mode-map "γ" "\\gamma")
-(define-key org-mode-map "δ" "\\delta")
-(define-key org-mode-map "ε" "\\epsilon")
-(define-key org-mode-map "ζ" "\\zeta")
-(define-key org-mode-map "θ" "\\theta")
-(define-key org-mode-map "ι" "\\iota")
-(define-key org-mode-map "κ" "\\kappa")
-(define-key org-mode-map "λ" "\\lambda")
-(define-key org-mode-map "μ" "\\mu")
-(define-key org-mode-map "ν" "\\nu")
-(define-key org-mode-map "ξ" "\\xi")
-(define-key org-mode-map "ο" "\\omicron")
-(define-key org-mode-map "π" "\\pi")
-(define-key org-mode-map "ρ" "\\rho")
-(define-key org-mode-map "σ" "\\sigma")
-(define-key org-mode-map "τ" "\\tau")
-(define-key org-mode-map "φ" "\\phi")
-(define-key org-mode-map "χ" "\\chi")
-(define-key org-mode-map "ψ" "\\psi")
-(define-key org-mode-map "ω" "\\omega")
-
-
-
-))
- (setq org-babel-load-languages (quote ((python . t) (ditaa . t) (sh . t) (lilypond . t) (R . t) (emacs-lisp . t) (ledger . t)))
- org-catch-invisible-edits (quote error)
- org-confirm-babel-evaluate nil
- org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
- org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
- org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT"))
- org-edit-src-content-indentation 0
- org-export-backends (quote (ascii html latex odt))
- org-export-headline-levels 4
- org-export-run-in-background t
- org-format-latex-header "\\documentclass{article}
+#+BEGIN_SRC emacs-lisp
+(setq org-babel-load-languages '((python . t) (ditaa . t)
+                                 (sh . t) (lilypond . t)
+                                 (R . t) (emacs-lisp . t)
+                                 (ledger . t))
+      org-catch-invisible-edits 'error
+      org-confirm-babel-evaluate nil
+      org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
+      org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
+      org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")
+      org-edit-src-content-indentation 0
+      org-export-backends '(ascii html latex odt)
+      org-export-headline-levels 4
+      org-export-run-in-background t
+      org-format-latex-options '(:foreground "#0da"
+                                             :background default
+                                             :scale 2.0
+                                             :html-foreground "Black"
+                                             :html-background "Transparent"
+                                             :html-scale 1.0
+                                             :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+      org-hierarchical-todo-statistics nil
+      org-highlight-latex-and-related '(latex script entities)
+      org-image-actual-width 200
+      org-latex-classes '(("article" "\\documentclass[11pt]{scrartcl}"
+                           ("\\section{%s}" . "\\section*{%s}")
+                           ("\\subsection{%s}" . "\\subsection*{%s}")
+                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                          ("report" "\\documentclass[11pt]{report}"
+                           ("\\part{%s}" . "\\part*{%s}")
+                           ("\\chapter{%s}" . "\\chapter*{%s}")
+                           ("\\section{%s}" . "\\section*{%s}")
+                           ("\\subsection{%s}" . "\\subsection*{%s}")
+                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+                          ("book" "\\documentclass[11pt]{book}"
+                           ("\\part{%s}" . "\\part*{%s}")
+                           ("\\chapter{%s}" . "\\chapter*{%s}")
+                           ("\\section{%s}" . "\\section*{%s}")
+                           ("\\subsection{%s}" . "\\subsection*{%s}")
+                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+      org-latex-inactive-timestamp-format "\\\\\\hfill\\textcolor{gray}{\\textbf{%s}}\\\\"
+      org-latex-preview-ltxpng-directory "~/ltxpreview/"
+      org-list-allow-alphabetical t
+      org-list-empty-line-terminates-plain-lists t
+      org-log-done 'time
+      org-replace-disputed-keys t
+      org-src-fontify-natively t
+      org-startup-align-all-tables t
+      org-startup-folded 'content
+      org-startup-indented t
+      org-startup-truncated nil
+      org-startup-with-inline-images t
+      org-support-shift-select 'always
+      org-todo-keyword-faces '(("FAILED" . "#f00") ("CANCELED" . "#ee3"))
+      org-todo-keywords '((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))
+      org-format-latex-header "\\documentclass{article}
 \\usepackage[usenames]{color}
 \\usepackage{etoolbox}
 \\usepackage{mdframed}
@@ -294,29 +408,12 @@
 \\AfterEndEnvironment{gather}{\\end{mdframed}}
 \\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
 \\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
-\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}"
-org-format-latex-options (quote (:foreground "#0da" :background default :scale 2.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
-org-hierarchical-todo-statistics nil
- org-highlight-latex-and-related (quote (latex script entities))
- org-image-actual-width 200
- org-latex-classes (quote (("article" "\\documentclass[11pt]{scrartcl}" ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}") ("\\paragraph{%s}" . "\\paragraph*{%s}") ("\\subparagraph{%s}" . "\\subparagraph*{%s}")) ("report" "\\documentclass[11pt]{report}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}")) ("book" "\\documentclass[11pt]{book}" ("\\part{%s}" . "\\part*{%s}") ("\\chapter{%s}" . "\\chapter*{%s}") ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}") ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
- org-latex-inactive-timestamp-format "\\\\\\hfill\\textcolor{gray}{\\textbf{%s}}\\\\"
- org-latex-preview-ltxpng-directory "~/ltxpreview/"
- org-list-allow-alphabetical t
- org-list-empty-line-terminates-plain-lists t
- org-log-done (quote time)
- org-publish-project-alist (quote (("Homepage" :base-directory "~/git/knupfer.github.io/_org/" :base-extension "org" :publishing-directory "~/git/knupfer.github.io/_processing/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 5 :body-only t :completion-function knu/publish)))
- org-replace-disputed-keys t
- org-src-fontify-natively t
- org-startup-align-all-tables t
- org-startup-folded (quote content)
- org-startup-indented t
- org-startup-truncated nil
- org-startup-with-inline-images t
- org-support-shift-select (quote always)
- org-todo-keyword-faces (quote (("FAILED" . "#f00") ("CANCELED" . "#ee3")))
- org-todo-keywords (quote ((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))))
+\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}")
+#+END_SRC
 
+*** faces
+
+#+BEGIN_SRC emacs-lisp
 (eval-after-load 'org-mode
   '(progn
      (set-face-attribute 'org-archived nil :foreground "#254555")
@@ -328,525 +425,379 @@ org-hierarchical-todo-statistics nil
      (set-face-attribute 'outline-1 nil :inherit 'font-lock-function-name-face :foreground "SkyBlue1" :weight 'bold)))
 #+END_SRC
 
-* Cursor
-#+BEGIN_SRC emacs-lisp
-(blink-cursor-mode -1)
-(defvar hcz-set-cursor-color-color "")
-(defvar hcz-set-cursor-color-buffer "")
-(defun hcz-set-cursor-color-according-to-mode ()
-  "change cursor color according to some minor modes."
-  ;; set-cursor-color is somewhat costly, so we only call it when needed:
-  (let ((color (if (and (boundp 'knu-org-mode-map) (org-inside-LaTeX-fragment-p)) "#2a6"
-                 (if buffer-read-only "white"
-                   (if overwrite-mode "#fa0"
-                     "#909")))))
-    (unless (and
-             (string= color hcz-set-cursor-color-color)
-             (string= (buffer-name) hcz-set-cursor-color-buffer))
-      (set-cursor-color (setq hcz-set-cursor-color-color color))
-      (setq hcz-set-cursor-color-buffer (buffer-name)))))
-(set-face-attribute 'cursor nil :background "#709")
-#+END_SRC
+** lilypond
 
-* Keymap
-#+BEGIN_SRC emacs-lisp
-(define-key global-map (kbd "<M-left>") 'backward-sentence)
-(define-key global-map (kbd "<M-right>") 'forward-sentence)
-(define-key global-map (kbd "<M-backspace>") 'backward-kill-sentence)
-(define-key global-map (kbd "<M-delete>") 'kill-sentence)
-(define-key global-map "\C-cm" 'magit-status)
-(define-key global-map (kbd "S-SPC") 'ace-jump-mode)
-#+END_SRC
-
-* Lilypond
 #+BEGIN_SRC emacs-lisp
 (setq LilyPond-indent-level 4)
 #+END_SRC
 
-* Manpages
+** manpages
+
 #+BEGIN_SRC emacs-lisp
-(setq
- Man-notify-method (quote pushy)
- Man-width 80)
+(setq Man-notify-method 'pushy
+      Man-width 80)
 #+END_SRC
 
-* Theming
+** ediff
+
 #+BEGIN_SRC emacs-lisp
- (load-theme 'deeper-blue)
+(setq ediff-split-window-function 'split-window-horizontally
+      ediff-window-setup-function 'ediff-setup-windows-plain)
 #+END_SRC
 
-* Erc
+** erc
+
 #+BEGIN_SRC emacs-lisp
- (setq erc-nick "quxbam"
- erc-prompt ">>>"
- erc-prompt-for-password nil
- erc-system-name "foobar"
- erc-timestamp-right-column 70)
-(eval-after-load 'erc-mode  '(set-face-attribute 'erc-prompt-face nil :background "Black" :foreground "lightBlue2" :weight 'bold))
+(setq erc-nick "quxbam"
+      erc-prompt ">>>"
+      erc-prompt-for-password nil
+      erc-system-name "foobar"
+      erc-timestamp-right-column 70)
+(eval-after-load 'erc-mode
+  '(set-face-attribute 'erc-prompt-face nil :background "Black"
+                       :foreground "lightBlue2" :weight 'bold))
 #+END_SRC
 
-* Cua
+** eshell
+
 #+BEGIN_SRC emacs-lisp
- (cua-mode 1)
- (setq cua-normal-cursor-color "black")
+(setq eshell-banner-message nil
+      eshell-cmpl-compare-entry-function 'string-lessp
+      eshell-modules-list '(eshell-alias eshell-banner
+                                         eshell-basic eshell-cmpl
+                                         eshell-dirs eshell-glob
+                                         eshell-hist eshell-ls
+                                         eshell-pred eshell-prompt
+                                         eshell-script eshell-smart
+                                         eshell-term eshell-unix)
+      eshell-plain-grep-behavior t)
 #+END_SRC
 
-* Diff
-#+BEGIN_SRC emacs-lisp
-(setq ediff-split-window-function (quote split-window-horizontally)
-ediff-window-setup-function (quote ediff-setup-windows-plain))
-#+END_SRC
+** gnus
 
-* Eshell
 #+BEGIN_SRC emacs-lisp
- (setq eshell-banner-message ""
- eshell-cmpl-compare-entry-function (quote string-lessp)
- eshell-modules-list (quote (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-unix))
- eshell-plain-grep-behavior t)
-#+END_SRC
+(setq user-full-name "Florian Knupfer"
+      user-mail-address "fknupfer@gmail.com"
+      message-generate-headers-first t
+      message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587
+                                   "fknupfer@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      starttls-use-gnutls t)
+ (setq mail-user-agent (quote gnus-user-agent))
 
-* Gnus
-#+BEGIN_SRC emacs-lisp
 (eval-after-load "mm-decode"
   '(progn
      (add-to-list 'mm-discouraged-alternatives "text/html")
      (add-to-list 'mm-discouraged-alternatives "text/richtext")))
-(setq gnus-default-adaptive-word-score-alist (quote ((82 . 1) (67 . -1) (75 . -2) (114 . -1)))
- gnus-treat-fill-article t
- gnus-treat-leading-whitespace t
- gnus-treat-strip-multiple-blank-lines t
- gnus-treat-strip-trailing-blank-lines t
- gnus-treat-unsplit-urls t)
-(eval-after-load 'gnus '(progn
 
-(setq gnus-select-method
-      '(nnimap "gmail"
-               (nnimap-address "imap.gmail.com")
-               (nnimap-server-port 993)
-               (nnimap-stream ssl)))
+(setq gnus-default-adaptive-word-score-alist '((82 . 1) (67 . -1)
+                                               (75 . -2) (114 . -1))
+      gnus-treat-fill-article t
+      gnus-treat-leading-whitespace t
+      gnus-treat-strip-multiple-blank-lines t
+      gnus-treat-strip-trailing-blank-lines t
+      gnus-treat-unsplit-urls t)
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nntp "eternal september"
-                    (nntp-address "reader443.eternal-september.org")
-                    (nntp-authinfo-force t)))
+(eval-after-load 'gnus
+  '(progn
+     (setq gnus-select-method '(nnimap "gmail"
+                                       (nnimap-address "imap.gmail.com")
+                                       (nnimap-server-port 993)
+                                       (nnimap-stream ssl)))
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nntp "gmane"
-                    (nntp-address "news.gmane.org")))
+     (add-to-list 'gnus-secondary-select-methods
+                  '(nntp "eternal september"
+                         (nntp-address "reader443.eternal-september.org")
+                         (nntp-authinfo-force t)))
+     (add-to-list 'gnus-secondary-select-methods
+                  '(nntp "gmane"
+                         (nntp-address "news.gmane.org")))
+     (add-to-list 'gnus-secondary-select-methods
+                  '(nnimap "Musikschule"
+                           (nnimap-address "secure.emailsrvr.com")
+                           (nnimap-server-port 993)
+                           (nnimap-stream ssl)))
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nnimap "Musikschule"
-                      (nnimap-address "secure.emailsrvr.com")
-                      (nnimap-server-port 993)
-                      (nnimap-stream ssl)))
+     (setq-default gnus-summary-mark-below -300
+                   gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
+     (setq gnus-face-5 'font-lock-comment-face)
+     (make-face 'my-gnus-face-6)
+     (set-face-attribute 'my-gnus-face-6 nil
+                         :foreground "#9EE"
+                         :background "#333"
+                         :weight 'bold)
+     (setq gnus-face-6 'my-gnus-face-6)
+     (make-face 'my-gnus-face-7)
+     (set-face-attribute 'my-gnus-face-7 nil
+                         :foreground "#9EE"
+                         :background "#333"
+                         :weight 'bold
+                         :box '(:line-width -1 :color "#555"))
+     (setq gnus-face-7 'my-gnus-face-7)
+     (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
+           gnus-thread-sort-functions '((not gnus-thread-sort-by-date))
+           gnus-summary-line-format
+           "%U%R%z %5{│%}%6{ %d %}%5{│%} %-23,23f %5{│%}%* %5{%B%}%s\\n"
+           gnus-sum-thread-tree-false-root " • "
+           gnus-sum-thread-tree-indent " "
+           gnus-sum-thread-tree-leaf-with-other "├─▶ "
+           gnus-sum-thread-tree-root "• "
+           gnus-sum-thread-tree-single-leaf "└─▶ "
+           gnus-sum-thread-tree-vertical "│"
+           gnus-group-line-format "%M%S%p%P%5y:%B%(%G%)\n"
+           gnus-posting-styles '((message-news-p
+                                  (name "quxbam")
+                                  (address "no@news.invalid"))))
+     (setq gnus-use-adaptive-scoring '(word))
+     (setq gnus-parameters
+           '(("WIKI"
+              (gnus-summary-line-format
+               "%U%R %5{│%}%6{ %5,5i %}%5{│%}%* %-40,40f %5{│ %s%}\\n")
+              (gnus-article-sort-functions '(gnus-article-sort-by-author gnus-article-sort-by-subject gnus-article-sort-by-score))
+              (gnus-show-threads nil))))
+     (setq nnml-use-compressed-files t
+           gnus-topic-display-empty-topics nil
+           gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
+     (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
-(setq-default
- gnus-summary-mark-below -300
- gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
-
-(setq gnus-face-5 'font-lock-comment-face)
-(copy-face 'bold 'my-gnus-face-6)
-(set-face-background 'my-gnus-face-6 "#333")
-(set-face-foreground 'my-gnus-face-6 "#9ee")
-(setq gnus-face-6 'my-gnus-face-6)
-
-(copy-face 'default 'my-gnus-mouse-face-6)
-(set-face-background 'my-gnus-mouse-face-6 "#993")
-(setq gnus-mouse-face-6 'my-gnus-mouse-face-6)
-
-(copy-face 'bold 'my-gnus-face-7)
-(set-face-background 'my-gnus-face-7 "#333")
-(set-face-foreground 'my-gnus-face-7 "#9ee")
-(set-face-attribute 'my-gnus-face-7 nil :box '(:line-width -1 :color "#555"))
-(setq gnus-face-7 'my-gnus-face-7)
-
-(setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
-      gnus-thread-sort-functions '((not gnus-thread-sort-by-date))
-      gnus-summary-line-format
-      "%U%R%z %5{│%}%6{ %d %}%5{│%}%6( %-23,23f %)%5{│%}%* %5{%B%}%s\\n"
-      gnus-sum-thread-tree-false-root " • "
-      gnus-sum-thread-tree-indent " "
-      gnus-sum-thread-tree-leaf-with-other "├─▶ "
-      gnus-sum-thread-tree-root "• "
-      gnus-sum-thread-tree-single-leaf "└─▶ "
-      gnus-sum-thread-tree-vertical "│"
-      gnus-group-line-format "%M%S%p%P%5y:%B%(%G%)\n"
-      gnus-posting-styles '((message-news-p
-                             (name "quxbam")
-                             (address "no@news.invalid"))))
-
-(setq gnus-use-adaptive-scoring '(word))
-
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-(setq nnml-use-compressed-files t
-      gnus-topic-display-empty-topics nil
-      gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-
-(setq gnus-parameters
-      '(("WIKI"
-         (gnus-summary-line-format
-          "%U%R %5{│%}%6{ %5,5i %}%5{│%}%* %-40,40f %5{│ %s%}\\n")
-         (gnus-article-sort-functions '(gnus-article-sort-by-author gnus-article-sort-by-subject gnus-article-sort-by-score))
-         (gnus-show-threads nil))))
-
-
-
-))
-#+END_SRC
-* Tramp
-#+BEGIN_SRC emacs-lisp
-(setq tramp-default-method "ssh"
- tramp-default-method-alist (quote (("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb") ("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "su") (nil "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp\\." nil "ftp")))
- tramp-default-proxies-alist (quote (("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:"))))
+     (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+     ))
 #+END_SRC
 
+** w3m
 
-* Default Layout
+*** vars
+
 #+BEGIN_SRC emacs-lisp
-(setq font-use-system-font nil)
-(fringe-mode 0)
-(column-number-mode 1)
-(setq inhibit-startup-screen t)
-(menu-bar-mode -1)
-;;(setq message-insert-canlock nil)
-(setq split-height-threshold nil)
-(setq split-width-threshold 80)
-(tool-bar-mode -1)
-(setq truncate-lines t)
-(setq visual-line-fringe-indicators (quote (nil right-curly-arrow)))
-(set-face-attribute 'mode-line nil :background "#033" :foreground "#9bb" :box nil)
-(set-face-attribute 'mode-line-buffer-id nil :foreground "#99dddd" :box nil :weight 'bold)
-(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line :background "gray32" :foreground "black" :box nil :weight 'light)
-(set-face-attribute 'default nil :inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant 'normal :weight 'normal :height 165 :width 'normal :foundry "unknown" :family "Source Code Pro")
-(set-face-attribute 'fringe nil :background "black" :foreground "#0ff")
-#+END_SRC
-
-* w3m
-#+BEGIN_SRC emacs-lisp
- (setq w3m-enable-google-feeling-lucky nil
- w3m-home-page "about:blank"
- w3m-search-default-engine "duckduckgo"
- w3m-search-engine-alist (quote (("duckduckgo" "https://duckduckgo.com/lite/?q=%s" undecided) ("yahoo" "https://search.yahoo.com/bin/search?p=%s" nil) ("blog" "https://blogsearch.google.com/blogsearch?q=%s&oe=utf-8&ie=utf-8" utf-8) ("blog-en" "https://blogsearch.google.com/blogsearch?q=%s&hl=en&oe=utf-8&ie=utf-8" utf-8) ("google" "https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8) ("google-en" "https://www.google.com/search?q=%s&hl=en&ie=utf-8&oe=utf-8" utf-8) ("google news" "https://news.google.com/news?q=%s&ie=utf-8&oe=utf-8" utf-8) ("google news-en" "https://news.google.com/news?q=%s&hl=en&ie=utf-8&oe=utf-8" nil) ("google groups" "https://groups.google.com/groups?q=%s" nil) ("All the Web" "http://www.alltheweb.com/search?q=%s&web&_sb_lang=en" nil) ("technorati" "http://www.technorati.com/search/%s" utf-8) ("technorati-ja" "http://www.technorati.jp/search/search.html?query=%s&language=ja" utf-8) ("technorati-tag" "http://www.technorati.com/tag/%s" utf-8) ("altavista" "https://altavista.com/sites/search/web?q=\"%s\"&kl=ja&search=Search" nil) ("debian-pkg" "http://packages.debian.org/cgi-bin/search_contents.pl?directories=yes&arch=i386&version=unstable&case=insensitive&word=%s" nil) ("debian-bts" "http://bugs.debian.org/cgi-bin/pkgreport.cgi?archive=yes&pkg=%s" nil) ("amazon" "https://www.amazon.com/exec/obidos/search-handle-form/250-7496892-7797857" iso-8859-1 "url=index=blended&field-keywords=%s") ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" nil) ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s" nil) ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8) ("freshmeat" "http://freshmeat.net/search/?q=%s&section=projects" nil)))
- w3m-session-load-crashed-sessions nil
- w3m-uri-replace-alist (quote (("\\`enwi:" w3m-search-uri-replace "en.wikipedia") ("\\`dewi:" w3m-search-uri-replace "de.wikipedia") ("\\`dd:" w3m-search-uri-replace "duckduckgo") ("\\`gg:" w3m-search-uri-replace "google") ("\\`ggg:" w3m-search-uri-replace "google groups") ("\\`ya:" w3m-search-uri-replace "yahoo") ("\\`al:" w3m-search-uri-replace "altavista") ("\\`bts:" w3m-search-uri-replace "debian-bts") ("\\`dpkg:" w3m-search-uri-replace "debian-pkg") ("\\`archie:" w3m-search-uri-replace "iij-archie") ("\\`alc:" w3m-search-uri-replace "alc") ("\\`urn:ietf:rfc:\\([0-9]+\\)" w3m-pattern-uri-replace "http://www.ietf.org/rfc/rfc\\1.txt")))
- w3m-use-favicon nil
- w3m-use-title-buffer-name t)
-
-(eval-after-load 'w3m '(progn (set-face-attribute 'w3m-arrived-anchor nil :foreground "#8888ee")
-                              (set-face-attribute 'w3m-current-anchor nil :weight 'ultra-bold)
-                              (set-face-attribute 'w3m-tab-background nil :foreground "#88dddd" :background "black")
-                              (set-face-attribute 'w3m-tab-selected nil :foreground "black" :background "grey75")
-                              (set-face-attribute 'w3m-tab-selected-retrieving nil :foreground "black" :background "#dd6666")
-                              (set-face-attribute 'w3m-tab-unselected nil :foreground "black" :background "grey30")
-                              (set-face-attribute 'w3m-tab-unselected-retrieving nil :foreground "black" :background "#aa4444")
-                              (set-face-attribute 'w3m-tab-unselected-unseen nil :foreground "black" :background "grey90")
-
-(defun w3m-filter-find-relationships (url next previous)
-  "Add <LINK> tags if they don't yet exist."
-  (let ((case-fold-search t))
-    (goto-char (point-max))
-    (when (re-search-backward next nil t)
-      (when (re-search-backward "href=\"?\\([^\" \t\n]+\\)" nil t)
-        (setq w3m-next-url (match-string 1))))
-    (when (re-search-backward previous nil t)
-      (when (re-search-backward "href=\"?\\([^\" \t\n]+\\)" nil t)
-        (setq w3m-previous-url (match-string 1))))))
-
-(defun w3m-download-with-wget ()
-  (interactive)
-  (let ((url (or (w3m-anchor) (w3m-image))))
-    (cd "~/")
-    (if url
-        (let ((proc (start-process "wget" "*wget*" ;;(format "*wget %s*" url)
-                                   "wget" "-nv"
-                                   "-P" "Downloads" url)))
-          (message "Download started")
-          (with-current-buffer (process-buffer proc) (insert "\n"))
-          (set-process-sentinel proc (lambda (proc str)
-                                       (message "wget download done"))))
-      (message "Nothing to get"))))
-
-(defun sacha/w3m-setup-keymap ()
-  "Use my heavily customized map."
-  (interactive)
-  ;;;; FIREFOX
-  (define-key w3m-mode-map (kbd "M-<left>") 'w3m-view-previous-page)
-  (define-key w3m-mode-map (kbd "M-<right>") 'w3m-view-next-page)
-  (define-key w3m-mode-map (kbd "RET") 'w3m-view-this-url-new-session)
-  (define-key w3m-mode-map (kbd "C-w") 'w3m-delete-buffer)
-  (define-key w3m-mode-map [(shift return)] 'w3m-view-this-url)
-  (define-key w3m-mode-map (kbd "<tab>") 'w3m-next-buffer)
-  (define-key w3m-mode-map (kbd "<S-iso-lefttab>") 'w3m-previous-buffer)
-  (define-key w3m-mode-map "d" 'w3m-download-with-wget)
-
-  (define-key w3m-mode-map "g" 'w3m-goto-url)
-  (define-key w3m-mode-map "G" 'w3m-goto-url-new-session)
-  (define-key w3m-mode-map (kbd "C-f") 'sacha/w3m-open-in-firefox)
-  (define-key w3m-mode-map (kbd "M-RET") 'w3m-view-this-url-new-session)
-
-  (define-key w3m-mode-map [(left)] 'backward-char)
-  (define-key w3m-mode-map [(right)] 'forward-char)
-  (define-key w3m-mode-map [(up)] 'previous-line)
-  (define-key w3m-mode-map [(down)] 'next-line)
-
-  (define-key w3m-mode-map (kbd "M-<down>") 'w3m-next-anchor)
-  (define-key w3m-mode-map (kbd "M-<up>") 'w3m-previous-anchor))
-
-(sacha/w3m-setup-keymap)
-
-(define-key w3m-mode-map (kbd "S-SPC") 'ace-jump-mode)
-
-(defun sacha/w3m-open-in-firefox ()
-  (interactive)
-  (browse-url-firefox w3m-current-url))
-
-(defun browse-apropos-url (text &optional new-window)
-  (interactive (browse-url-interactive-arg "Location: "))
-  (let ((text (replace-regexp-in-string 
-               "^ *\\| *$" "" 
-               (replace-regexp-in-string "[ \t\n]+" " " text)))
-        ___braplast)
-    (let ((url (or (assoc-if
-                    (lambda (a) (string-match a text))
-                    apropos-url-alist)
-                   text)))
-      (browse-url (replace-regexp-in-string (car url) (cdr url) text) new-window))))
-
-(setq apropos-url-alist
-      '(("^gw?:? +\\(.*\\)" . ;; Google Web 
+(setq w3m-enable-google-feeling-lucky nil
+      w3m-home-page "about:blank"
+      w3m-search-default-engine "duckduckgo"
+      w3m-search-engine-alist
+      '(("duckduckgo" "https://duckduckgo.com/lite/?q=%s" undecided)
+        ("yahoo" "https://search.yahoo.com/bin/search?p=%s" nil)
+        ("blog" "https://blogsearch.google.com/blogsearch?q=%s&oe=utf-8&ie=utf-8" utf-8)
+        ("blog-en" "https://blogsearch.google.com/blogsearch?q=%s&hl=en&oe=utf-8&ie=utf-8" utf-8)
+        ("google" "https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
+        ("google-en" "https://www.google.com/search?q=%s&hl=en&ie=utf-8&oe=utf-8" utf-8)
+        ("google news" "https://news.google.com/news?q=%s&ie=utf-8&oe=utf-8" utf-8)
+        ("google news-en" "https://news.google.com/news?q=%s&hl=en&ie=utf-8&oe=utf-8" nil)
+        ("google groups" "https://groups.google.com/groups?q=%s" nil)
+        ("All the Web" "http://www.alltheweb.com/search?q=%s&web&_sb_lang=en" nil)
+        ("technorati" "http://www.technorati.com/search/%s" utf-8)
+        ("technorati-ja" "http://www.technorati.jp/search/search.html?query=%s&language=ja" utf-8)
+        ("technorati-tag" "http://www.technorati.com/tag/%s" utf-8)
+        ("altavista" "https://altavista.com/sites/search/web?q=\"%s\"&kl=ja&search=Search" nil)
+        ("debian-pkg" "http://packages.debian.org/cgi-bin/search_contents.pl?directories=yes&arch=i386&version=unstable&case=insensitive&word=%s" nil)
+        ("debian-bts" "http://bugs.debian.org/cgi-bin/pkgreport.cgi?archive=yes&pkg=%s" nil)
+        ("amazon" "https://www.amazon.com/exec/obidos/search-handle-form/250-7496892-7797857" iso-8859-1 "url=index=blended&field-keywords=%s")
+        ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" nil)
+        ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s" nil)
+        ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8)
+        ("freshmeat" "http://freshmeat.net/search/?q=%s&section=projects" nil))
+      w3m-session-load-crashed-sessions nil
+      w3m-uri-replace-alist
+      '(("\\`enwi:" w3m-search-uri-replace "en.wikipedia")
+        ("\\`dewi:" w3m-search-uri-replace "de.wikipedia")
+        ("\\`dd:" w3m-search-uri-replace "duckduckgo")
+        ("\\`gg:" w3m-search-uri-replace "google")
+        ("\\`ggg:" w3m-search-uri-replace "google groups")
+        ("\\`ya:" w3m-search-uri-replace "yahoo")
+        ("\\`al:" w3m-search-uri-replace "altavista")
+        ("\\`bts:" w3m-search-uri-replace "debian-bts")
+        ("\\`dpkg:" w3m-search-uri-replace "debian-pkg")
+        ("\\`archie:" w3m-search-uri-replace "iij-archie")
+        ("\\`alc:" w3m-search-uri-replace "alc")
+        ("\\`urn:ietf:rfc:\\([0-9]+\\)" w3m-pattern-uri-replace "http://www.ietf.org/rfc/rfc\\1.txt"))
+      w3m-use-favicon nil
+      w3m-use-title-buffer-name t
+      apropos-url-alist
+      '(("^gw?:? +\\(.*\\)" . ;; Google Web
          "http://www.google.com/search?q=\\1")
-
         ("^g!:? +\\(.*\\)" . ;; Google Lucky
          "http://www.google.com/search?btnI=I%27m+Feeling+Lucky&q=\\1")
-        
-        ("^gl:? +\\(.*\\)" .  ;; Google Linux 
+        ("^gl:? +\\(.*\\)" . ;; Google Linux
          "http://www.google.com/linux?q=\\1")
-        
         ("^gi:? +\\(.*\\)" . ;; Google Images
          "http://images.google.com/images?sa=N&tab=wi&q=\\1")
-
         ("^gg:? +\\(.*\\)" . ;; Google Groups
          "http://groups.google.com/groups?q=\\1")
-
         ("^gd:? +\\(.*\\)" . ;; Google Directory
          "http://www.google.com/search?&sa=N&cat=gwd/Top&tab=gd&q=\\1")
-
         ("^gn:? +\\(.*\\)" . ;; Google News
          "http://news.google.com/news?sa=N&tab=dn&q=\\1")
-
         ("^gt:? +\\(\\w+\\)|? *\\(\\w+\\) +\\(\\w+://.*\\)" . ;; Google Translate URL
          "http://translate.google.com/translate?langpair=\\1|\\2&u=\\3")
-        
         ("^gt:? +\\(\\w+\\)|? *\\(\\w+\\) +\\(.*\\)" . ;; Google Translate Text
          "http://translate.google.com/translate_t?langpair=\\1|\\2&text=\\3")
-
-        ("^/\\.$" . ;; Slashdot 
+        ("^/\\.$" . ;; Slashdot
          "http://www.slashdot.org")
-
         ("^/\\.:? +\\(.*\\)" . ;; Slashdot search
-         "http://www.osdn.com/osdnsearch.pl?site=Slashdot&query=\\1")        
-        
+         "http://www.osdn.com/osdnsearch.pl?site=Slashdot&query=\\1")
         ("^fm$" . ;; Freshmeat
          "http://www.freshmeat.net")
-
         ("^ewiki:? *?\\(.*\\)" . ;; Emacs Wiki Search
          "http://www.emacswiki.org/cgi-bin/wiki?search=\\1")
- 
-        ("^ewiki$" . ;; Emacs Wiki 
+        ("^ewiki$" . ;; Emacs Wiki
          "http://www.emacswiki.org")
-
-        ("^arda$" . ;; The Encyclopedia of Arda 
-         "http://www.glyphweb.com/arda/")
-         
-         ))
-
-
-))
-
+        ("^arda$" . ;; The Encyclopedia of Arda
+         "http://www.glyphweb.com/arda/")))
 #+END_SRC
 
-* flyspell
+*** functions
+
 #+BEGIN_SRC emacs-lisp
-(eval-after-load 'flyspell '(progn
-  (set-face-attribute 'flyspell-duplicate nil :background "#333300" :box '(:line-width -2 :color "#666600"))
-  (set-face-attribute 'flyspell-incorrect nil :background "#550000" :box '(:line-width -2 :color "#880000"))
- (setq ispell-highlight-face (quote flyspell-incorrect)
- ispell-local-dictionary "de_DE"
- ispell-program-name "aspell")
-))
+(eval-after-load 'w3m
+  '(progn
+     (defun w3m-filter-find-relationships (url next previous)
+       "Add <LINK> tags if they don't yet exist."
+       (let ((case-fold-search t))
+         (goto-char (point-max))
+         (when (re-search-backward next nil t)
+           (when (re-search-backward "href=\"?\\([^\" \t\n]+\\)" nil t)
+             (setq w3m-next-url (match-string 1))))
+         (when (re-search-backward previous nil t)
+           (when (re-search-backward "href=\"?\\([^\" \t\n]+\\)" nil t)
+             (setq w3m-previous-url (match-string 1))))))
+
+     (defun w3m-download-with-wget ()
+       (interactive)
+       (let ((url (or (w3m-anchor) (w3m-image))))
+         (cd "~/")
+         (if url
+             (let ((proc (start-process "wget" "*wget*"
+                                        "wget" "-nv"
+                                        "-P" "Downloads" url)))
+               (message "Download started")
+               (with-current-buffer (process-buffer proc) (insert "\n"))
+               (set-process-sentinel proc (lambda (proc str)
+                                            (message "wget download done"))))
+           (message "Nothing to get"))))
+
+     (defun sacha/w3m-open-in-firefox ()
+       (interactive)
+       (browse-url-firefox w3m-current-url))
+
+     (defun browse-apropos-url (text &optional new-window)
+       (interactive (browse-url-interactive-arg "Location: "))
+       (let ((text (replace-regexp-in-string
+                    "^ *\\| *$" ""
+                    (replace-regexp-in-string "[ \t\n]+" " " text)))
+             ___braplast)
+         (let ((url (or (assoc-if
+                         (lambda (a) (string-match a text))
+                         apropos-url-alist)
+                        text)))
+           (browse-url (replace-regexp-in-string (car url) (cdr url) text) new-window))))))
 #+END_SRC
 
-* Misc
+*** key-map
+
 #+BEGIN_SRC emacs-lisp
-(yas-global-mode 1)
-(defalias 'yes-or-no-p 'y-or-n-p)
- (setq display-time-24hr-format t)
- (display-time-mode t)
- (scroll-bar-mode -1)
-(setq
- pretty-symbol-categories (quote (knu-custom))
- proced-format-alist (quote ((short pid tree pcpu time (args comm)) (medium user pid tree pcpu pmem vsize rss ttname state start time (args comm)) (long user euid group pid tree pri nice pcpu pmem vsize rss ttname state start time (args comm)) (verbose user euid group egid pid ppid tree pgrp sess pri nice pcpu pmem state thcount vsize rss ttname tpgid minflt majflt cminflt cmajflt start time utime stime ctime cutime cstime etime (args comm))))
- python-shell-interpreter "python3"
+(eval-after-load 'w3m
+  '(mapc (lambda (x) (define-key w3m-mode-map (kbd (car x)) (cadr x)))
+         '(("M-<left>" w3m-view-previous-page)
+           ("M-<right>" w3m-view-next-page)
+           ("RET" w3m-view-this-url-new-session)
+           ("C-w" w3m-delete-buffer)
+           ("S-RET" w3m-view-this-url)
+           ("<tab>" w3m-next-buffer)
+           ("<S-iso-lefttab>" w3m-previous-buffer)
+           ("d" w3m-download-with-wget)
+           ("g" w3m-goto-url)
+           ("G" w3m-goto-url-new-session)
+           ("C-f" sacha/w3m-open-in-firefox)
+           ("M-RET" w3m-view-this-url-new-session)
+           ("<left>" backward-char)
+           ("<right>" forward-char)
+           ("<up>" previous-line)
+           ("<down>" next-line)
+           ("M-<down>" w3m-next-anchor)
+           ("M-<up>" w3m-previous-anchor)
+           ("S-SPC" ace-jump-mode))))
+#+END_SRC
 
- sml/hidden-modes (quote (" hl-p" " hs+" " WS" " ws"))
- sml/mode-width (quote full)
- sml/name-width 15
- sml/replacer-regexp-list (quote (("^~/Org/" ":Org:") ("^~/\\.emacs\\.d/" ":ED:") ("^/sudo:.*:" ":SU:") ("^~/Documents/" ":Doc:") ("^~/Dropbox/" ":DB:") ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:") ("^~/[Gg]it/" ":G:") ("^~/[Gg]it[Hh]ub/" ":Git:") ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:"))))
+*** faces
 
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'w3m
+  '(progn (set-face-attribute 'w3m-arrived-anchor nil :foreground "#8888ee")
+          (set-face-attribute 'w3m-current-anchor nil :weight 'ultra-bold)
+          (set-face-attribute 'w3m-tab-background nil :foreground "#88dddd" :background "black")
+          (set-face-attribute 'w3m-tab-selected nil :foreground "black" :background "grey75")
+          (set-face-attribute 'w3m-tab-selected-retrieving nil :foreground "black" :background "#dd6666")
+          (set-face-attribute 'w3m-tab-unselected nil :foreground "black" :background "grey30")
+          (set-face-attribute 'w3m-tab-unselected-retrieving nil :foreground "black" :background "#aa4444")
+          (set-face-attribute 'w3m-tab-unselected-unseen nil :foreground "black" :background "grey90")))
+#+END_SRC
 
- (setq c-default-style (quote ((c-mode . "stroustrup") (java-mode . "java") (awk-mode . "awk") (other . "gnu")))
- ess-default-style (quote C++)
- hl-paren-colors (quote ("#05ffff" "#e07fef" "#f0cf05" "#ee5555" "#ffffff" "#00ff00")))
- (setq indent-tabs-mode nil)
- (keyfreq-autosave-mode 1)
- (keyfreq-mode 1)
- (setq kill-do-not-save-duplicates t)
+** volume
 
-(eval-after-load 'volume '(progn
- (setq volume-amixer-default-channel "Speaker"
- volume-backend (quote volume-amixer-backend))
- (setq volume-electric-mode t)))
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'volume
+  '(progn (setq volume-amixer-default-channel "Speaker"
+                volume-backend 'volume-amixer-backend
+                volume-electric-mode t)))
+#+END_SRC
 
-(setq whitespace-style (quote (face trailing tabs))
+** magit
+
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+
+* minor-modes
+
+** keyfreq
+
+#+BEGIN_SRC emacs-lisp
+(keyfreq-autosave-mode 1)
+(keyfreq-mode 1)
+#+END_SRC
+
+** whitespace
+
+#+BEGIN_SRC emacs-lisp
+(setq whitespace-style '(face trailing tabs)
       whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\)")
-(eval-after-load 'whitespace '(set-face-attribute 'whitespace-tab nil :background "nil" :foreground "#00eeaa" :weight 'ultra-bold))
-(set-face-attribute 'region nil :background "#505")
-(eval-after-load 'highlight-parentheses '(set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
+
+(eval-after-load 'whitespace
+  '(set-face-attribute 'whitespace-tab nil
+                       :background "nil"
+                       :foreground "#00eeaa"
+                       :weight 'ultra-bold))
 #+END_SRC
 
-* got root?
+** paredit
+
+*** key-map
+
 #+BEGIN_SRC emacs-lisp
-(when (equal (getenv "USER") "root")
-  (set-face-background 'mode-line "#400")
-  (set-face-foreground 'mode-line "#b00")
-  (set-face-foreground 'mode-line-buffer-id "#ee5555"))
+(eval-after-load 'paredit
+  '(mapc (lambda (x) (define-key paredit-mode-map (kbd (car x)) (cadr x)))
+         '(("<C-right>" nil)
+           ("<C-left>" nil)
+           ("<M-right>" paredit-forward)
+           ("<M-left>" paredit-backward)
+           ("<C-up>" paredit-forward-barf-sexp)
+           ("<C-down>" paredit-forward-slurp-sexp)
+           ("<M-up>" paredit-backward-slurp-sexp)
+           ("<M-down>" paredit-backward-barf-sexp)
+           ("<M-backspace>" backward-kill-sexp)
+           ("<M-delete>" kill-sexp)
+           ("C-k" paredit-kill-and-join-forward)
+           ("<delete>" paredit-del-and-join-forward)
+           ("<backspace>" paredit-del-backward-and-join)
+           ("<tab>" completion-at-point)
+           ("<RET>" paredit-newline)
+           ("<C-backspace>" paredit-backward-kill-word)
+           ("<C-delete>" paredit-forward-kill-word))))
 #+END_SRC
 
-* ace-jump
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'ace-jump-mode '(set-face-attribute 'ace-jump-face-foreground nil :background "black" :foreground "green" :weight 'bold))
-#+END_SRC
+*** functions
 
-* num3
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'num3-mode '(set-face-attribute 'num3-face-even nil :foreground "#fa0" :background "black" :underline nil))
-#+END_SRC
-
-* magit
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
-
-* hooks
-#+BEGIN_SRC emacs-lisp
-(add-hook 'kill-emacs-hook '(lambda ()
-                              (when (fboundp 'gnus-group-exit)
-                                (defun gnus-y-or-n-p (yes) yes)
-                                (gnus-group-exit))))
-(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
-(add-hook 'after-change-major-mode-hook '(lambda ()
-                                           (highlight-parentheses-mode)))
-(add-hook 'LilyPond-mode-hook '(lambda () (highlight-parentheses-mode)
-                                 (lilypond-pretty-beat-mode)))
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-(add-hook 'org-mode-hook '(lambda ()
-                            (auto-fill-mode)
-                            (num3-mode)
-                            (whitespace-mode)
-                            (pretty-symbols-mode)))
-(add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-(add-hook 'prog-mode-hook '(lambda ()
-                             (num3-mode)
-                             (whitespace-mode)
-                             (indentation-tree-mode)
-			     (hs-minor-mode)))
-(add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
-#+END_SRC
-* load other stuff
-#+BEGIN_SRC emacs-lisp
-(load "knu-device" t)
-#+END_SRC
-* pretty-sym
-#+BEGIN_SRC emacs-lisp
-;; Greek
-(add-to-list 'pretty-symbol-patterns '(?α knu-custom "\\\\alpha" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Α knu-custom "\\\\Alpha" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?β knu-custom "\\\\beta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Β knu-custom "\\\\Beta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?γ knu-custom "\\\\gamma" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Γ knu-custom "\\\\Gamma" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?δ knu-custom "\\\\delta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Δ knu-custom "\\\\Delta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ε knu-custom "\\\\epsilon" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ε knu-custom "\\\\Epsilon" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ζ knu-custom "\\\\zeta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ζ knu-custom "\\\\Zeta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?η knu-custom "\\\\eta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Η knu-custom "\\\\Eta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?θ knu-custom "\\\\theta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Θ knu-custom "\\\\Theta" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ι knu-custom "\\\\iota" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ι knu-custom "\\\\Iota" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?κ knu-custom "\\\\kappa" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?K knu-custom "\\\\Kappa" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?λ knu-custom "\\\\lambda" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Λ knu-custom "\\\\Lambda" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?μ knu-custom "\\\\mu" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Μ knu-custom "\\\\Mu" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ν knu-custom "\\\\nu" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ν knu-custom "\\\\Nu" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ν knu-custom "\\\\vega" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ν knu-custom "\\\\Vega" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ξ knu-custom "\\\\xi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ξ knu-custom "\\\\Xi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ο knu-custom "\\\\omicron" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ο knu-custom "\\\\Omicron" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?π knu-custom "\\\\pi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Π knu-custom "\\\\Pi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ρ knu-custom "\\\\rho" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ρ knu-custom "\\\\Rho" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?σ knu-custom "\\\\sigma" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Σ knu-custom "\\\\Sigma" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?τ knu-custom "\\\\tau" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Τ knu-custom "\\\\Tau" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?υ knu-custom "\\\\upsilon" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Y knu-custom "\\\\Upsilon" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?φ knu-custom "\\\\phi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Φ knu-custom "\\\\Phi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?χ knu-custom "\\\\chi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Χ knu-custom "\\\\Chi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ψ knu-custom "\\\\psi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ψ knu-custom "\\\\Psi" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?ω knu-custom "\\\\omega" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Ω knu-custom "\\\\Omega" (org-mode latex-mode)))
-;; math
-(add-to-list 'pretty-symbol-patterns '(?∇ knu-custom "\\\\nabla" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?∫ knu-custom "\\\\int" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?∮ knu-custom "\\\\oint" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?× knu-custom "\\\\times" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?· knu-custom "\\\\cdot" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?Σ knu-custom "\\\\sum" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?± knu-custom "\\\\pm" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?∓ knu-custom "\\\\mp" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?≈ knu-custom "\\\\approx" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?≠ knu-custom "\\\\neq" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?≤ knu-custom "\\\\leq" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?≥ knu-custom "\\\\geq" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?⟶ knu-custom "\\\\rightarrow" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?⟵ knu-custom "\\\\leftarrow" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?⟹ knu-custom "\\\\Rightarrow" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?⟸ knu-custom "\\\\Leftarrow" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?⟼ knu-custom "\\\\mapsto" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?↷ knu-custom "\\\\curvearrowright" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?⟷ knu-custom "\\\\leftrightarrow" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?d knu-custom "\\\\mathrm{d}" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?∞ knu-custom "\\\\infty" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?∂ knu-custom "\\\\partial" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?≡ knu-custom "\\\\equiv" (org-mode latex-mode)))
-(add-to-list 'pretty-symbol-patterns '(?≪ knu-custom "\\\\ll" (org-mode latex-mode)))
-#+END_SRC
-
-* lisp
 #+BEGIN_SRC emacs-lisp
 (defvar buffer-undo-list-tmp nil)
 
@@ -860,38 +811,221 @@ ediff-window-setup-function (quote ediff-setup-windows-plain))
     (paredit-forward-delete arg)))
 
 (defun paredit-kill-and-join-forward (&optional arg)
-  (interactive "P") 
+  (interactive "P")
   (if (and (eolp) (not (bolp)))
       (delete-indentation t)
     (paredit-kill arg)))
 
 (defun paredit-del-backward-and-join (&optional arg)
-  (interactive "P") 
+  (interactive "P")
   (if (looking-back "\\(^ *\\)")
       (delete-indentation)
     (paredit-backward-delete arg)))
+#+END_SRC
 
+** cua
+
+#+BEGIN_SRC emacs-lisp
+(cua-mode 1)
+(setq cua-normal-cursor-color "black")
+#+END_SRC
+
+** flyspell
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'flyspell
+  '(progn (set-face-attribute 'flyspell-duplicate nil
+                              :background "#333300"
+                              :box '(:line-width -2 :color "#666600"))
+          (set-face-attribute 'flyspell-incorrect nil
+                              :background "#550000"
+                              :box '(:line-width -2 :color "#880000"))
+          (setq ispell-highlight-face 'flyspell-incorrect
+                ispell-local-dictionary "de_DE"
+                ispell-program-name "aspell")))
+#+END_SRC
+
+** num3
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'num3-mode
+  '(set-face-attribute 'num3-face-even nil
+                       :foreground "#fa0"
+                       :background "black"
+                       :underline nil))
+#+END_SRC
+
+** pretty-symbol
+
+#+BEGIN_SRC emacs-lisp
+(setq pretty-symbol-categories '(knu-custom))
+
+(mapc (lambda (x) (add-to-list 'pretty-symbol-patterns x))
+      '((?α knu-custom "\\\\alpha" (org-mode latex-mode))
+        (?Α knu-custom "\\\\Alpha" (org-mode latex-mode))
+        (?β knu-custom "\\\\beta" (org-mode latex-mode))
+        (?Β knu-custom "\\\\Beta" (org-mode latex-mode))
+        (?γ knu-custom "\\\\gamma" (org-mode latex-mode))
+        (?Γ knu-custom "\\\\Gamma" (org-mode latex-mode))
+        (?δ knu-custom "\\\\delta" (org-mode latex-mode))
+        (?Δ knu-custom "\\\\Delta" (org-mode latex-mode))
+        (?ε knu-custom "\\\\epsilon" (org-mode latex-mode))
+        (?Ε knu-custom "\\\\Epsilon" (org-mode latex-mode))
+        (?ζ knu-custom "\\\\zeta" (org-mode latex-mode))
+        (?Ζ knu-custom "\\\\Zeta" (org-mode latex-mode))
+        (?η knu-custom "\\\\eta" (org-mode latex-mode))
+        (?Η knu-custom "\\\\Eta" (org-mode latex-mode))
+        (?θ knu-custom "\\\\theta" (org-mode latex-mode))
+        (?Θ knu-custom "\\\\Theta" (org-mode latex-mode))
+        (?ι knu-custom "\\\\iota" (org-mode latex-mode))
+        (?Ι knu-custom "\\\\Iota" (org-mode latex-mode))
+        (?κ knu-custom "\\\\kappa" (org-mode latex-mode))
+        (?K knu-custom "\\\\Kappa" (org-mode latex-mode))
+        (?λ knu-custom "\\\\lambda" (org-mode latex-mode))
+        (?Λ knu-custom "\\\\Lambda" (org-mode latex-mode))
+        (?μ knu-custom "\\\\mu" (org-mode latex-mode))
+        (?Μ knu-custom "\\\\Mu" (org-mode latex-mode))
+        (?ν knu-custom "\\\\nu" (org-mode latex-mode))
+        (?Ν knu-custom "\\\\Nu" (org-mode latex-mode))
+        (?ν knu-custom "\\\\vega" (org-mode latex-mode))
+        (?ν knu-custom "\\\\Vega" (org-mode latex-mode))
+        (?ξ knu-custom "\\\\xi" (org-mode latex-mode))
+        (?Ξ knu-custom "\\\\Xi" (org-mode latex-mode))
+        (?ο knu-custom "\\\\omicron" (org-mode latex-mode))
+        (?Ο knu-custom "\\\\Omicron" (org-mode latex-mode))
+        (?π knu-custom "\\\\pi" (org-mode latex-mode))
+        (?Π knu-custom "\\\\Pi" (org-mode latex-mode))
+        (?ρ knu-custom "\\\\rho" (org-mode latex-mode))
+        (?Ρ knu-custom "\\\\Rho" (org-mode latex-mode))
+        (?σ knu-custom "\\\\sigma" (org-mode latex-mode))
+        (?Σ knu-custom "\\\\Sigma" (org-mode latex-mode))
+        (?τ knu-custom "\\\\tau" (org-mode latex-mode))
+        (?Τ knu-custom "\\\\Tau" (org-mode latex-mode))
+        (?υ knu-custom "\\\\upsilon" (org-mode latex-mode))
+        (?Y knu-custom "\\\\Upsilon" (org-mode latex-mode))
+        (?φ knu-custom "\\\\phi" (org-mode latex-mode))
+        (?Φ knu-custom "\\\\Phi" (org-mode latex-mode))
+        (?χ knu-custom "\\\\chi" (org-mode latex-mode))
+        (?Χ knu-custom "\\\\Chi" (org-mode latex-mode))
+        (?ψ knu-custom "\\\\psi" (org-mode latex-mode))
+        (?Ψ knu-custom "\\\\Psi" (org-mode latex-mode))
+        (?ω knu-custom "\\\\omega" (org-mode latex-mode))
+        (?Ω knu-custom "\\\\Omega" (org-mode latex-mode))
+        (?∇ knu-custom "\\\\nabla" (org-mode latex-mode))
+        (?∫ knu-custom "\\\\int" (org-mode latex-mode))
+        (?∮ knu-custom "\\\\oint" (org-mode latex-mode))
+        (?× knu-custom "\\\\times" (org-mode latex-mode))
+        (?· knu-custom "\\\\cdot" (org-mode latex-mode))
+        (?Σ knu-custom "\\\\sum" (org-mode latex-mode))
+        (?± knu-custom "\\\\pm" (org-mode latex-mode))
+        (?∓ knu-custom "\\\\mp" (org-mode latex-mode))
+        (?≈ knu-custom "\\\\approx" (org-mode latex-mode))
+        (?≠ knu-custom "\\\\neq" (org-mode latex-mode))
+        (?≤ knu-custom "\\\\leq" (org-mode latex-mode))
+        (?≥ knu-custom "\\\\geq" (org-mode latex-mode))
+        (?⟶ knu-custom "\\\\rightarrow" (org-mode latex-mode))
+        (?⟵ knu-custom "\\\\leftarrow" (org-mode latex-mode))
+        (?⟹ knu-custom "\\\\Rightarrow" (org-mode latex-mode))
+        (?⟸ knu-custom "\\\\Leftarrow" (org-mode latex-mode))
+        (?⟼ knu-custom "\\\\mapsto" (org-mode latex-mode))
+        (?↷ knu-custom "\\\\curvearrowright" (org-mode latex-mode))
+        (?⟷ knu-custom "\\\\leftrightarrow" (org-mode latex-mode))
+        (?d knu-custom "\\\\mathrm{d}" (org-mode latex-mode))
+        (?∞ knu-custom "\\\\infty" (org-mode latex-mode))
+        (?∂ knu-custom "\\\\partial" (org-mode latex-mode))
+        (?≡ knu-custom "\\\\equiv" (org-mode latex-mode))
+        (?≪ knu-custom "\\\\ll" (org-mode latex-mode))))
+#+END_SRC
+
+** highlight-parentheses
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'highlight-parentheses
+  '(set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
+
+(setq hl-paren-colors '("#05ffff" "#e07fef"
+                        "#f0cf05" "#ee5555"
+                        "#ffffff" "#00ff00"))
+#+END_SRC
+
+** yasnippet
+
+#+BEGIN_SRC emacs-lisp
+(yas-global-mode 1)
+#+END_SRC
+
+** ace-jump
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'ace-jump-mode
+  '(set-face-attribute 'ace-jump-face-foreground nil
+                       :background "black"
+                       :foreground "green"
+                       :weight 'bold))
+#+END_SRC
+
+* misc
+
+** hooks
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'kill-emacs-hook (lambda ()
+                             (when (fboundp 'gnus-group-exit)
+                               (defun gnus-y-or-n-p (yes) yes)
+                               (gnus-group-exit))))
+(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+(add-hook 'after-change-major-mode-hook (lambda ()
+                                          (highlight-parentheses-mode)))
+(add-hook 'LilyPond-mode-hook (lambda () (highlight-parentheses-mode)
+                                (lilypond-pretty-beat-mode)))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+(add-hook 'org-mode-hook (lambda ()
+                           (auto-fill-mode)
+                           (num3-mode)
+                           (whitespace-mode)
+                           (pretty-symbols-mode)))
+(add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
+(add-hook 'prog-mode-hook (lambda ()
+                            (num3-mode)
+                            (whitespace-mode)
+                            (indentation-tree-mode)
+                            (hs-minor-mode)))
+(add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'eshell-mode-hook 'paredit-mode)
-(add-hook 'post-command-hook '(lambda () (when (or (equal major-mode 'emacs-lisp-mode)
-                                             (equal major-mode 'lisp-interaction-mode)) 
-                                      (when (not (equal buffer-undo-list-tmp buffer-undo-list))
-                                        (auto-indent-sexps)
-                                        (setq buffer-undo-list-tmp buffer-undo-list)))))
-(add-hook 'paredit-mode-hook '(lambda () (define-key paredit-mode-map (kbd "C-k") 'paredit-kill-and-join-forward)
-                                (define-key paredit-mode-map (kbd "<delete>") 'paredit-del-and-join-forward)
-                                (define-key paredit-mode-map (kbd "<backspace>") 'paredit-del-backward-and-join)))
+(add-hook 'post-command-hook
+          (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
+                               (equal major-mode 'lisp-interaction-mode))
+                       (when (not (equal buffer-undo-list-tmp buffer-undo-list))
+                         (auto-indent-sexps)
+                         (setq buffer-undo-list-tmp buffer-undo-list)))))
 
-(define-key lisp-interaction-mode-map (kbd "<tab>") 'completion-at-point)
-(define-key emacs-lisp-mode-map (kbd "<tab>") 'completion-at-point)
-(define-key lisp-interaction-mode-map (kbd "<RET>") 'paredit-newline)
-(define-key emacs-lisp-mode-map (kbd "<RET>") 'paredit-newline)
-
-(define-key lisp-interaction-mode-map (kbd "<C-backspace>") 'paredit-backward-kill-word)
-(define-key emacs-lisp-mode-map (kbd "<C-backspace>") 'paredit-backward-kill-word)
-(define-key lisp-interaction-mode-map (kbd "<C-delete>") 'paredit-forward-kill-word)
-(define-key emacs-lisp-mode-map (kbd "<C-delete>") 'paredit-forward-kill-word)
 #+END_SRC
- 
- 
 
+** tramp
+
+#+BEGIN_SRC emacs-lisp
+(setq tramp-default-method "ssh"
+      tramp-default-method-alist
+      '(("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb")
+        ("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'"
+         "\\`root\\'" "su")
+        (nil "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp\\." nil "ftp"))
+      tramp-default-proxies-alist
+      '(("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:")))
+#+END_SRC
+
+** misc
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(setq c-default-style '((c-mode . "stroustrup")
+                        (java-mode . "java")
+                        (awk-mode . "awk")
+                        (other . "gnu"))
+      ess-default-style 'C++
+      indent-tabs-mode nil)
+
+(setq kill-do-not-save-duplicates t)
+#+END_SRC
