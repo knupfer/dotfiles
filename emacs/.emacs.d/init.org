@@ -652,43 +652,49 @@
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'w3m
   '(progn
-     (defun knu-orgify-wikipedia ()
-       (save-excursion
-         (while (re-search-forward " +$" nil t)
-           (replace-match "")))
-       (when (string-match "en\.wikipedia" w3m-current-url)
-         (require 'org)
+     (defun knu-w3m-orgify ()
+       (require 'org)
+       (setq knu-headings nil
+             knu-headings-number nil)
+       (let ((curr-url w3m-current-url))
+         (with-temp-buffer
+           (w3m-retrieve (concat "about://source/" curr-url))
+           (goto-char (point-min))
+           (while (re-search-forward
+                   "<h\\([0-9]+\\)[^>]*\\(><[^>]+\\)*> *\\([^<]+\\)" nil t)
+             (add-to-list 'knu-headings (list (string-to-number (match-string-no-properties 1)) (match-string-no-properties 3)) t)
+             (add-to-list 'knu-headings-number (string-to-number (match-string-no-properties 1)))
+             (let ((y 0))
+               (setq knu-headings-number (sort knu-headings-number '<))
+               (setq knu-headings-array (make-vector (1+ (car (last knu-headings-number))) 0))
+               (mapc (lambda (x) (setq y (1+ y)) (aset knu-headings-array x (- y x)))
+                     knu-headings-number))))
          (save-excursion
-           (setq contents nil)
            (goto-char (point-min))
-           (re-search-forward "\n\nContents\n\n" nil t)
-           (let ((begin (match-beginning 0)))
-             (re-search-forward "^ *$" nil t)
-             (let ((end (point)))
-               (goto-char begin)
-               (while
-                   (re-search-forward "^ +. \\([0-9\.]+\\) \\(.+\\)$" end t)
-                 (add-to-list 'contents (list (/ (1+ (length (match-string-no-properties 1))) 2) (match-string-no-properties 2)) t))
-               (delete-region begin end)))
-           (goto-char (point-min))
-           (while contents
-             (let ((level (caar contents))
-                   (heading (cadr (pop contents))))
-               (when (re-search-forward (concat "\n\n" heading "\\(.*\\)") nil t)
-                 (beginning-of-line)
-                 (set-text-properties (match-beginning 0) (match-end 0) nil)
-                 (when (match-string 1)
-                   (delete-region (match-beginning 1) (match-end 1)))
-                 (insert (concat (make-string level ?*) " ")))))
-           (goto-line 3)
-           (insert "\n* Overview\n")
-           (when (re-search-forward "^* *$" nil t)
-             (replace-match ""))
-           (org-set-font-lock-defaults)
-           (font-lock-add-keywords nil org-font-lock-keywords)
+           (when org-startup-indented
+             (org-indent-mode 1))
+           (while knu-headings
+             (let ((level (+ (caar knu-headings)
+                             (elt knu-headings-array (caar knu-headings))))
+                   (heading (cadr (pop knu-headings)))
+                   face1
+                   face2)
+               (save-excursion
+                 (re-search-forward (concat "\\("
+                                            (make-string (1- level) ?.)
+                                            "\\)\\(..\\)") nil t)
+                 (setq face1 (org-get-level-face 1)
+                       face2 (org-get-level-face 2))
+                 (while (re-search-forward "^*+ *$" nil t)
+                   (replace-match "")))
+               (when (re-search-forward (concat "^" heading ".*\n\n") nil t)
+                 (replace-match
+                  (concat
+                   (propertize
+                    (make-string (1- level) ?*) 'face face1)
+                   (propertize (concat "* " heading "\n\n") 'face face2))))))
            (orgstruct-mode 1)
-           (hide-sublevels 10)
-           (font-lock-fontify-keywords-region (point-min) (point-max)))))
+           (hide-sublevels 10))))
 
      (defun w3m-filter-find-relationships (url next previous)
        "Add <LINK> tags if they don't yet exist."
@@ -1007,7 +1013,7 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'w3m-fontify-after-hook 'knu-orgify-wikipedia)
+(add-hook 'w3m-fontify-after-hook 'knu-w3m-orgify)
 (add-hook 'kill-emacs-hook (lambda ()
                              (when (fboundp 'gnus-group-exit)
                                (defun gnus-y-or-n-p (yes) yes)
