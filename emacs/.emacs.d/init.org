@@ -693,7 +693,6 @@
                    (propertize
                     (make-string (1- level) ?*) 'face face1)
                    (propertize (concat "* " heading "\n\n") 'face face2))))))
-           (orgstruct-mode 1)
            (hide-sublevels 10))))
 
      (defun w3m-filter-find-relationships (url next previous)
@@ -748,8 +747,8 @@
            ("RET" w3m-view-this-url-new-session)
            ("C-w" w3m-delete-buffer)
            ("S-RET" w3m-view-this-url)
-           ("<tab>" w3m-next-buffer)
-           ("<S-iso-lefttab>" w3m-previous-buffer)
+           ("<tab>" org-cycle)
+           ("<S-iso-lefttab>" org-shifttab)
            ("d" w3m-download-with-wget)
            ("g" w3m-goto-url)
            ("G" w3m-goto-url-new-session)
