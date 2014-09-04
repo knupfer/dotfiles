@@ -461,16 +461,17 @@
 ** eshell
 
 #+BEGIN_SRC emacs-lisp
-(setq eshell-banner-message nil
-      eshell-cmpl-compare-entry-function 'string-lessp
-      eshell-modules-list '(eshell-alias eshell-banner
-                                         eshell-basic eshell-cmpl
-                                         eshell-dirs eshell-glob
-                                         eshell-hist eshell-ls
-                                         eshell-pred eshell-prompt
-                                         eshell-script eshell-smart
-                                         eshell-term eshell-unix)
-      eshell-plain-grep-behavior t)
+;; (eval-after-load 'eshell
+;;   '(setq eshell-banner-message nil
+;;          eshell-cmpl-compare-entry-function 'string-lessp
+;;          eshell-modules-list '(eshell-alias eshell-banner
+;;                                             eshell-basic eshell-cmpl
+;;                                             eshell-dirs eshell-glob
+;;                                             eshell-hist eshell-ls
+;;                                             eshell-pred eshell-prompt
+;;                                             eshell-script eshell-smart
+;;                                             eshell-term eshell-unix)
+;;          eshell-plain-grep-behavior t))
 #+END_SRC
 
 ** gnus
@@ -576,6 +577,7 @@
 (setq w3m-enable-google-feeling-lucky nil
       w3m-home-page "about:blank"
       w3m-search-default-engine "duckduckgo"
+      w3m-fill-column 60
       w3m-search-engine-alist
       '(("duckduckgo" "https://duckduckgo.com/lite/?q=%s" undecided)
         ("yahoo" "https://search.yahoo.com/bin/search?p=%s" nil)
@@ -836,7 +838,9 @@
            ("<tab>" completion-at-point)
            ("<RET>" paredit-newline)
            ("<C-backspace>" paredit-backward-kill-word)
-           ("<C-delete>" paredit-forward-kill-word))))
+           ("<C-delete>" paredit-forward-kill-word)
+           ("{" paredit-open-curly)
+           ("}" paredit-close-curly))))
 #+END_SRC
 
 *** functions
@@ -1012,6 +1016,7 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
+(add-hook 'c-mode-hook 'paredit-mode)
 (add-hook 'w3m-fontify-after-hook 'knu-w3m-orgify)
 (add-hook 'kill-emacs-hook (lambda ()
                              (when (fboundp 'gnus-group-exit)
