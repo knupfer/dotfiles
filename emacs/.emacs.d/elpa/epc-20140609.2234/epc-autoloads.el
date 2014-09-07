@@ -3,8 +3,10 @@
 ;;; Code:
 
 
-;;;### (autoloads nil nil ("epc-pkg.el" "epc.el" "epcs.el") (21515
-;;;;;;  19802 11451 290000))
+;;;### (autoloads nil nil ("../../../../../../.emacs.d/elpa/epc-20140609.2234/epc-pkg.el"
+;;;;;;  "../../../../../../.emacs.d/elpa/epc-20140609.2234/epc.el"
+;;;;;;  "../../../../../../.emacs.d/elpa/epc-20140609.2234/epcs.el")
+;;;;;;  (21516 8661 313741 700000))
 
 ;;;***
 
