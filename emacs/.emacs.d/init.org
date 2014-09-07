@@ -683,7 +683,7 @@
      (defun knu-w3m-cleanup ()
        (save-excursion
          (goto-char (point-min))
-         (while (re-search-forward "^ *\\*+ *$\\| +$")
+         (while (re-search-forward "^ *\\*+ *$\\| +$" nil t)
            (replace-match ""))))
 
      (defun knu-w3m-orgify ()
