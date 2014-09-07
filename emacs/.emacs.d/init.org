@@ -50,7 +50,8 @@
 #+BEGIN_SRC emacs-lisp
 (display-time-mode t)
 (scroll-bar-mode -1)
-(fringe-mode '(0 . 1))
+(fringe-mode '(0 . nil))
+;;(fringe-mode (quote (0)) nil (fringe))
 (column-number-mode 1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -114,8 +115,8 @@
 (defvar hcz-set-cursor-color-buffer "")
 (defun hcz-set-cursor-color-according-to-mode ()
   "change cursor color according to some minor modes."
-  ;; set-cursor-color is somewhat costly, so we only call it when needed:
-  (let ((color (if (and (boundp 'knu-org-mode-map) (org-inside-LaTeX-fragment-p)) "#2a6"
+  (let ((color (if (and (boundp 'knu-org-mode-map)
+                        (org-inside-LaTeX-fragment-p)) "#2a6"
                  (if buffer-read-only "white"
                    (if overwrite-mode "#fa0"
                      "#909")))))
@@ -163,22 +164,12 @@
       jedi:environment-virtualenv
       (append python-environment-virtualenv
               '("--python" "python3")))
-(setq
- ac-auto-start 2
- ac-override-local-map nil
- ac-use-menu-map t
- ac-candidate-limit 20)
 (setq python-shell-interpreter "python3")
 ;;(add-hook 'python-mode-hook 'auto-complete-mode)
 (add-hook 'python-mode-hook
           (lambda ()
             (jedi:setup)
-            (jedi:ac-setup)
-            (flycheck-mode)
-            ;;            (local-set-key "\C-cd" 'jedi:show-doc)
-            ;;          (local-set-key (kbd "M-SPC") 'jedi:complete)
-            ;;            (local-set-key (kbd "M-.") 'jedi:goto-definition)
-            ))
+            (jedi:ac-setup)))
 #+END_SRC
 
 ** org
@@ -187,20 +178,20 @@
 
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'org
-     '(mapc (lambda (x) (define-key org-mode-map (kbd (car x)) (cadr x)))
-           '(("<f5>" knu-org-latex-snip) ("<f6>" knu-org-del-overlay)
-             ("<M-left>" nil) ("<M-right>" nil)
-             ("α" "\\alpha") ("β" "\\beta")
-             ("γ" "\\gamma") ("δ" "\\delta")
-             ("ε" "\\epsilon") ("ζ" "\\zeta")
-             ("θ" "\\theta") ("ι" "\\iota")
-             ("κ" "\\kappa") ("λ" "\\lambda")
-             ("μ" "\\mu") ("ν" "\\nu")
-             ("ξ" "\\xi") ("ο" "\\omicron")
-             ("π" "\\pi") ("ρ" "\\rho")
-             ("σ" "\\sigma") ("τ" "\\tau")
-             ("φ" "\\phi") ("χ" "\\chi")
-             ("ψ" "\\psi") ("ω" "\\omega"))))
+  '(mapc (lambda (x) (define-key org-mode-map (kbd (car x)) (cadr x)))
+         '(("<f5>" knu-org-latex-snip) ("<f6>" knu-org-del-overlay)
+           ("<M-left>" nil) ("<M-right>" nil)
+           ("α" "\\alpha") ("β" "\\beta")
+           ("γ" "\\gamma") ("δ" "\\delta")
+           ("ε" "\\epsilon") ("ζ" "\\zeta")
+           ("θ" "\\theta") ("ι" "\\iota")
+           ("κ" "\\kappa") ("λ" "\\lambda")
+           ("μ" "\\mu") ("ν" "\\nu")
+           ("ξ" "\\xi") ("ο" "\\omicron")
+           ("π" "\\pi") ("ρ" "\\rho")
+           ("σ" "\\sigma") ("τ" "\\tau")
+           ("φ" "\\phi") ("χ" "\\chi")
+           ("ψ" "\\psi") ("ω" "\\omega"))))
 #+END_SRC
 
 *** functions
@@ -246,14 +237,16 @@
                (narrow-to-region beg end)
                (goto-char beg)
                (knu-org-format-latex
-                (concat org-latex-preview-ltxpng-directory (file-name-sans-extension
-                                                            (file-name-nondirectory
-                                                             buffer-file-name)))
+                (concat org-latex-preview-ltxpng-directory
+                        (file-name-sans-extension
+                         (file-name-nondirectory
+                          buffer-file-name)))
                 default-directory 'overlays nil at 'forbuffer
                 org-latex-create-formula-image-program pos at-snippet))))))
 
-     (defun knu-org-format-latex (prefix &optional dir overlays msg at
-                                         forbuffer processing-type pos at-snippet)
+     (defun knu-org-format-latex (prefix &optional
+                                         dir overlays msg at forbuffer
+                                         processing-type pos at-snippet)
        (if (and overlays (fboundp 'clear-image-cache)) (clear-image-cache))
        (let* ((prefixnodir (file-name-nondirectory prefix))
               (absprefix (expand-file-name prefix dir))
@@ -290,9 +283,11 @@
                        ;; Get the colors from the face at point.
                        (goto-char beg)
                        (when (eq fg 'auto)
-                         (setq fg (face-attribute face :foreground nil 'default)))
+                         (setq fg (face-attribute face :foreground nil
+                                                  'default)))
                        (when (eq bg 'auto)
-                         (setq bg (face-attribute face :background nil 'default)))
+                         (setq bg (face-attribute face :background nil
+                                                  'default)))
                        (setq optnew (copy-sequence opt))
                        (plist-put optnew :foreground fg)
                        (plist-put optnew :background bg))
@@ -332,7 +327,10 @@
                                 (make-glyph (vector 'png :file movefile))))
                            (overlay-put
                             ov 'display
-                            (list 'image :type 'png :file movefile :ascent 'center)))
+                            (list 'image
+                                  :type 'png
+                                  :file movefile
+                                  :ascent 'center)))
                          (push ov org-latex-fragment-image-overlays)
                          (goto-char end))
                      (delete-region beg end)
@@ -341,7 +339,8 @@
                                        (replace-regexp-in-string
                                         "\"" "" txt)
                                        'org-latex-src-embed-type
-                                       (if block-type 'paragraph 'character))))))))))))))
+                                       (if block-type 'paragraph
+                                         'character))))))))))))))
 #+END_SRC
 
 *** misc
@@ -821,13 +820,38 @@
 
 * minor-modes
 
+** autocomplete
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'popup-tip-face nil
+                    :foreground "#000"
+                    :background "#5cd")
+(set-face-attribute 'popup-face nil
+                    :foreground "#ccc"
+                    :background "#333")
+(set-face-attribute 'popup-menu-selection-face nil
+                    :foreground "#cff"
+                    :background "#555")
+(setq ac-override-local-map nil
+      ac-use-menu-map t
+      ac-candidate-limit 20)
+#+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
+(global-flycheck-mode 1)
 (eval-after-load 'flycheck
   '(progn
-     (set-face-attribute 'flycheck-error nil :background "#800" :underline nil :weight 'ultrabold)
-     (set-face-attribute 'flycheck-warning nil :background "#660" :underline nil :weight 'ultrabold)
-     (set-face-attribute 'flycheck-info nil :background "#008" :underline nil :weight 'ultrabold)))
+     (set-face-attribute 'flycheck-error nil
+                         :background "#800"
+                         :underline nil
+                         :weight 'ultrabold)
+     (set-face-attribute 'flycheck-warning nil
+                         :background "#660"
+                         :underline nil
+                         :weight 'ultrabold)
+     (set-face-attribute 'flycheck-info nil
+                         :background "#008"
+                         :underline nil
+                         :weight 'ultrabold)))
 #+END_SRC
 ** keyfreq
 
