@@ -679,6 +679,12 @@
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'w3m
   '(progn
+     (defun knu-w3m-cleanup ()
+       (save-excursion
+         (goto-char (point-min))
+         (while (re-search-forward "^ *\\*+ *$\\| +$")
+           (replace-match ""))))
+
      (defun knu-w3m-orgify ()
        (require 'org)
        (setq knu-headings nil
@@ -1075,7 +1081,9 @@
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'c-mode-hook 'paredit-mode)
-(add-hook 'w3m-fontify-after-hook 'knu-w3m-orgify)
+(add-hook 'w3m-fontify-after-hook (lambda ()
+                                    (knu-w3m-cleanup)
+                                    (knu-w3m-orgify)))
 (add-hook 'kill-emacs-hook (lambda ()
                              (when (fboundp 'gnus-group-exit)
                                (defun gnus-y-or-n-p (yes) yes)
