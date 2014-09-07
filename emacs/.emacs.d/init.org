@@ -16,7 +16,6 @@
 #+BEGIN_SRC emacs-lisp
 (mapc (lambda (x) (add-to-list 'load-path x))
       '("~/.emacs.d/lisp/"
-        "~/.emacs.d/predict/"
         "~/git/indentation-tree.el/"
         "~/git/indentation-tree/"
         "~/git/lilypond-pretty-print/"
@@ -28,13 +27,14 @@
 
 #+BEGIN_SRC emacs-lisp
 (mapc 'require '(hl-defined
-                 predictive
                  indentation-tree
                  lilypond-pretty-print
                  pretty-symbols
                  yasnippet
                  macro-type
-                 org-panes))
+                 org-panes
+                 python-mode))
+(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
 #+END_SRC
 
 ** theming
@@ -50,7 +50,7 @@
 #+BEGIN_SRC emacs-lisp
 (display-time-mode t)
 (scroll-bar-mode -1)
-(fringe-mode 0)
+(fringe-mode '(0 . 1))
 (column-number-mode 1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -152,7 +152,33 @@
 
 ** python
 #+BEGIN_SRC emacs-lisp
+(require 'jedi)
+(require 'auto-complete)
+(setq python-environment-virtualenv
+      (append python-environment-virtualenv
+              '("--python" "python3")))
+(setq py-shell-name "python3")
+(setq python-shell-exec-path "python3")
+(setq jedi:environment-root "jedi"
+      jedi:environment-virtualenv
+      (append python-environment-virtualenv
+              '("--python" "python3")))
+(setq
+ ac-auto-start 2
+ ac-override-local-map nil
+ ac-use-menu-map t
+ ac-candidate-limit 20)
 (setq python-shell-interpreter "python3")
+;;(add-hook 'python-mode-hook 'auto-complete-mode)
+(add-hook 'python-mode-hook
+          (lambda ()
+            (jedi:setup)
+            (jedi:ac-setup)
+            (flycheck-mode)
+            ;;            (local-set-key "\C-cd" 'jedi:show-doc)
+            ;;          (local-set-key (kbd "M-SPC") 'jedi:complete)
+            ;;            (local-set-key (kbd "M-.") 'jedi:goto-definition)
+            ))
 #+END_SRC
 
 ** org
@@ -795,6 +821,14 @@
 
 * minor-modes
 
+** flycheck
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'flycheck
+  '(progn
+     (set-face-attribute 'flycheck-error nil :background "#800" :underline nil :weight 'ultrabold)
+     (set-face-attribute 'flycheck-warning nil :background "#660" :underline nil :weight 'ultrabold)
+     (set-face-attribute 'flycheck-info nil :background "#008" :underline nil :weight 'ultrabold)))
+#+END_SRC
 ** keyfreq
 
 #+BEGIN_SRC emacs-lisp
