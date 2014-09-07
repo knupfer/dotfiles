@@ -33,8 +33,9 @@
                  yasnippet
                  macro-type
                  org-panes
-                 python-mode))
-(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
+  ;;               python-mode
+))
+;;(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
 #+END_SRC
 
 ** theming
@@ -937,8 +938,8 @@
 ** cua
 
 #+BEGIN_SRC emacs-lisp
-(cua-mode 1)
-(setq cua-normal-cursor-color "black")
+;;(cua-mode 1)
+;;(setq cua-normal-cursor-color "black")
 #+END_SRC
 
 ** flyspell
