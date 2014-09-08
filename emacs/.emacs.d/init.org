@@ -1081,6 +1081,7 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'c-mode-hook 'paredit-mode)
 (add-hook 'w3m-fontify-after-hook (lambda ()
                                     (knu-w3m-cleanup)
