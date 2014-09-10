@@ -21,7 +21,8 @@
         "~/git/indentation-tree/"
         "~/git/lilypond-pretty-print/"
         "~/git/macro-type/"
-        "~/git/org-panes/"))
+        "~/git/org-panes/"
+        "~/git/hs-align/"))
 #+END_SRC
 
 ** require packages
@@ -34,8 +35,9 @@
                  yasnippet
                  macro-type
                  org-panes
-  ;;               python-mode
-))
+                 hs-align
+                 ;;               python-mode
+                 ))
 ;;(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
 #+END_SRC
 
@@ -153,6 +155,11 @@
 
 * major-modes
 
+** haskell
+#+BEGIN_SRC emacs-lisp
+(eval-after-load "haskell-mode"
+  '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+#+END_SRC
 ** python
 #+BEGIN_SRC emacs-lisp
 (require 'jedi)
@@ -1082,8 +1089,8 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook (lambda () (turn-on-haskell-indentation)
-                               (hs-align-mode)))
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(add-hook 'haskell-mode-hook 'hs-align-mode)
 (add-hook 'c-mode-hook 'paredit-mode)
 (add-hook 'w3m-fontify-after-hook (lambda ()
                                     (knu-w3m-cleanup)
