@@ -9,6 +9,7 @@
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("marmalade" . "http://marmalade-repo.org/packages/")
         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(setq indent-tab-mode nil)
 #+END_SRC
 
 ** loadpath
@@ -1081,7 +1082,8 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook (lambda () (turn-on-haskell-indentation)
+                               (hs-align-mode)))
 (add-hook 'c-mode-hook 'paredit-mode)
 (add-hook 'w3m-fontify-after-hook (lambda ()
                                     (knu-w3m-cleanup)
@@ -1141,8 +1143,7 @@
                         (java-mode . "java")
                         (awk-mode . "awk")
                         (other . "gnu"))
-      ess-default-style 'C++
-      indent-tabs-mode nil)
+      ess-default-style 'C++)
 
 (setq kill-do-not-save-duplicates t)
 #+END_SRC
