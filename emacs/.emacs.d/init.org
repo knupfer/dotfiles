@@ -855,16 +855,42 @@
 (global-flycheck-mode 1)
 (eval-after-load 'flycheck
   '(progn
+     (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
+
+     (flycheck-define-checker haskell-hlint-extensions
+       "Use hlint extensions
+
+See URL `https://github.com/ndmitchell/hlint'."
+       :command ("hlint" "--hint=Generalise" "--hint=Dollar" source-inplace)
+       :error-patterns
+       ((info line-start
+              (file-name) ":" line ":" column
+              ": Warning: "
+              (message (one-or-more not-newline)
+                       (one-or-more "\n" (one-or-more not-newline)))
+              line-end)
+        (info line-start
+              (file-name) ":" line ":" column
+              ": Error: "
+              (message (one-or-more not-newline)
+                       (one-or-more "\n" (one-or-more not-newline)))
+              line-end))
+       :modes haskell-mode
+       :next-checkers ((t . haskell-ghc)))
+
      (set-face-attribute 'flycheck-error nil
-                         :background "#800"
+                         :foreground "#D00"
+                         :background "#222"
                          :underline nil
                          :weight 'ultrabold)
      (set-face-attribute 'flycheck-warning nil
-                         :background "#660"
+                         :foreground "#CC0"
+                         :background "#222"
                          :underline nil
                          :weight 'ultrabold)
      (set-face-attribute 'flycheck-info nil
-                         :background "#008"
+                         :foreground "#00F"
+                         :background "#222"
                          :underline nil
                          :weight 'ultrabold)))
 #+END_SRC
