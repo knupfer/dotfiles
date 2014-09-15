@@ -1028,6 +1028,7 @@ See URL `https://github.com/ndmitchell/hlint'."
         (?κ knu-custom "\\\\kappa" (org-mode latex-mode))
         (?K knu-custom "\\\\Kappa" (org-mode latex-mode))
         (?λ knu-custom "\\\\lambda" (org-mode latex-mode))
+        (?λ knu-custom "\\\\" (haskell-mode))
         (?Λ knu-custom "\\\\Lambda" (org-mode latex-mode))
         (?μ knu-custom "\\\\mu" (org-mode latex-mode))
         (?Μ knu-custom "\\\\Mu" (org-mode latex-mode))
@@ -1115,8 +1116,10 @@ See URL `https://github.com/ndmitchell/hlint'."
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-(add-hook 'haskell-mode-hook 'hs-align-mode)
+(add-hook 'haskell-mode-hook (lambda () (haskell-indentation-mode)
+                               (hs-align-mode)
+                               (pretty-symbols-mode)))
+
 (add-hook 'c-mode-hook 'paredit-mode)
 (add-hook 'w3m-fontify-after-hook (lambda ()
                                     (knu-w3m-cleanup)
