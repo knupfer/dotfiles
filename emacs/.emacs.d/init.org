@@ -857,6 +857,30 @@
   '(progn
      (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
 
+     (defun flycheck-mode-line-status-text (&optional status)
+       "Get a text describing STATUS for use in the mode line.
+
+STATUS defaults to `flycheck-last-status-change' if omitted or
+nil."
+       (let ((text
+              (pcase (or status flycheck-last-status-change)
+                (`not-checked "")
+                (`no-checker " [  -  ]")
+                (`running " [  *  ]")
+                (`errored " [  !  ]")
+                (`finished
+                 (if flycheck-current-errors
+                     (let ((error-counts (flycheck-count-errors
+                                          flycheck-current-errors)))
+                       (format " [%s:%s:%s]"
+                               (or (cdr (assq 'error error-counts)) " ")
+                               (or (cdr (assq 'warning error-counts)) " ")
+                               (or (cdr (assq 'info error-counts)) " ")))
+                   ""))
+                (`interrupted " [  -  ]")
+                (`suspicious " [  ?  ]"))))
+         text))
+
      (flycheck-define-checker haskell-hlint-extensions
        "Use hlint extensions
 
