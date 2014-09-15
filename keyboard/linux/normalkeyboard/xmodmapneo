@@ -23,7 +23,6 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 clear Lock
 clear Mod2
-clear Mod3
 clear Mod5
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Shift
@@ -33,6 +32,7 @@ keycode 56 =  Control_L Control_L Control_L Control_L Control_L Control_L Contro
 add Control = Control_L
 keycode 57 =  Control_R Control_R Control_R Control_R Control_R Control_R Control_R Control_R
 keycode 65 = Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L Alt_L
+
 add Control = Control_R
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Mod3
@@ -45,6 +45,7 @@ keycode 134 =  ISO_Group_Shift ISO_Group_Shift ISO_First_Group NoSymbol
 keysym less = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift ISO_Level3_Lock NoSymbol
 keysym ISO_Level3_Shift = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift ISO_Level3_Lock NoSymbol
 keycode 54 = ISO_Level3_Shift ISO_Level3_Shift ISO_Group_Shift ISO_Group_Shift ISO_Level3_Lock NoSymbol
+keycode 108 = Super_L Super_L Super_L Super_L Super_L Super_L Super_L Super_L
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Alt key
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
