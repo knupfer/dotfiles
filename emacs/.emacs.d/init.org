@@ -577,12 +577,13 @@
            gnus-thread-sort-functions '((not gnus-thread-sort-by-date))
            gnus-summary-line-format
            "%U%R%z %5{│%}%6{ %d %}%5{│%} %-23,23f %5{│%}%* %5{%B%}%s\\n"
-           gnus-sum-thread-tree-false-root " • "
-           gnus-sum-thread-tree-indent " "
+           gnus-sum-thread-tree-false-root "• "
+           gnus-sum-thread-tree-indent "  "
+           gnus-sum-thread-tree-single-indent "  "
            gnus-sum-thread-tree-leaf-with-other "├─▶ "
            gnus-sum-thread-tree-root "• "
            gnus-sum-thread-tree-single-leaf "└─▶ "
-           gnus-sum-thread-tree-vertical "│"
+           gnus-sum-thread-tree-vertical "│ "
            gnus-group-line-format "%M%S%p%P%5y:%B%(%G%)\n"
            gnus-posting-styles '((message-news-p
                                   (name "quxbam")
