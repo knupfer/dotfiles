@@ -735,8 +735,7 @@
                   (concat
                    (propertize
                     (make-string (1- level) ?*) 'face face1)
-                   (propertize (concat "* " heading "\n\n") 'face face2))))))
-           (hide-sublevels 10))))
+                   (propertize (concat "* " heading "\n\n") 'face face2)))))))))
 
      (defun w3m-filter-find-relationships (url next previous)
        "Add <LINK> tags if they don't yet exist."
