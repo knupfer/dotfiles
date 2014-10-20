@@ -442,7 +442,8 @@
 \\AfterEndEnvironment{gather}{\\end{mdframed}}
 \\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
 \\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
-\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}")
+\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
+\\newcommand{\\e}{\\mathrm{e}}")
 #+END_SRC
 
 *** faces
