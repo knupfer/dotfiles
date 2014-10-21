@@ -398,7 +398,6 @@
                            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
       org-latex-inactive-timestamp-format "\\\\\\hfill\\textcolor{gray}{\\textbf{%s}}\\\\"
       org-latex-preview-ltxpng-directory "~/ltxpreview/"
-      org-list-allow-alphabetical t
       org-list-empty-line-terminates-plain-lists t
       org-log-done 'time
       org-replace-disputed-keys t
