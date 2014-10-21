@@ -441,7 +441,8 @@
 \\AfterEndEnvironment{gather}{\\end{mdframed}}
 \\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
 \\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
-\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}")
+\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
+\\newcommand{\\e}{\\mathrm{e}}")
 #+END_SRC
 
 *** faces
@@ -520,7 +521,8 @@
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
-      starttls-use-gnutls t)
+      starttls-use-gnutls t
+)
  (setq mail-user-agent (quote gnus-user-agent))
 
 (eval-after-load "mm-decode"
@@ -1051,7 +1053,7 @@ See URL `https://github.com/ndmitchell/hlint'."
         (?κ knu-custom "\\\\kappa" (org-mode latex-mode))
         (?K knu-custom "\\\\Kappa" (org-mode latex-mode))
         (?λ knu-custom "\\\\lambda" (org-mode latex-mode))
-        (?λ knu-custom "\\\\" (haskell-mode))
+        (?∈ knu-custom "\\\\in" (org-mode latex-mode))
         (?Λ knu-custom "\\\\Lambda" (org-mode latex-mode))
         (?μ knu-custom "\\\\mu" (org-mode latex-mode))
         (?Μ knu-custom "\\\\Mu" (org-mode latex-mode))
@@ -1104,7 +1106,46 @@ See URL `https://github.com/ndmitchell/hlint'."
         (?∞ knu-custom "\\\\infty" (org-mode latex-mode))
         (?∂ knu-custom "\\\\partial" (org-mode latex-mode))
         (?≡ knu-custom "\\\\equiv" (org-mode latex-mode))
-        (?≪ knu-custom "\\\\ll" (org-mode latex-mode))))
+        (?≪ knu-custom "\\\\ll" (org-mode latex-mode))
+        (?Ø knu-custom "()" (haskell-mode))
+        (?Ø knu-custom "\\[\\]" (haskell-mode))
+        (?─ knu-custom "--" (haskell-mode))
+        (?∃ knu-custom "exists" (haskell-mode))
+        (?⋙ knu-custom ">>>" (haskell-mode))
+        (?⋘ knu-custom "<<<" (haskell-mode))
+        (?⪜ knu-custom ">>=" (haskell-mode))
+        (?⋇ knu-custom "<\\*>" (haskell-mode))
+        (?∑ knu-custom "sum" (haskell-mode))
+        (?∀ knu-custom "forall" (haskell-mode))
+        (?→ knu-custom "->" (haskell-mode))
+        (?← knu-custom "<-" (haskell-mode))
+        (?∷ knu-custom "::" (haskell-mode))
+        (?⇛ knu-custom "==>" (haskell-mode))
+        (?⇚ knu-custom "<==" (haskell-mode))
+        (?≫ knu-custom ">>" (haskell-mode))
+        (?≪ knu-custom "<<" (haskell-mode))
+        (?≥ knu-custom ">=" (haskell-mode))
+        (?≡ knu-custom "==" (haskell-mode))
+        (?≤ knu-custom "<=" (haskell-mode))
+        (?⇒ knu-custom "=>" (haskell-mode))
+        (?∈ knu-custom "`elem`" (haskell-mode))
+        (?∈ knu-custom "`member`" (haskell-mode))
+        (?∉ knu-custom "`notMember`" (haskell-mode))
+        (?∉ knu-custom "`notElem`" (haskell-mode))
+        (?⧺ knu-custom "++" (haskell-mode))
+        (?∘ knu-custom " \\. " (haskell-mode))
+        (?≢ knu-custom "/=" (haskell-mode))
+        (?… knu-custom "\\.\\." (haskell-mode))
+        (?∨ knu-custom "||" (haskell-mode))
+        (?∧ knu-custom "&&" (haskell-mode))
+        (?ℓ knu-custom "length" (haskell-mode))
+        (?⅏ knu-custom "String" (haskell-mode))
+        (?ℶ knu-custom "where" (haskell-mode))
+        (?ℤ knu-custom "Integer" (haskell-mode))
+        (?ℤ knu-custom "Int" (haskell-mode))
+        (?ℚ knu-custom "Double" (haskell-mode))
+        (?ℚ knu-custom "Float" (haskell-mode))
+        (?λ knu-custom "\\\\" (haskell-mode))))
 #+END_SRC
 
 ** highlight-parentheses
