@@ -103,7 +103,7 @@
                     :height 100
                     :width 'normal
                     :foundry "unknown"
-                    :family "Source Code Pro")
+                    :family "DejaVu Sans Mono")
 (set-face-attribute 'fringe nil
                     :background "black"
                     :foreground "#0ff")
