@@ -857,6 +857,7 @@
 (eval-after-load 'flycheck
   '(progn
      (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
+     (add-to-list 'flycheck-checkers 'haskell-ghc-2)
 
      (defun flycheck-mode-line-status-text (&optional status)
        "Get a text describing STATUS for use in the mode line.
@@ -882,6 +883,7 @@ nil."
                 (`suspicious " [  ?  ]"))))
          text))
 
+
      (flycheck-define-checker haskell-hlint-extensions
        "Use hlint extensions
 
@@ -901,7 +903,54 @@ See URL `https://github.com/ndmitchell/hlint'."
                        (one-or-more "\n" (one-or-more not-newline)))
               line-end))
        :modes haskell-mode
-       :next-checkers ((t . haskell-ghc)))
+       :next-checkers ((t . haskell-ghc-2)))
+
+
+(flycheck-define-checker haskell-ghc-2
+  "A Haskell syntax and type checker using ghc.
+
+See URL `http://www.haskell.org/ghc/'."
+  :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults"
+            (option-flag "-no-user-package-db"
+                         flycheck-ghc-no-user-package-database)
+            (option-list "-package-db" flycheck-ghc-package-databases)
+            (option-list "-i" flycheck-ghc-search-path concat)
+            ;; Include the parent directory of the current module tree, to
+            ;; properly resolve local imports
+            (eval (concat
+                   "-i"
+                   (flycheck-module-root-directory
+                    (flycheck-find-in-buffer flycheck-haskell-module-re))))
+            (option-list "-X" flycheck-ghc-language-extensions concat)
+            ;; Force GHC to treat the file as Haskell file, even if it doesn't
+            ;; have an extension.  Otherwise GHC would fail on files without an
+            ;; extension
+            "-x" "hs" source)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ":" column ":"
+            (or " " "\n    ") "Warning:" (optional "\n")
+            (message
+             (one-or-more " ") (one-or-more not-newline)
+             (zero-or-more "\n"
+                           (one-or-more " ")
+                           (one-or-more not-newline)))
+            line-end)
+   (error line-start (file-name) ":" line ":" column ":"
+          (or (message (one-or-more not-newline))
+              (and "\n"
+                   (message
+                    (one-or-more " ") (one-or-more not-newline)
+                    (zero-or-more "\n"
+                                  (one-or-more " ")
+                                  (one-or-more not-newline)))))
+          line-end))
+  :error-filter
+  (lambda (errors)
+    (flycheck-sanitize-errors (flycheck-dedent-error-messages errors)))
+  :modes haskell-mode
+  :next-checkers ((warning . haskell-hlint)))
+
+
 
      (set-face-attribute 'flycheck-error nil
                          :foreground "#D00"
