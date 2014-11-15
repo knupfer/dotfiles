@@ -155,6 +155,12 @@
 
 * major-modes
 
+** org-caldav
+#+BEGIN_SRC emacs-lisp
+(setq org-caldav-url "https://80.240.140.83/owncloud/remote.php/caldav/calendars/quxbar")
+(setq org-caldav-calendar-id "private")
+(setq org-caldav-inbox "/home/quxbar/org/calendar.org")
+#+END_SRC
 ** haskell
 #+BEGIN_SRC emacs-lisp
 (eval-after-load "haskell-mode"
@@ -910,7 +916,7 @@ See URL `https://github.com/ndmitchell/hlint'."
   "A Haskell syntax and type checker using ghc.
 
 See URL `http://www.haskell.org/ghc/'."
-  :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults"
+  :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
             (option-flag "-no-user-package-db"
                          flycheck-ghc-no-user-package-database)
             (option-list "-package-db" flycheck-ghc-package-databases)
@@ -1091,6 +1097,16 @@ See URL `http://www.haskell.org/ghc/'."
         (?κ "\\kappa") (?K "\\Kappa") (?⊥ "\\perp") (10096 "\\left(") (10097 "\\right)")
         (12304 "\\left\\[") (12305 "\\right]") (?ħ "\\hbar") (?ᵃ "^a")
         (?ᵇ "^b") (?ᶜ "^c") (?ᵈ "^d") (?ᵉ "^e") (?ᶠ "^f")
+        (?Ȧ "\\dot{A}") (?ȧ "\\dot{a}") (?Ḃ "\\dot{B}") (?ḃ "\\dot{b}")
+        (?Ċ "\\dot{C}") (?ċ "\\dot{c}") (?Ḋ "\\dot{D}") (?ḋ "\\dot{d}")
+        (?Ė "\\dot{E}") (?ė "\\dot{e}") (?Ḟ "\\dot{F}") (?ḟ "\\dot{f}")
+        (?Ġ "\\dot{G}") (?ġ "\\dot{g}") (?Ḣ "\\dot{H}") (?ḣ "\\dot{h}")
+        (?İ "\\dot{I}") (?Ṁ "\\dot{M}") (?ṁ "\\dot{m}")
+        (?Ṅ "\\dot{N}") (?ṅ "\\dot{n}") (?Ȯ "\\dot{O}") (?ȯ "\\dot{o}")
+        (?Ṗ "\\dot{P}") (?ṗ "\\dot{p}") (?Ṙ "\\dot{R}") (?ṙ "\\dot{r}")
+        (?Ṡ "\\dot{S}") (?ṡ "\\dot{s}") (?Ṫ "\\dot{T}") (?ṫ "\\dot{t}")
+        (?Ẇ "\\dot{W}") (?ẇ "\\dot{w}") (?Ẋ "\\dot{X}") (?ẋ "\\dot{x}")
+        (?Ẏ "\\dot{Y}") (?ẏ "\\dot{y}") (?Ż "\\dot{Z}") (?ż "\\dot{z}")
         (?ᵍ "^g") (?ʰ "^h") (?ⁱ "^i") (?ʲ "^j") (?ᵏ "^k")
         (?ˡ "^l") (?ᵐ "^m") (?ⁿ "^n") (?ᵒ "^o") (?ᵖ "^p")
         (?ʳ "^r") (?ˢ "^s") (?ᵗ "^t") (?ᵘ "^u") (?ᵛ "^v")
