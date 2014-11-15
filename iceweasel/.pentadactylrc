@@ -11,6 +11,7 @@ map -count -modes=b <A-x> -builtin :
 map -count -modes=b <C-g> -builtin <Esc>
 map -modes=b <C-x><C-c> -ex :exit
 map -modes=b <C-h> -ex :help
+set defsearch=duckduckgo
 set guioptions=bCs
 set hintkeys=tarenishTARENISHdoDO
 set showtabline=multitab
