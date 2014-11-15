@@ -19,3 +19,4 @@ emacs/.emacs.d/auto-save-list/
 /emacs/.emacs.d/init.elc
 /emacs/.emacs.d/tramp
 emacs/.emacs.d/.python-environments/
+/emacs/.emacs.d/org-caldav-backup.org
