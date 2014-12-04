@@ -31,8 +31,7 @@ column number.  (A case in which this might be useful is when you want to
 fill comments at, for example, column 70, but want a vertical rule at
 column 80 or 100 to indicate the maximum line length for code.)  The
 default behavior (showing the indicator at the fill column) is specified
-by setting fci-rule-column to nil.  Note that this variable becomes buffer
-local when set.
+by setting fci-rule-column to nil.
 
 On graphical displays the fill-column rule is drawn using a bitmap
 image.  Its color is controlled by the variable `fci-rule-color', whose
@@ -157,5 +156,5 @@ Acknowledgements
 Thanks to Ami Fischman, Christopher Genovese, Michael Hoffman, José
 Alfredo Romero L., R. Lange, Joe Lisee, José Lombera, Frank Meffert,
 Mitchell Peabody, sheijk, and an anonymous BT subscriber for bug reports
-and suggestions.  Special thanks to lomew, David Röthlisberger, and Pär
-Wieslander for code contributions.
+and suggestions.  Special thanks to lomew, John Lamp, David Röthlisberger,
+and Pär Wieslander for code contributions.
