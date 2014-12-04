@@ -13,7 +13,7 @@ map -modes=b <C-x><C-c> -ex :exit
 map -modes=b <C-h> -ex :help
 set defsearch=duckduckgo
 set guioptions=bCs
-set hintkeys=tarenishTARENISHdoDO
+set hintkeys=tarenish
 set showtabline=multitab
 
 " vim: set ft=pentadactyl:
