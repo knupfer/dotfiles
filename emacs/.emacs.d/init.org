@@ -844,6 +844,12 @@
 
 * minor-modes
 
+** fill-column-indicator
+#+BEGIN_SRC emacs-lisp
+(setq fci-always-use-textual-rule t
+      fci-rule-column 80
+      fci-rule-color "#cc0000")
+#+END_SRC
 ** autocomplete
 #+BEGIN_SRC emacs-lisp
 (set-face-attribute 'popup-tip-face nil
