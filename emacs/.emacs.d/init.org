@@ -993,7 +993,7 @@ See URL `http://www.haskell.org/ghc/'."
 
 #+BEGIN_SRC emacs-lisp
 (setq whitespace-style '(face trailing tabs)
-      whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\)")
+      whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\|\\\\underline\\)")
 
 (eval-after-load 'whitespace
   '(set-face-attribute 'whitespace-tab nil
@@ -1103,6 +1103,7 @@ See URL `http://www.haskell.org/ghc/'."
         (?ε "\\epsilon") (?Ε "\\Epsilon") (?ζ "\\zeta") (?Ζ "\\Zeta") (?η "\\eta")
         (?Η "\\Eta") (?θ "\\theta") (?Θ "\\Theta") (?ι "\\iota") (?Ι "\\Iota")
         (?κ "\\kappa") (?K "\\Kappa") (?⊥ "\\perp") (10096 "\\left(") (10097 "\\right)")
+        (?_ "\\underline")
         (12304 "\\left\\[") (12305 "\\right]") (?ħ "\\hbar") (?ᵃ "^a")
         (?ᵇ "^b") (?ᶜ "^c") (?ᵈ "^d") (?ᵉ "^e") (?ᶠ "^f")
         (?Ȧ "\\dot{A}") (?ȧ "\\dot{a}") (?Ḃ "\\dot{B}") (?ḃ "\\dot{b}")
