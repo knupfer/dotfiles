@@ -1179,9 +1179,13 @@ See URL `http://www.haskell.org/ghc/'."
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook (lambda () (haskell-indentation-mode)
-                               (hs-align-mode)
+(add-hook 'haskell-mode-hook (lambda () (structured-haskell-mode)
+                             ;; (hs-align-mode)
+                               (ghc-init)
+                               (company-mode)
                                (pretty-symbols-mode)))
+(add-hook 'structured-haskell-mode-hook (lambda () (define-key shm-map (kbd "RET") 'shm/newline-indent)))
+(add-to-list 'company-backends 'company-ghc)
 
 (add-hook 'c-mode-hook 'paredit-mode)
 (add-hook 'w3m-fontify-after-hook (lambda ()
