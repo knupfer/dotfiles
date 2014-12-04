@@ -197,7 +197,7 @@
 (eval-after-load 'org
   '(mapc (lambda (x) (define-key org-mode-map (kbd (car x)) (cadr x)))
          '(("<f5>" knu-org-latex-snip) ("<f6>" knu-org-del-overlay)
-           ("<M-left>" nil) ("<M-right>" nil)
+           ("<M-left>" org-shiftmetaleft) ("<M-right>" org-shiftmetaright)
            ("α" "\\alpha") ("β" "\\beta")
            ("γ" "\\gamma") ("δ" "\\delta")
            ("ε" "\\epsilon") ("ζ" "\\zeta")
