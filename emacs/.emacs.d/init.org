@@ -22,7 +22,8 @@
         "~/git/lilypond-pretty-print/"
         "~/git/macro-type/"
         "~/git/org-panes/"
-        "~/git/hs-align/"))
+        "~/git/hs-align/"
+        "~/git/haskell-emacs/"))
 #+END_SRC
 
 ** require packages
@@ -36,9 +37,10 @@
                  macro-type
                  org-panes
                  hs-align
-                 ;;               python-mode
-                 ))
-;;(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
+                 floobits
+                 company
+                 haskell-emacs))
+(haskell-emacs-init)
 #+END_SRC
 
 ** theming
