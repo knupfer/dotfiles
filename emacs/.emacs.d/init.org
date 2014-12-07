@@ -9,7 +9,6 @@
       '(("gnu" . "http://elpa.gnu.org/packages/")
         ("marmalade" . "http://marmalade-repo.org/packages/")
         ("melpa" . "http://melpa.milkbox.net/packages/")))
-(setq indent-tab-mode nil)
 #+END_SRC
 
 ** loadpath
@@ -35,11 +34,17 @@
                  pretty-symbols
                  yasnippet
                  macro-type
+                 org
                  org-panes
                  hs-align
-                 floobits
                  company
-                 haskell-emacs))
+                 haskell-emacs
+                 ace-jump-mode))
+#+END_SRC
+
+** initialize packages
+
+#+BEGIN_SRC emacs-lisp
 (haskell-emacs-init)
 #+END_SRC
 
@@ -57,7 +62,6 @@
 (display-time-mode t)
 (scroll-bar-mode -1)
 (fringe-mode '(0 . nil))
-;;(fringe-mode (quote (0)) nil (fringe))
 (column-number-mode 1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -69,7 +73,6 @@
 (setq font-use-system-font nil
       inhibit-startup-screen t
       split-height-threshold 500
-      truncate-lines t
       visual-line-fringe-indicators '(nil right-curly-arrow)
       display-time-24hr-format t)
 #+END_SRC
@@ -77,40 +80,73 @@
 *** faces
 
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'mode-line nil
-                    :background "#033"
-                    :foreground "#9bb"
-                    :box nil)
-(set-face-attribute 'mode-line-buffer-id nil
-                    :foreground "#99dddd"
-                    :box nil :weight 'bold)
-(set-face-attribute 'mode-line-inactive nil
-                    :inherit 'mode-line
-                    :background "gray32"
-                    :foreground "black"
-                    :box nil
-                    :weight 'light)
-(set-face-attribute 'default nil
-                    :inherit nil
-                    :stipple nil
-                    :background "#000000"
-                    :foreground "#ffffff"
-                    :inverse-video nil
-                    :box nil
-                    :strike-through nil
-                    :overline nil
-                    :underline nil
-                    :slant 'normal
-                    :weight 'normal
-                    :height 100
-                    :width 'normal
-                    :foundry "unknown"
-                    :family "DejaVu Sans Mono")
-(set-face-attribute 'fringe nil
-                    :background "black"
-                    :foreground "#0ff")
-(set-face-attribute 'region nil
-                    :background "#505")
+  (set-face-attribute 'mode-line nil
+                      :background "#033"
+                      :foreground "#9bb"
+                      :box nil)
+  (set-face-attribute 'mode-line-buffer-id nil
+                      :foreground "#99dddd"
+                      :box nil)
+  (set-face-attribute 'mode-line-inactive nil
+                      :inherit 'mode-line
+                      :background "gray32"
+                      :foreground "black"
+                      :box nil
+                      :weight 'light)
+  (set-face-attribute 'default nil
+                      :background "#000000"
+                      :foreground "#ffffff"
+                      :height 100
+                      :foundry "unknown"
+                      :family "DejaVu Sans Mono")
+  (set-face-attribute 'fringe nil
+                      :background "black"
+                      :foreground "#0ff")
+  (set-face-attribute 'region nil
+                      :background "#505")
+  (set-face-attribute 'cursor nil
+                      :background "#709")
+  (set-face-attribute 'org-archived nil
+                      :foreground "#254555")
+  (set-face-attribute 'org-checkbox nil
+                      :inherit 'bold
+                      :foreground "#2f2")
+  (set-face-attribute 'org-done nil
+                      :foreground "#5f5"
+                      :weight 'ultra-bold)
+  (set-face-attribute 'org-hide nil
+                      :foreground "#777")
+  (set-face-attribute 'org-todo nil
+                      :foreground "#faa"
+                      :weight 'ultra-bold)
+  (set-face-attribute 'outline-1 nil
+                      :inherit 'font-lock-function-name-face
+                      :foreground "SkyBlue1"
+                      :weight 'bold)
+  (make-face 'my-gnus-face-6)
+  (set-face-attribute 'my-gnus-face-6 nil
+                      :foreground "#9EE"
+                      :background "#333"
+                      :weight 'bold)
+  (make-face 'my-gnus-face-7)
+  (set-face-attribute 'my-gnus-face-7 nil
+                      :foreground "#9EE"
+                      :background "#333"
+                      :weight 'bold
+                      :box '(:line-width -1 :color "#555"))
+  ;; (set-face-attribute 'popup-tip-face nil
+  ;;                     :foreground "#000"
+  ;;                     :background "#5cd")
+  ;; (set-face-attribute 'popup-face nil
+  ;;                     :foreground "#ccc"
+  ;;                     :background "#333")
+  ;; (set-face-attribute 'popup-menu-selection-face nil
+  ;;                     :foreground "#cff"
+  ;;                     :background "#555")
+  (set-face-attribute 'ace-jump-face-foreground nil
+                      :background "black"
+                      :foreground "green"
+                      :weight 'bold)
 #+END_SRC
 
 ** cursor
@@ -131,7 +167,6 @@
              (string= (buffer-name) hcz-set-cursor-color-buffer))
       (set-cursor-color (setq hcz-set-cursor-color-color color))
       (setq hcz-set-cursor-color-buffer (buffer-name)))))
-(set-face-attribute 'cursor nil :background "#709")
 #+END_SRC
 
 ** key-map
@@ -163,11 +198,7 @@
 (setq org-caldav-calendar-id "private")
 (setq org-caldav-inbox "/home/quxbar/org/calendar.org")
 #+END_SRC
-** haskell
-#+BEGIN_SRC emacs-lisp
-(eval-after-load "haskell-mode"
-  '(define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
-#+END_SRC
+
 ** python
 #+BEGIN_SRC emacs-lisp
 (require 'jedi)
@@ -182,7 +213,6 @@
       (append python-environment-virtualenv
               '("--python" "python3")))
 (setq python-shell-interpreter "python3")
-;;(add-hook 'python-mode-hook 'auto-complete-mode)
 (add-hook 'python-mode-hook
           (lambda ()
             (jedi:setup)
@@ -211,7 +241,7 @@
            ("ψ" "\\psi") ("ω" "\\omega"))))
 #+END_SRC
 
-*** functions
+*** TODO functions
 
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'org
@@ -345,7 +375,7 @@
                            (overlay-put
                             ov 'display
                             (list 'image
-                                  :type 'png
+                                   :type 'png
                                   :file movefile
                                   :ascent 'center)))
                          (push ov org-latex-fragment-image-overlays)
@@ -363,19 +393,13 @@
 *** misc
 
 #+BEGIN_SRC emacs-lisp
-(setq org-babel-load-languages '((python . t) (ditaa . t)
-                                 (sh . t) (lilypond . t)
-                                 (R . t) (emacs-lisp . t)
-                                 (ledger . t))
-      org-catch-invisible-edits 'error
+(setq org-catch-invisible-edits 'error
       org-confirm-babel-evaluate nil
       org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
       org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
       org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")
-      org-edit-src-content-indentation 0
       org-export-backends '(ascii html latex odt)
       org-export-headline-levels 4
-      org-export-run-in-background t
       org-format-latex-options '(:foreground "#0da"
                                              :background default
                                              :scale 2.0
@@ -404,18 +428,15 @@
                            ("\\section{%s}" . "\\section*{%s}")
                            ("\\subsection{%s}" . "\\subsection*{%s}")
                            ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-      org-latex-inactive-timestamp-format "\\\\\\hfill\\textcolor{gray}{\\textbf{%s}}\\\\"
       org-latex-preview-ltxpng-directory "~/ltxpreview/"
       org-list-empty-line-terminates-plain-lists t
       org-log-done 'time
       org-replace-disputed-keys t
       org-src-fontify-natively t
       org-startup-align-all-tables t
-      org-startup-folded 'content
+      org-startup-folded t
       org-startup-indented t
-      org-startup-truncated nil
       org-startup-with-inline-images t
-      org-support-shift-select 'always
       org-todo-keyword-faces '(("FAILED" . "#f00") ("CANCELED" . "#ee3"))
       org-todo-keywords '((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))
       org-format-latex-header "\\documentclass{article}
@@ -453,19 +474,6 @@
 \\newcommand{\\e}{\\mathrm{e}}")
 #+END_SRC
 
-*** faces
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'org-mode
-  '(progn
-     (set-face-attribute 'org-archived nil :foreground "#254555")
-     (set-face-attribute 'org-checkbox nil :inherit 'bold :foreground "#2f2")
-     (set-face-attribute 'org-done nil :foreground "#5f5" :weight 'ultra-bold)
-     (set-face-attribute 'org-hide nil :foreground "#777")
-     (set-face-attribute 'org-indent nil :background "black" :foreground "black")
-     (set-face-attribute 'org-todo nil :foreground "#faa" :weight 'ultra-bold)
-     (set-face-attribute 'outline-1 nil :inherit 'font-lock-function-name-face :foreground "SkyBlue1" :weight 'bold)))
-#+END_SRC
 
 ** lilypond
 
@@ -495,25 +503,6 @@
       erc-prompt-for-password nil
       erc-system-name "foobar"
       erc-timestamp-right-column 70)
-(eval-after-load 'erc-mode
-  '(set-face-attribute 'erc-prompt-face nil :background "Black"
-                       :foreground "lightBlue2" :weight 'bold))
-#+END_SRC
-
-** eshell
-
-#+BEGIN_SRC emacs-lisp
-;; (eval-after-load 'eshell
-;;   '(setq eshell-banner-message nil
-;;          eshell-cmpl-compare-entry-function 'string-lessp
-;;          eshell-modules-list '(eshell-alias eshell-banner
-;;                                             eshell-basic eshell-cmpl
-;;                                             eshell-dirs eshell-glob
-;;                                             eshell-hist eshell-ls
-;;                                             eshell-pred eshell-prompt
-;;                                             eshell-script eshell-smart
-;;                                             eshell-term eshell-unix)
-;;          eshell-plain-grep-behavior t))
 #+END_SRC
 
 ** gnus
@@ -530,21 +519,19 @@
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
       starttls-use-gnutls t
-)
- (setq mail-user-agent (quote gnus-user-agent))
-
-(eval-after-load "mm-decode"
-  '(progn
-     (add-to-list 'mm-discouraged-alternatives "text/html")
-     (add-to-list 'mm-discouraged-alternatives "text/richtext")))
-
-(setq gnus-default-adaptive-word-score-alist '((82 . 1) (67 . -1)
+      mail-user-agent 'gnus-user-agent
+      gnus-default-adaptive-word-score-alist '((82 . 1) (67 . -1)
                                                (75 . -2) (114 . -1))
       gnus-treat-fill-article t
       gnus-treat-leading-whitespace t
       gnus-treat-strip-multiple-blank-lines t
       gnus-treat-strip-trailing-blank-lines t
       gnus-treat-unsplit-urls t)
+
+(eval-after-load "mm-decode"
+  '(progn
+     (add-to-list 'mm-discouraged-alternatives "text/html")
+     (add-to-list 'mm-discouraged-alternatives "text/richtext")))
 
 (eval-after-load 'gnus
   '(progn
@@ -569,18 +556,7 @@
      (setq-default gnus-summary-mark-below -300
                    gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
      (setq gnus-face-5 'font-lock-comment-face)
-     (make-face 'my-gnus-face-6)
-     (set-face-attribute 'my-gnus-face-6 nil
-                         :foreground "#9EE"
-                         :background "#333"
-                         :weight 'bold)
      (setq gnus-face-6 'my-gnus-face-6)
-     (make-face 'my-gnus-face-7)
-     (set-face-attribute 'my-gnus-face-7 nil
-                         :foreground "#9EE"
-                         :background "#333"
-                         :weight 'bold
-                         :box '(:line-width -1 :color "#555"))
      (setq gnus-face-7 'my-gnus-face-7)
      (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
            gnus-thread-sort-functions '((not gnus-thread-sort-by-date))
@@ -608,9 +584,7 @@
            gnus-topic-display-empty-topics nil
            gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
      (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-
-     (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-     ))
+     (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)))
 #+END_SRC
 
 ** w3m
@@ -624,73 +598,19 @@
       w3m-fill-column 60
       w3m-search-engine-alist
       '(("duckduckgo" "https://duckduckgo.com/lite/?q=%s" undecided)
-        ("yahoo" "https://search.yahoo.com/bin/search?p=%s" nil)
-        ("blog" "https://blogsearch.google.com/blogsearch?q=%s&oe=utf-8&ie=utf-8" utf-8)
-        ("blog-en" "https://blogsearch.google.com/blogsearch?q=%s&hl=en&oe=utf-8&ie=utf-8" utf-8)
         ("google" "https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
         ("google-en" "https://www.google.com/search?q=%s&hl=en&ie=utf-8&oe=utf-8" utf-8)
-        ("google news" "https://news.google.com/news?q=%s&ie=utf-8&oe=utf-8" utf-8)
-        ("google news-en" "https://news.google.com/news?q=%s&hl=en&ie=utf-8&oe=utf-8" nil)
-        ("google groups" "https://groups.google.com/groups?q=%s" nil)
-        ("All the Web" "http://www.alltheweb.com/search?q=%s&web&_sb_lang=en" nil)
-        ("technorati" "http://www.technorati.com/search/%s" utf-8)
-        ("technorati-ja" "http://www.technorati.jp/search/search.html?query=%s&language=ja" utf-8)
-        ("technorati-tag" "http://www.technorati.com/tag/%s" utf-8)
-        ("altavista" "https://altavista.com/sites/search/web?q=\"%s\"&kl=ja&search=Search" nil)
-        ("debian-pkg" "http://packages.debian.org/cgi-bin/search_contents.pl?directories=yes&arch=i386&version=unstable&case=insensitive&word=%s" nil)
-        ("debian-bts" "http://bugs.debian.org/cgi-bin/pkgreport.cgi?archive=yes&pkg=%s" nil)
-        ("amazon" "https://www.amazon.com/exec/obidos/search-handle-form/250-7496892-7797857" iso-8859-1 "url=index=blended&field-keywords=%s")
         ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" nil)
         ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s" nil)
-        ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8)
-        ("freshmeat" "http://freshmeat.net/search/?q=%s&section=projects" nil))
+        ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8))
       w3m-session-load-crashed-sessions nil
       w3m-uri-replace-alist
       '(("\\`enwi:" w3m-search-uri-replace "en.wikipedia")
         ("\\`dewi:" w3m-search-uri-replace "de.wikipedia")
         ("\\`dd:" w3m-search-uri-replace "duckduckgo")
-        ("\\`gg:" w3m-search-uri-replace "google")
-        ("\\`ggg:" w3m-search-uri-replace "google groups")
-        ("\\`ya:" w3m-search-uri-replace "yahoo")
-        ("\\`al:" w3m-search-uri-replace "altavista")
-        ("\\`bts:" w3m-search-uri-replace "debian-bts")
-        ("\\`dpkg:" w3m-search-uri-replace "debian-pkg")
-        ("\\`archie:" w3m-search-uri-replace "iij-archie")
-        ("\\`alc:" w3m-search-uri-replace "alc")
-        ("\\`urn:ietf:rfc:\\([0-9]+\\)" w3m-pattern-uri-replace "http://www.ietf.org/rfc/rfc\\1.txt"))
+        ("\\`gg:" w3m-search-uri-replace "google"))
       w3m-use-favicon nil
-      w3m-use-title-buffer-name t
-      apropos-url-alist
-      '(("^gw?:? +\\(.*\\)" . ;; Google Web
-         "http://www.google.com/search?q=\\1")
-        ("^g!:? +\\(.*\\)" . ;; Google Lucky
-         "http://www.google.com/search?btnI=I%27m+Feeling+Lucky&q=\\1")
-        ("^gl:? +\\(.*\\)" . ;; Google Linux
-         "http://www.google.com/linux?q=\\1")
-        ("^gi:? +\\(.*\\)" . ;; Google Images
-         "http://images.google.com/images?sa=N&tab=wi&q=\\1")
-        ("^gg:? +\\(.*\\)" . ;; Google Groups
-         "http://groups.google.com/groups?q=\\1")
-        ("^gd:? +\\(.*\\)" . ;; Google Directory
-         "http://www.google.com/search?&sa=N&cat=gwd/Top&tab=gd&q=\\1")
-        ("^gn:? +\\(.*\\)" . ;; Google News
-         "http://news.google.com/news?sa=N&tab=dn&q=\\1")
-        ("^gt:? +\\(\\w+\\)|? *\\(\\w+\\) +\\(\\w+://.*\\)" . ;; Google Translate URL
-         "http://translate.google.com/translate?langpair=\\1|\\2&u=\\3")
-        ("^gt:? +\\(\\w+\\)|? *\\(\\w+\\) +\\(.*\\)" . ;; Google Translate Text
-         "http://translate.google.com/translate_t?langpair=\\1|\\2&text=\\3")
-        ("^/\\.$" . ;; Slashdot
-         "http://www.slashdot.org")
-        ("^/\\.:? +\\(.*\\)" . ;; Slashdot search
-         "http://www.osdn.com/osdnsearch.pl?site=Slashdot&query=\\1")
-        ("^fm$" . ;; Freshmeat
-         "http://www.freshmeat.net")
-        ("^ewiki:? *?\\(.*\\)" . ;; Emacs Wiki Search
-         "http://www.emacswiki.org/cgi-bin/wiki?search=\\1")
-        ("^ewiki$" . ;; Emacs Wiki
-         "http://www.emacswiki.org")
-        ("^arda$" . ;; The Encyclopedia of Arda
-         "http://www.glyphweb.com/arda/")))
+      w3m-use-title-buffer-name t)
 #+END_SRC
 
 *** functions
@@ -837,11 +757,6 @@
                 volume-electric-mode t)))
 #+END_SRC
 
-** magit
-
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
-
 * minor-modes
 
 ** fill-column-indicator
@@ -850,137 +765,128 @@
       fci-rule-column 80
       fci-rule-color "#cc0000")
 #+END_SRC
+
 ** autocomplete
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'popup-tip-face nil
-                    :foreground "#000"
-                    :background "#5cd")
-(set-face-attribute 'popup-face nil
-                    :foreground "#ccc"
-                    :background "#333")
-(set-face-attribute 'popup-menu-selection-face nil
-                    :foreground "#cff"
-                    :background "#555")
 (setq ac-override-local-map nil
       ac-use-menu-map t
       ac-candidate-limit 20)
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
-(global-flycheck-mode 1)
-(eval-after-load 'flycheck
-  '(progn
-     (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
-     (add-to-list 'flycheck-checkers 'haskell-ghc-2)
+  (global-flycheck-mode 1)
+  (eval-after-load 'flycheck
+    '(progn
+           (flycheck-define-checker haskell-hlint-extensions
+         "Use hlint extensions
 
-     (defun flycheck-mode-line-status-text (&optional status)
-       "Get a text describing STATUS for use in the mode line.
+  See URL `https://github.com/ndmitchell/hlint'."
+         :command ("hlint" "--hint=Dollar" source-inplace)
+         :error-patterns
+         ((info line-start
+                (file-name) ":" line ":" column
+                ": Warning: "
+                (message (one-or-more not-newline)
+                         (one-or-more "\n" (one-or-more not-newline)))
+                line-end)
+          (info line-start
+                (file-name) ":" line ":" column
+                ": Error: "
+                (message (one-or-more not-newline)
+                         (one-or-more "\n" (one-or-more not-newline)))
+                line-end))
+         :modes haskell-mode
+         :next-checkers ((t . haskell-ghc-2)))
+       (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
+       (add-to-list 'flycheck-checkers 'haskell-ghc-2)
 
-STATUS defaults to `flycheck-last-status-change' if omitted or
-nil."
-       (let ((text
-              (pcase (or status flycheck-last-status-change)
-                (`not-checked "")
-                (`no-checker " [  -  ]")
-                (`running " [  *  ]")
-                (`errored " [  !  ]")
-                (`finished
-                 (if flycheck-current-errors
-                     (let ((error-counts (flycheck-count-errors
-                                          flycheck-current-errors)))
-                       (format " [%s:%s:%s]"
-                               (or (cdr (assq 'error error-counts)) " ")
-                               (or (cdr (assq 'warning error-counts)) " ")
-                               (or (cdr (assq 'info error-counts)) " ")))
-                   ""))
-                (`interrupted " [  -  ]")
-                (`suspicious " [  ?  ]"))))
-         text))
+       (defun flycheck-mode-line-status-text (&optional status)
+         "Get a text describing STATUS for use in the mode line.
+
+  STATUS defaults to `flycheck-last-status-change' if omitted or
+  nil."
+         (let ((text
+                (pcase (or status flycheck-last-status-change)
+                  (`not-checked "")
+                  (`no-checker " [  -  ]")
+                  (`running " [  *  ]")
+                  (`errored " [  !  ]")
+                  (`finished
+                   (if flycheck-current-errors
+                       (let ((error-counts (flycheck-count-errors
+                                            flycheck-current-errors)))
+                         (format " [%s:%s:%s]"
+                                 (or (cdr (assq 'error error-counts)) " ")
+                                 (or (cdr (assq 'warning error-counts)) " ")
+                                 (or (cdr (assq 'info error-counts)) " ")))
+                     ""))
+                  (`interrupted " [  -  ]")
+                  (`suspicious " [  ?  ]"))))
+           text))
 
 
-     (flycheck-define-checker haskell-hlint-extensions
-       "Use hlint extensions
+   
 
-See URL `https://github.com/ndmitchell/hlint'."
-       :command ("hlint" "--hint=Dollar" source-inplace)
-       :error-patterns
-       ((info line-start
-              (file-name) ":" line ":" column
-              ": Warning: "
-              (message (one-or-more not-newline)
-                       (one-or-more "\n" (one-or-more not-newline)))
+
+  (flycheck-define-checker haskell-ghc-2
+    "A Haskell syntax and type checker using ghc.
+
+  See URL `http://www.haskell.org/ghc/'."
+    :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
+              (option-flag "-no-user-package-db"
+                           flycheck-ghc-no-user-package-database)
+              (option-list "-package-db" flycheck-ghc-package-databases)
+              (option-list "-i" flycheck-ghc-search-path concat)
+              ;; Include the parent directory of the current module tree, to
+              ;; properly resolve local imports
+              (eval (concat
+                     "-i"
+                     (flycheck-module-root-directory
+                      (flycheck-find-in-buffer flycheck-haskell-module-re))))
+              (option-list "-X" flycheck-ghc-language-extensions concat)
+              ;; Force GHC to treat the file as Haskell file, even if it doesn't
+              ;; have an extension.  Otherwise GHC would fail on files without an
+              ;; extension
+              "-x" "hs" source)
+    :error-patterns
+    ((warning line-start (file-name) ":" line ":" column ":"
+              (or " " "\n    ") "Warning:" (optional "\n")
+              (message
+               (one-or-more " ") (one-or-more not-newline)
+               (zero-or-more "\n"
+                             (one-or-more " ")
+                             (one-or-more not-newline)))
               line-end)
-        (info line-start
-              (file-name) ":" line ":" column
-              ": Error: "
-              (message (one-or-more not-newline)
-                       (one-or-more "\n" (one-or-more not-newline)))
-              line-end))
-       :modes haskell-mode
-       :next-checkers ((t . haskell-ghc-2)))
+     (error line-start (file-name) ":" line ":" column ":"
+            (or (message (one-or-more not-newline))
+                (and "\n"
+                     (message
+                      (one-or-more " ") (one-or-more not-newline)
+                      (zero-or-more "\n"
+                                    (one-or-more " ")
+                                    (one-or-more not-newline)))))
+            line-end))
+    :error-filter
+    (lambda (errors)
+      (flycheck-sanitize-errors (flycheck-dedent-error-messages errors)))
+    :modes haskell-mode
+    :next-checkers ((warning . haskell-hlint)))
 
-
-(flycheck-define-checker haskell-ghc-2
-  "A Haskell syntax and type checker using ghc.
-
-See URL `http://www.haskell.org/ghc/'."
-  :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
-            (option-flag "-no-user-package-db"
-                         flycheck-ghc-no-user-package-database)
-            (option-list "-package-db" flycheck-ghc-package-databases)
-            (option-list "-i" flycheck-ghc-search-path concat)
-            ;; Include the parent directory of the current module tree, to
-            ;; properly resolve local imports
-            (eval (concat
-                   "-i"
-                   (flycheck-module-root-directory
-                    (flycheck-find-in-buffer flycheck-haskell-module-re))))
-            (option-list "-X" flycheck-ghc-language-extensions concat)
-            ;; Force GHC to treat the file as Haskell file, even if it doesn't
-            ;; have an extension.  Otherwise GHC would fail on files without an
-            ;; extension
-            "-x" "hs" source)
-  :error-patterns
-  ((warning line-start (file-name) ":" line ":" column ":"
-            (or " " "\n    ") "Warning:" (optional "\n")
-            (message
-             (one-or-more " ") (one-or-more not-newline)
-             (zero-or-more "\n"
-                           (one-or-more " ")
-                           (one-or-more not-newline)))
-            line-end)
-   (error line-start (file-name) ":" line ":" column ":"
-          (or (message (one-or-more not-newline))
-              (and "\n"
-                   (message
-                    (one-or-more " ") (one-or-more not-newline)
-                    (zero-or-more "\n"
-                                  (one-or-more " ")
-                                  (one-or-more not-newline)))))
-          line-end))
-  :error-filter
-  (lambda (errors)
-    (flycheck-sanitize-errors (flycheck-dedent-error-messages errors)))
-  :modes haskell-mode
-  :next-checkers ((warning . haskell-hlint)))
-
-
-
-     (set-face-attribute 'flycheck-error nil
-                         :foreground "#D00"
-                         :background "#222"
-                         :underline nil
-                         :weight 'ultrabold)
-     (set-face-attribute 'flycheck-warning nil
-                         :foreground "#CC0"
-                         :background "#222"
-                         :underline nil
-                         :weight 'ultrabold)
-     (set-face-attribute 'flycheck-info nil
-                         :foreground "#00F"
-                         :background "#222"
-                         :underline nil
-                         :weight 'ultrabold)))
+       (set-face-attribute 'flycheck-error nil
+                           :foreground "#D00"
+                           :background "#222"
+                           :underline nil
+                           :weight 'ultrabold)
+       (set-face-attribute 'flycheck-warning nil
+                           :foreground "#CC0"
+                           :background "#222"
+                           :underline nil
+                           :weight 'ultrabold)
+       (set-face-attribute 'flycheck-info nil
+                           :foreground "#00F"
+                           :background "#222"
+                           :underline nil
+                           :weight 'ultrabold)))
 #+END_SRC
 ** keyfreq
 
@@ -1055,28 +961,6 @@ See URL `http://www.haskell.org/ghc/'."
   (if (looking-back "\\(^ *\\)")
       (delete-indentation)
     (paredit-backward-delete arg)))
-#+END_SRC
-
-** cua
-
-#+BEGIN_SRC emacs-lisp
-;;(cua-mode 1)
-;;(setq cua-normal-cursor-color "black")
-#+END_SRC
-
-** flyspell
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'flyspell
-  '(progn (set-face-attribute 'flyspell-duplicate nil
-                              :background "#333300"
-                              :box '(:line-width -2 :color "#666600"))
-          (set-face-attribute 'flyspell-incorrect nil
-                              :background "#550000"
-                              :box '(:line-width -2 :color "#880000"))
-          (setq ispell-highlight-face 'flyspell-incorrect
-                ispell-local-dictionary "de_DE"
-                ispell-program-name "aspell")))
 #+END_SRC
 
 ** num3
@@ -1164,27 +1048,18 @@ See URL `http://www.haskell.org/ghc/'."
 (yas-global-mode 1)
 #+END_SRC
 
-** ace-jump
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'ace-jump-mode
-  '(set-face-attribute 'ace-jump-face-foreground nil
-                       :background "black"
-                       :foreground "green"
-                       :weight 'bold))
-#+END_SRC
-
 * misc
 
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook (lambda () (structured-haskell-mode)
-                             ;; (hs-align-mode)
+(add-hook 'haskell-mode-hook (lambda ()
+                               (structured-haskell-mode)
                                (ghc-init)
                                (company-mode)
                                (pretty-symbols-mode)))
-(add-hook 'structured-haskell-mode-hook (lambda () (define-key shm-map (kbd "RET") 'shm/newline-indent)))
+(add-hook 'structured-haskell-mode-hook (lambda ()
+                                          (define-key shm-map (kbd "RET") 'shm/newline-indent)))
 (add-to-list 'company-backends 'company-ghc)
 
 (add-hook 'c-mode-hook 'paredit-mode)
@@ -1249,4 +1124,9 @@ See URL `http://www.haskell.org/ghc/'."
       ess-default-style 'C++)
 
 (setq kill-do-not-save-duplicates t)
+#+END_SRC
+* Customize
+#+BEGIN_SRC emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 #+END_SRC
