@@ -1089,14 +1089,12 @@
                             (hs-minor-mode)))
 (add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-(add-hook 'eshell-mode-hook 'paredit-mode)
 (add-hook 'post-command-hook
           (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
                                (equal major-mode 'lisp-interaction-mode))
                        (when (not (equal buffer-undo-list-tmp buffer-undo-list))
                          (auto-indent-sexps)
                          (setq buffer-undo-list-tmp buffer-undo-list)))))
-
 #+END_SRC
 
 ** tramp
