@@ -14,6 +14,7 @@
      (emacs-lisp . t)
      (ledger . t)
      (haskell . t))))
+ '(org-panes-contents-depth 2)
  '(truncate-lines t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
