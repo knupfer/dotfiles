@@ -936,7 +936,7 @@
                        "-x" "hs" source)
              :error-patterns
              ((info line-start (file-name) ":" line ":" column ":"
-                    (or " " "\n    ") "Found hole" (optional "\n") (one-or-more " ")
+                    (or " " "\n    ") "Found hole" (optional "\n")
                     (message
                      (one-or-more " ") (one-or-more not-newline)
                      (zero-or-more "\n"
@@ -968,14 +968,27 @@
                                          (with-temp-buffer
                                            (insert txt)
                                            (goto-char (point-min))
-                                           (when (re-search-forward "^Found hole ‘\\([^’]+\\)’ with type:" nil t)
-                                             (replace-match (concat (match-string 1) " ::")))
-                                           (while (re-search-forward " *(bound at[^)]+)\\| *In the expression:" nil t)
+                                           (when (re-search-forward "^‘\\([^’]+\\)’ with type:" nil t)
+                                             (replace-match (concat "Hole " (match-string 1) " ::")))
+                                           (while (re-search-forward " *(bound at\\(\n\\|[^)]\\)+)" nil t)
+                                             (replace-match ""))
+                                           (goto-char (point-min))
+                                           (while (re-search-forward " *at /tmp/.*" nil t)
                                              (replace-match ""))
                                            (goto-char (point-min))
                                            (forward-line)
-                                           (while (re-search-forward "^[^ \n\t]" nil t)
-                                             (replace-match (concat "  -- " (match-string 0))))
+                                           (while (re-search-forward " *\\(from the context\\|bound by the type\\|.+is a rigid type\\|Expected type\\|Actual type\\|Relevant bindings\\|in the second\\)" nil t)
+                                             (replace-match (concat "-- " (match-string 1))))
+                                           (goto-char (point-min))
+                                           (while (re-search-forward "\\(, namely\\|variable bound by\\)\n +" nil t)
+                                             (replace-match (concat (match-string 1) " ")))
+                                           (goto-char (point-min))
+                                           (while (re-search-forward "-- .*\n\\( +\\)" nil t)
+                                             (let ((len (length (match-string 1))))
+                                               (beginning-of-line)
+                                               (while (re-search-forward (concat "^" (make-string len ?\s)) (point-at-eol) t)
+                                                 (replace-match "   ")
+                                                 (forward-line))))
                                            (buffer-string)))))
                      errors))
              :modes haskell-mode
