@@ -23,3 +23,7 @@ emacs/.emacs.d/.python-environments/
 emacs/.emacs.d/org-caldav-*
 /emacs/.emacs.d/bbdb
 /emacs/.emacs.d/.org-id-locations
+/emacs/.emacs.d/network-security.data
+emacs/.emacs.d/haskell-fun/*.o
+emacs/.emacs.d/haskell-fun/*.hi
+emacs/.emacs.d/haskell-fun/.HaskellEmacs*
