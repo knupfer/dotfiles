@@ -15,6 +15,7 @@
      (ledger . t)
      (haskell . t))))
  '(org-panes-contents-depth 2)
+ '(paradox-github-token t)
  '(truncate-lines t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
