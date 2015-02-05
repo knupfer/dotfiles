@@ -63,44 +63,44 @@ import           Data.Text (Text)
 import qualified Data.Text as T
 import           Prelude   (Bool, Char, Int, Maybe, String, uncurry)
 
-append :: (Text, Text) -> Text
-append = uncurry T.append
+append :: Text -> Text -> Text
+append = T.append
 
-breakOn :: (Text, Text) -> (Text, Text)
-breakOn = uncurry T.breakOn
+breakOn :: Text -> Text -> (Text, Text)
+breakOn = T.breakOn
 
-breakOnAll :: (Text, Text) -> [(Text, Text)]
-breakOnAll = uncurry T.breakOnAll
+breakOnAll :: Text -> Text -> [(Text, Text)]
+breakOnAll = T.breakOnAll
 
-breakOnEnd :: (Text, Text) -> (Text, Text)
-breakOnEnd = uncurry T.breakOnEnd
+breakOnEnd :: Text -> Text -> (Text, Text)
+breakOnEnd = T.breakOnEnd
 
-center :: (Int, Char, Text) -> Text
-center (i,c,t) = T.center i c t
+center :: Int -> Char -> Text -> Text
+center = T.center
 
-chunksOf :: (Int, Text) -> [Text]
-chunksOf = uncurry T.chunksOf
+chunksOf :: Int -> Text -> [Text]
+chunksOf = T.chunksOf
 
-commonPrefixes :: (Text, Text) -> Maybe (Text, Text, Text)
-commonPrefixes = uncurry T.commonPrefixes
+commonPrefixes :: Text -> Text -> Maybe (Text, Text, Text)
+commonPrefixes = T.commonPrefixes
 
 concat :: [Text] -> Text
 concat = T.concat
 
-cons :: (Char, Text) -> Text
-cons = uncurry T.cons
+cons :: Char -> Text -> Text
+cons = T.cons
 
 copy :: Text -> Text
 copy = T.copy
 
-count :: (Text, Text) -> Int
-count = uncurry T.count
+count :: Text -> Text -> Int
+count = T.count
 
-drop :: (Int, Text) -> Text
-drop = uncurry T.drop
+drop :: Int -> Text -> Text
+drop = T.drop
 
-dropEnd :: (Int, Text) -> Text
-dropEnd = uncurry T.dropEnd
+dropEnd :: Int -> Text -> Text
+dropEnd = T.dropEnd
 
 group :: Text -> [Text]
 group = T.group
@@ -108,8 +108,8 @@ group = T.group
 head :: Text -> Char
 head = T.head
 
-index :: (Text, Int) -> Char
-index = uncurry T.index
+index :: Text -> Int -> Char
+index = T.index
 
 init :: Text -> Text
 init = T.init
@@ -117,26 +117,26 @@ init = T.init
 inits :: Text -> [Text]
 inits = T.inits
 
-intercalate :: (Text, [Text]) -> Text
-intercalate = uncurry T.intercalate
+intercalate :: Text -> [Text] -> Text
+intercalate = T.intercalate
 
-intersperse :: (Char, Text) -> Text
-intersperse = uncurry T.intersperse
+intersperse :: Char -> Text -> Text
+intersperse = T.intersperse
 
-isInfixOf :: (Text, Text) -> Bool
-isInfixOf = uncurry T.isInfixOf
+isInfixOf :: Text -> Text -> Bool
+isInfixOf = T.isInfixOf
 
-isPrefixOf :: (Text, Text) -> Bool
-isPrefixOf = uncurry T.isPrefixOf
+isPrefixOf :: Text -> Text -> Bool
+isPrefixOf = T.isPrefixOf
 
-isSuffixOf :: (Text, Text) -> Bool
-isSuffixOf = uncurry T.isSuffixOf
+isSuffixOf :: Text -> Text -> Bool
+isSuffixOf = T.isSuffixOf
 
-justifyLeft :: (Int, Char, Text) -> Text
-justifyLeft (i,c,t) = T.justifyLeft i c t
+justifyLeft :: Int -> Char -> Text -> Text
+justifyLeft = T.justifyLeft
 
-justifyRight :: (Int, Char, Text) -> Text
-justifyRight (i,c,t) = T.justifyRight i c t
+justifyRight :: Int -> Char -> Text -> Text
+justifyRight = T.justifyRight
 
 last :: Text -> Char
 last = T.last
@@ -159,11 +159,11 @@ null = T.null
 pack :: String -> Text
 pack = T.pack
 
-replace :: (Text, Text, Text) -> Text
-replace (t1,t2,t3) = T.replace t1 t2 t3
+replace :: Text -> Text -> Text -> Text
+replace = T.replace
 
-replicate :: (Int, Text) -> Text
-replicate = uncurry T.replicate
+replicate :: Int -> Text -> Text
+replicate = T.replicate
 
 reverse :: Text -> Text
 reverse = T.reverse
@@ -171,14 +171,14 @@ reverse = T.reverse
 singleton :: Char -> Text
 singleton = T.singleton
 
-snoc :: (Text, Char) -> Text
-snoc = uncurry T.snoc
+snoc :: Text -> Char -> Text
+snoc = T.snoc
 
-splitAt :: (Int, Text) -> (Text, Text)
-splitAt = uncurry T.splitAt
+splitAt :: Int -> Text -> (Text, Text)
+splitAt = T.splitAt
 
-splitOn :: (Text, Text) -> [Text]
-splitOn = uncurry T.splitOn
+splitOn :: Text -> Text -> [Text]
+splitOn = T.splitOn
 
 strip :: Text -> Text
 strip = T.strip
@@ -186,14 +186,14 @@ strip = T.strip
 stripEnd :: Text -> Text
 stripEnd = T.stripEnd
 
-stripPrefix :: (Text, Text) -> Maybe Text
-stripPrefix = uncurry T.stripPrefix
+stripPrefix :: Text -> Text -> Maybe Text
+stripPrefix = T.stripPrefix
 
 stripStart :: Text -> Text
 stripStart = T.stripStart
 
-stripSuffix :: (Text, Text) -> Maybe Text
-stripSuffix = uncurry T.stripSuffix
+stripSuffix :: Text -> Text -> Maybe Text
+stripSuffix = T.stripSuffix
 
 tail :: Text -> Text
 tail = T.tail
@@ -201,11 +201,11 @@ tail = T.tail
 tails :: Text -> [Text]
 tails = T.tails
 
-take :: (Int, Text) -> Text
-take = uncurry T.take
+take :: Int -> Text -> Text
+take = T.take
 
-takeEnd :: (Int, Text) -> Text
-takeEnd = uncurry T.takeEnd
+takeEnd :: Int -> Text -> Text
+takeEnd = T.takeEnd
 
 toCaseFold :: Text -> Text
 toCaseFold = T.toCaseFold
@@ -237,5 +237,5 @@ unwords = T.unwords
 words :: Text -> [Text]
 words = T.words
 
-zip :: (Text, Text) -> [(Char, Char)]
-zip = uncurry T.zip
+zip :: Text -> Text -> [(Char, Char)]
+zip = T.zip

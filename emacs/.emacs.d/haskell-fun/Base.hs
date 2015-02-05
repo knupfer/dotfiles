@@ -49,7 +49,7 @@ module Base ( even
 
 import qualified Prelude as P
 
-abs :: P.Integer -> P.Integer
+abs :: P.Double -> P.Double
 abs = P.abs
 
 acos :: P.Double -> P.Double
@@ -70,8 +70,8 @@ asinh = P.asinh
 atan :: P.Double -> P.Double
 atan = P.atan
 
-atan2 :: (P.Double, P.Double) -> P.Double
-atan2 = P.uncurry P.atan2
+atan2 :: P.Double -> P.Double -> P.Double
+atan2 = P.atan2
 
 atanh :: P.Double -> P.Double
 atanh = P.atanh
@@ -85,11 +85,11 @@ cos = P.cos
 cosh :: P.Double -> P.Double
 cosh = P.cosh
 
-div :: (P.Integer, P.Integer) -> P.Integer
-div = P.uncurry P.div
+div :: P.Integer -> P.Integer -> P.Integer
+div = P.div
 
-divMod :: (P.Integer, P.Integer) -> (P.Integer, P.Integer)
-divMod = P.uncurry P.divMod
+divMod :: P.Integer -> P.Integer -> (P.Integer, P.Integer)
+divMod = P.divMod
 
 even :: P.Integer -> P.Bool
 even = P.even
@@ -103,11 +103,11 @@ exponent = P.exponent
 floor :: P.Double -> P.Integer
 floor = P.floor
 
-gcd :: (P.Integer, P.Integer) -> P.Integer
-gcd = P.uncurry P.gcd
+gcd :: P.Integer -> P.Integer -> P.Integer
+gcd = P.gcd
 
-lcm :: (P.Integer, P.Integer) -> P.Integer
-lcm = P.uncurry P.lcm
+lcm :: P.Integer -> P.Integer -> P.Integer
+lcm = P.lcm
 
 lines :: P.String -> [P.String]
 lines = P.lines
@@ -115,13 +115,13 @@ lines = P.lines
 log :: P.Double -> P.Double
 log = P.log
 
-logBase :: (P.Double, P.Double) -> P.Double
-logBase = P.uncurry P.logBase
+logBase :: P.Double -> P.Double -> P.Double
+logBase = P.logBase
 
-mod :: (P.Integer, P.Integer) -> P.Integer
-mod = P.uncurry P.mod
+mod :: P.Integer -> P.Integer -> P.Integer
+mod = P.mod
 
-negate :: P.Integer -> P.Integer
+negate :: P.Double -> P.Double
 negate = P.negate
 
 not :: P.Bool -> P.Bool
@@ -133,23 +133,23 @@ odd = P.odd
 or :: [P.Bool] -> P.Bool
 or = P.or
 
-product :: [P.Integer] -> P.Integer
+product :: [P.Double] -> P.Double
 product = P.product
 
 properFraction :: P.Double -> (P.Integer, P.Double)
 properFraction = P.properFraction
 
-quot :: (P.Integer, P.Integer) -> P.Integer
-quot = P.uncurry P.quot
+quot :: P.Integer -> P.Integer -> P.Integer
+quot = P.quot
 
-quotRem :: (P.Integer, P.Integer) -> (P.Integer, P.Integer)
-quotRem = P.uncurry P.quotRem
+quotRem :: P.Integer -> P.Integer -> (P.Integer, P.Integer)
+quotRem = P.quotRem
 
 recip :: P.Double -> P.Double
 recip = P.recip
 
-rem :: (P.Integer, P.Integer) -> P.Integer
-rem = P.uncurry P.rem
+rem :: P.Integer -> P.Integer -> P.Integer
+rem = P.rem
 
 round :: P.Double -> P.Integer
 round = P.round
@@ -157,7 +157,7 @@ round = P.round
 significand :: P.Double -> P.Double
 significand = P.significand
 
-signum :: P.Integer -> P.Integer
+signum :: P.Double -> P.Double
 signum = P.signum
 
 sin :: P.Double -> P.Double
