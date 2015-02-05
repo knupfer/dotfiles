@@ -780,235 +780,247 @@
 #+BEGIN_SRC emacs-lisp
   (defun display-haskell-message-or-buffer (message
                                             &optional buffer-name not-this-window frame)
-      "Display MESSAGE in the echo area if possible, otherwise in a pop-up buffer.
-    MESSAGE may be either a string or a buffer.
+          "Display MESSAGE in the echo area if possible, otherwise in a pop-up buffer.
+        MESSAGE may be either a string or a buffer.
 
-    A buffer is displayed using `display-buffer' if MESSAGE is too long for
-    the maximum height of the echo area, as defined by `max-mini-window-height'
-    if `resize-mini-windows' is non-nil.
+        A buffer is displayed using `display-buffer' if MESSAGE is too long for
+        the maximum height of the echo area, as defined by `max-mini-window-height'
+        if `resize-mini-windows' is non-nil.
 
-    Returns either the string shown in the echo area, or when a pop-up
-    buffer is used, the window used to display it.
+        Returns either the string shown in the echo area, or when a pop-up
+        buffer is used, the window used to display it.
 
-    If MESSAGE is a string, then the optional argument BUFFER-NAME is the
-    name of the buffer used to display it in the case where a pop-up buffer
-    is used, defaulting to `*Message*'.  In the case where MESSAGE is a
-    string and it is displayed in the echo area, it is not specified whether
-    the contents are inserted into the buffer anyway.
+        If MESSAGE is a string, then the optional argument BUFFER-NAME is the
+        name of the buffer used to display it in the case where a pop-up buffer
+        is used, defaulting to `*Message*'.  In the case where MESSAGE is a
+        string and it is displayed in the echo area, it is not specified whether
+        the contents are inserted into the buffer anyway.
 
-    Optional arguments NOT-THIS-WINDOW and FRAME are as for `display-buffer',
-    and only used if a buffer is displayed."
-      (let ((curr-mod major-mode))
-        (cond ((and (stringp message) (not (string-match "\n" message)))
-               ;; Trivial case where we can use the echo area
-               (message "%s" message))
-              ((and (stringp message)
-                    (= (string-match "\n" message) (1- (length message))))
-               ;; Trivial case where we can just remove single trailing newline
-               (message "%s" (substring message 0 (1- (length message)))))
-              (t
-               ;; General case
-               (with-current-buffer
-                   (if (bufferp message)
-                       message
-                     (get-buffer-create (or buffer-name "*Message*")))
+        Optional arguments NOT-THIS-WINDOW and FRAME are as for `display-buffer',
+        and only used if a buffer is displayed."
+          (let ((curr-mod major-mode))
+            (cond ((and (stringp message) (not (string-match "\n" message)))
+                   ;; Trivial case where we can use the echo area
+                   (message "%s" message))
+                  ((and (stringp message)
+                        (= (string-match "\n" message) (1- (length message))))
+                   ;; Trivial case where we can just remove single trailing newline
+                   (message "%s" (substring message 0 (1- (length message)))))
+                  (t
+                   ;; General case
+                   (with-current-buffer
+                       (if (bufferp message)
+                           message
+                         (get-buffer-create (or buffer-name "*Message*")))
+                     (unless (bufferp message)
+                       (erase-buffer)
 
-                 (unless (bufferp message)
-                   (erase-buffer)
-                   (insert (haskell-fontify-as-mode message curr-mod)))
+                       (insert (haskell-fontify-as-mode message curr-mod))
+                       (when (equal curr-mod 'haskell-mode)
+                         (goto-char (point-min))
+                         (while (re-search-forward " ‘\\([^’]+\\)’" nil t)
+                           (let ((tx (substring-no-properties (match-string 1))))
+                             (replace-match "")
+                             (insert (haskell-fontify-as-mode (concat " " tx) 'haskell-mode))))))
 
-                 (let ((lines
-                        (if (= (buffer-size) 0)
-                            0
-                          (count-screen-lines nil nil nil (minibuffer-window)))))
-                   (cond ((= lines 0))
-                         ((and (or (<= lines 1)
-                                   (<= lines
-                                       (if resize-mini-windows
-                                           (cond ((floatp max-mini-window-height)
-                                                  (* (frame-height)
-                                                     max-mini-window-height))
-                                                 ((integerp max-mini-window-height)
-                                                  max-mini-window-height)
-                                                 (t
-                                                  1))
-                                         1)))
-                               ;; Don't use the echo area if the output buffer is
-                               ;; already displayed in the selected frame.
-                               (not (get-buffer-window (current-buffer))))
-                          ;; Echo area
-                          (goto-char (point-max))
-                          (when (bolp)
-                            (backward-char 1))
-                          (message "%s" (buffer-substring (point-min) (point))))
-                         (t
-                          ;; Buffer
-                          (goto-char (point-min))
-                          (display-buffer (current-buffer)
-                                          not-this-window frame)))))))))
+                     (let ((lines
+                            (if (= (buffer-size) 0)
+                                0
+                              (count-screen-lines nil nil nil (minibuffer-window)))))
+                       (cond ((= lines 0))
+                             ((and (or (<= lines 1)
+                                       (<= lines
+                                           (if resize-mini-windows
+                                               (cond ((floatp max-mini-window-height)
+                                                      (* (frame-height)
+                                                         max-mini-window-height))
+                                                     ((integerp max-mini-window-height)
+                                                      max-mini-window-height)
+                                                     (t
+                                                      1))
+                                             1)))
+                                   ;; Don't use the echo area if the output buffer is
+                                   ;; already displayed in the selected frame.
+                                   (not (get-buffer-window (current-buffer))))
+                              ;; Echo area
+                              (goto-char (point-max))
+                              (when (bolp)
+                                (backward-char 1))
+                              (message "%s" (buffer-substring (point-min) (point))))
+                             (t
+                              ;; Buffer
+                              (goto-char (point-min))
+                              (display-buffer (current-buffer)
+                                              not-this-window frame)))))))))
+  (byte-compile 'display-haskell-message-or-buffer)
+#+END_SRC
 
-                                                                                                                                                                                                                                                                                                                         (global-flycheck-mode 1)
-      (eval-after-load 'flycheck
-        '(progn
-           (defun flycheck-display-error-messages (errors)
-             "Display the messages of ERRORS.
+#+BEGIN_SRC emacs-lisp
+ (global-flycheck-mode 1)
+  (eval-after-load 'flycheck
+    '(progn
+       (defun flycheck-display-error-messages (errors)
+         "Display the messages of ERRORS.
 
-    Concatenate all non-nil messages of ERRORS separated by empty
-    lines, and display them with `display-message-or-buffer', which
-    shows the messages either in the echo area or in a separate
-    buffer, depending on the number of lines.  See Info
-    node `(elisp)Displaying Messages' for more information.
+  Concatenate all non-nil messages of ERRORS separated by empty
+  lines, and display them with `display-message-or-buffer', which
+  shows the messages either in the echo area or in a separate
+  buffer, depending on the number of lines.  See Info
+  node `(elisp)Displaying Messages' for more information.
 
-    In the latter case, show messages in
-    `flycheck-error-message-buffer'."
-             (let ((messages (delq nil (mapcar #'flycheck-error-message errors))))
-               (when (and errors (flycheck-may-use-echo-area-p))
-                 (display-haskell-message-or-buffer (string-join messages "\n\n")
-                                                    flycheck-error-message-buffer))))
+  In the latter case, show messages in
+  `flycheck-error-message-buffer'."
+         (let ((messages (delq nil (mapcar #'flycheck-error-message errors))))
+           (when (and errors (flycheck-may-use-echo-area-p))
+             (display-haskell-message-or-buffer (string-join messages "\n\n")
+                                                flycheck-error-message-buffer))))
 
-           (flycheck-define-checker haskell-hlint-extensions
-             "Use hlint extensions
+       (flycheck-define-checker haskell-hlint-extensions
+         "Use hlint extensions
 
-      See URL `https://github.com/ndmitchell/hlint'."
-             :command ("hlint" "--hint=Dollar" source-inplace)
-             :error-patterns
-             ((info line-start
-                    (file-name) ":" line ":" column
-                    ": Warning: "
-                    (message (one-or-more not-newline)
-                             (one-or-more "\n" (one-or-more not-newline)))
-                    line-end)
-              (info line-start
-                    (file-name) ":" line ":" column
-                    ": Error: "
-                    (message (one-or-more not-newline)
-                             (one-or-more "\n" (one-or-more not-newline)))
-                    line-end))
-             :modes haskell-mode
-             :next-checkers ((t . haskell-ghc-2)))
-           (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
-           (add-to-list 'flycheck-checkers 'haskell-ghc-2)
+    See URL `https://github.com/ndmitchell/hlint'."
+         :command ("hlint" "--hint=Dollar" source-inplace)
+         :error-patterns
+         ((info line-start
+                (file-name) ":" line ":" column
+                ": Warning: "
+                (message (one-or-more not-newline)
+                         (one-or-more "\n" (one-or-more not-newline)))
+                line-end)
+          (info line-start
+                (file-name) ":" line ":" column
+                ": Error: "
+                (message (one-or-more not-newline)
+                         (one-or-more "\n" (one-or-more not-newline)))
+                line-end))
+         :modes haskell-mode
+         :next-checkers ((t . haskell-ghc-2)))
+       (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
+       (add-to-list 'flycheck-checkers 'haskell-ghc-2)
 
-           (defun flycheck-mode-line-status-text (&optional status)
-             "Get a text describing STATUS for use in the mode line.
+       (defun flycheck-mode-line-status-text (&optional status)
+         "Get a text describing STATUS for use in the mode line.
 
-      STATUS defaults to `flycheck-last-status-change' if omitted or
-      nil."
-             (let ((text
-                    (pcase (or status flycheck-last-status-change)
-                      (`not-checked "")
-                      (`no-checker " [  -  ]")
-                      (`running " [  *  ]")
-                      (`errored " [  !  ]")
-                      (`finished
-                       (if flycheck-current-errors
-                           (let ((error-counts (flycheck-count-errors
-                                                flycheck-current-errors)))
-                             (format " [%s:%s:%s]"
-                                     (or (cdr (assq 'error error-counts)) " ")
-                                     (or (cdr (assq 'warning error-counts)) " ")
-                                     (or (cdr (assq 'info error-counts)) " ")))
-                         ""))
-                      (`interrupted " [  -  ]")
-                      (`suspicious " [  ?  ]"))))
-               text))
+    STATUS defaults to `flycheck-last-status-change' if omitted or
+    nil."
+         (let ((text
+                (pcase (or status flycheck-last-status-change)
+                  (`not-checked "")
+                  (`no-checker " [  -  ]")
+                  (`running " [  *  ]")
+                  (`errored " [  !  ]")
+                  (`finished
+                   (if flycheck-current-errors
+                       (let ((error-counts (flycheck-count-errors
+                                            flycheck-current-errors)))
+                         (format " [%s:%s:%s]"
+                                 (or (cdr (assq 'error error-counts)) " ")
+                                 (or (cdr (assq 'warning error-counts)) " ")
+                                 (or (cdr (assq 'info error-counts)) " ")))
+                     ""))
+                  (`interrupted " [  -  ]")
+                  (`suspicious " [  ?  ]"))))
+           text))
 
 
-           (flycheck-define-checker haskell-ghc-2
-             "A Haskell syntax and type checker using ghc.
+       (flycheck-define-checker haskell-ghc-2
+         "A Haskell syntax and type checker using ghc.
 
-      See URL `http://www.haskell.org/ghc/'."
-             :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
-                       (option-flag "-no-user-package-db"
-                                    flycheck-ghc-no-user-package-database)
-                       (option-list "-package-db" flycheck-ghc-package-databases)
-                       (option-list "-i" flycheck-ghc-search-path concat)
-                       ;; Include the parent directory of the current module tree, to
-                       ;; properly resolve local imports
-                       (eval (concat
-                              "-i"
-                              (flycheck-module-root-directory
-                               (flycheck-find-in-buffer flycheck-haskell-module-re))))
-                       (option-list "-X" flycheck-ghc-language-extensions concat)
-                       ;; Force GHC to treat the file as Haskell file, even if it doesn't
-                       ;; have an extension.  Otherwise GHC would fail on files without an
-                       ;; extension
-                       "-x" "hs" source)
-             :error-patterns
-             ((info line-start (file-name) ":" line ":" column ":"
-                    (or " " "\n    ") "Found hole" (optional "\n")
-                    (message
-                     (one-or-more " ") (one-or-more not-newline)
-                     (zero-or-more "\n"
-                                   (one-or-more " ")
-                                   (one-or-more not-newline)))
-                    line-end)
-              (warning line-start (file-name) ":" line ":" column ":"
-                       (or " " "\n    ") "Warning:" (optional "\n")
-                       (message
-                        (one-or-more " ") (one-or-more not-newline)
-                        (zero-or-more "\n"
-                                      (one-or-more " ")
-                                      (one-or-more not-newline)))
-                       line-end)
-              (error line-start (file-name) ":" line ":" column ":"
-                     (or (message (one-or-more not-newline))
-                         (and "\n"
-                              (message
-                               (one-or-more " ") (one-or-more not-newline)
-                               (zero-or-more "\n"
-                                             (one-or-more " ")
-                                             (one-or-more not-newline)))))
-                     line-end))
-             :error-filter
-             (lambda (errors)
-               (flycheck-sanitize-errors (flycheck-dedent-error-messages errors))
-               (mapc (lambda (x) (aset x 6
-                                       (let ((txt (elt x 6)))
-                                         (with-temp-buffer
-                                           (insert txt)
-                                           (goto-char (point-min))
-                                           (when (re-search-forward "^‘\\([^’]+\\)’ with type:" nil t)
-                                             (replace-match (concat "Hole " (match-string 1) " ::")))
-                                           (while (re-search-forward " *(bound at\\(\n\\|[^)]\\)+)" nil t)
-                                             (replace-match ""))
-                                           (goto-char (point-min))
-                                           (while (re-search-forward " *at /tmp/.*" nil t)
-                                             (replace-match ""))
-                                           (goto-char (point-min))
-                                           (forward-line)
-                                           (while (re-search-forward " *\\(from the context\\|bound by the type\\|.+is a rigid type\\|Expected type\\|Actual type\\|Relevant bindings\\|in the second\\)" nil t)
-                                             (replace-match (concat "-- " (match-string 1))))
-                                           (goto-char (point-min))
-                                           (while (re-search-forward "\\(, namely\\|variable bound by\\)\n +" nil t)
-                                             (replace-match (concat (match-string 1) " ")))
-                                           (goto-char (point-min))
-                                           (while (re-search-forward "-- .*\n\\( +\\)" nil t)
-                                             (let ((len (length (match-string 1))))
-                                               (beginning-of-line)
-                                               (while (re-search-forward (concat "^" (make-string len ?\s)) (point-at-eol) t)
-                                                 (replace-match "   ")
-                                                 (forward-line))))
-                                           (buffer-string)))))
-                     errors))
-             :modes haskell-mode
-             :next-checkers ((warning . haskell-hlint)))
+    See URL `http://www.haskell.org/ghc/'."
+         :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
+                   (option-flag "-no-user-package-db"
+                                flycheck-ghc-no-user-package-database)
+                   (option-list "-package-db" flycheck-ghc-package-databases)
+                   (option-list "-i" flycheck-ghc-search-path concat)
+                   ;; Include the parent directory of the current module tree, to
+                   ;; properly resolve local imports
+                   (eval (concat
+                          "-i"
+                          (flycheck-module-root-directory
+                           (flycheck-find-in-buffer flycheck-haskell-module-re))))
+                   (option-list "-X" flycheck-ghc-language-extensions concat)
+                   ;; Force GHC to treat the file as Haskell file, even if it doesn't
+                   ;; have an extension.  Otherwise GHC would fail on files without an
+                   ;; extension
+                   "-x" "hs" source)
+         :error-patterns
+         ((info line-start (file-name) ":" line ":" column ":"
+                (or " " "\n    ") "Found hole" (optional "\n")
+                (message
+                 (one-or-more " ") (one-or-more not-newline)
+                 (zero-or-more "\n"
+                               (one-or-more " ")
+                               (one-or-more not-newline)))
+                line-end)
+          (warning line-start (file-name) ":" line ":" column ":"
+                   (or " " "\n    ") "Warning:" (optional "\n")
+                   (message
+                    (one-or-more " ") (one-or-more not-newline)
+                    (zero-or-more "\n"
+                                  (one-or-more " ")
+                                  (one-or-more not-newline)))
+                   line-end)
+          (error line-start (file-name) ":" line ":" column ":"
+                 (or (message (one-or-more not-newline))
+                     (and "\n"
+                          (message
+                           (one-or-more " ") (one-or-more not-newline)
+                           (zero-or-more "\n"
+                                         (one-or-more " ")
+                                         (one-or-more not-newline)))))
+                 line-end))
+         :error-filter
+         (lambda (errors)
+           (flycheck-sanitize-errors (flycheck-dedent-error-messages errors))
+           (mapc (lambda (x) (aset x 6
+                                   (let ((txt (elt x 6)))
+                                     (with-temp-buffer
+                                       (insert txt)
+                                       (goto-char (point-min))
+                                       (while (re-search-forward "\n +\\(with type\\)" nil t)
+                                         (replace-match (concat " " (match-string 1))))
+                                       (goto-char (point-min))
+                                       (when (re-search-forward "^‘\\([^’]+\\)’ with type:" nil t)
+                                         (replace-match (concat "Hole " (match-string 1) " ::")))
+                                       (while (re-search-forward " *(bound at\\(\n\\|[^)]\\)+)" nil t)
+                                         (replace-match ""))
+                                       (goto-char (point-min))
+                                       (while (re-search-forward " *at /tmp/.*" nil t)
+                                         (replace-match ""))
+                                       (goto-char (point-min))
+                                       (forward-line)
+                                       (while (re-search-forward "^ *\\(from the context\\|bound by the type\\|.+is a rigid type\\|Expected type\\|Actual type\\|Relevant bindings\\|in the second\\|in the first\\|in the expression\\|in an equation\\)" nil t)
+                                         (replace-match (concat "-- " (match-string 1))))
+                                       (goto-char (point-min))
+                                       (while (re-search-forward "\\(, namely\\|variable bound by\\)\n +" nil t)
+                                         (replace-match (concat (match-string 1) " ")))
+                                       (goto-char (point-min))
+                                       (while (re-search-forward "-- .*\n\\( +\\)" nil t)
+                                         (let ((len (length (match-string 1))))
+                                           (beginning-of-line)
+                                           (while (re-search-forward (concat "^" (make-string len ?\s)) (point-at-eol) t)
+                                             (replace-match "")
+                                             (forward-line))))
+                                       (buffer-string)))))
+                 errors))
+         :modes haskell-mode
+         :next-checkers ((warning . haskell-hlint)))
 
-           (set-face-attribute 'flycheck-error nil
-                               :foreground "#D00"
-                               :background "#222"
-                               :underline nil
-                               :weight 'ultrabold)
-           (set-face-attribute 'flycheck-warning nil
-                               :foreground "#CC0"
-                               :background "#222"
-                               :underline nil
-                               :weight 'ultrabold)
-           (set-face-attribute 'flycheck-info nil
-                               :foreground "#66F"
-                               :background "#008"
-                               :underline nil
-                               :weight 'ultrabold)))
+       (set-face-attribute 'flycheck-error nil
+                           :foreground "#D00"
+                           :background "#222"
+                           :underline nil
+                           :weight 'ultrabold)
+       (set-face-attribute 'flycheck-warning nil
+                           :foreground "#CC0"
+                           :background "#222"
+                           :underline nil
+                           :weight 'ultrabold)
+       (set-face-attribute 'flycheck-info nil
+                           :foreground "#66F"
+                           :background "#008"
+                           :underline nil
+                           :weight 'ultrabold)))
 #+END_SRC
 ** keyfreq
 
@@ -1098,58 +1110,119 @@
 ** pretty-symbol
 
 #+BEGIN_SRC emacs-lisp
-(setq pretty-symbol-categories '(knu-custom))
+ (setq pretty-symbol-categories '(knu-custom))
 
-(mapc (lambda (x) (add-to-list 'pretty-symbol-patterns
-                                 (list (car x) 'knu-custom
-                                       (regexp-quote (cadr x))
-                                       '(org-mode latex-mode))))
-      '((?α "\\alpha") (?Α "\\Alpha") (?∞ "\\infty") (?ℝ "\\mathbb{R}") (?β "\\beta")
-        (?Β "\\Beta") (?γ "\\gamma") (?Γ "\\Gamma") (?δ "\\delta") (?Δ "\\Delta")
-        (?ε "\\epsilon") (?Ε "\\Epsilon") (?ζ "\\zeta") (?Ζ "\\Zeta") (?η "\\eta")
-        (?Η "\\Eta") (?θ "\\theta") (?Θ "\\Theta") (?ι "\\iota") (?Ι "\\Iota")
-        (?κ "\\kappa") (?K "\\Kappa") (?⊥ "\\perp") (10096 "\\left(") (10097 "\\right)")
-        (?_ "\\underline")
-        (12304 "\\left\\[") (12305 "\\right]") (?ħ "\\hbar") (?ᵃ "^a")
-        (?ᵇ "^b") (?ᶜ "^c") (?ᵈ "^d") (?ᵉ "^e") (?ᶠ "^f")
-        (?Ȧ "\\dot{A}") (?ȧ "\\dot{a}") (?Ḃ "\\dot{B}") (?ḃ "\\dot{b}")
-        (?Ċ "\\dot{C}") (?ċ "\\dot{c}") (?Ḋ "\\dot{D}") (?ḋ "\\dot{d}")
-        (?Ė "\\dot{E}") (?ė "\\dot{e}") (?Ḟ "\\dot{F}") (?ḟ "\\dot{f}")
-        (?Ġ "\\dot{G}") (?ġ "\\dot{g}") (?Ḣ "\\dot{H}") (?ḣ "\\dot{h}")
-        (?İ "\\dot{I}") (?Ṁ "\\dot{M}") (?ṁ "\\dot{m}")
-        (?Ṅ "\\dot{N}") (?ṅ "\\dot{n}") (?Ȯ "\\dot{O}") (?ȯ "\\dot{o}")
-        (?Ṗ "\\dot{P}") (?ṗ "\\dot{p}") (?Ṙ "\\dot{R}") (?ṙ "\\dot{r}")
-        (?Ṡ "\\dot{S}") (?ṡ "\\dot{s}") (?Ṫ "\\dot{T}") (?ṫ "\\dot{t}")
-        (?Ẇ "\\dot{W}") (?ẇ "\\dot{w}") (?Ẋ "\\dot{X}") (?ẋ "\\dot{x}")
-        (?Ẏ "\\dot{Y}") (?ẏ "\\dot{y}") (?Ż "\\dot{Z}") (?ż "\\dot{z}")
-        (?ᵍ "^g") (?ʰ "^h") (?ⁱ "^i") (?ʲ "^j") (?ᵏ "^k")
-        (?ˡ "^l") (?ᵐ "^m") (?ⁿ "^n") (?ᵒ "^o") (?ᵖ "^p")
-        (?ʳ "^r") (?ˢ "^s") (?ᵗ "^t") (?ᵘ "^u") (?ᵛ "^v")
-        (?ʷ "^w") (?ˣ "^x") (?ʸ "^y") (?ᶻ "^z") (?ₐ "_a")
-        (?ₑ "_e") (?ₕ "_h") (?ᵢ "_i") (?ⱼ "_j") (?ₖ "_k") (?ₗ "_l")
-        (?ₘ "_m") (?ₙ "_n") (?ₒ "_o") (?ₚ "_p") (?ᵣ "_r") (?ₛ "_s")
-        (?ₜ "_t") (?ᵤ "_u") (?ᵥ "_v") (?ₓ "_x") (?⁰ "^0") (?ⁱ "^1")
-        (?² "^2") (?³ "^3") (?⁴ "^4") (?⁵ "^5") (?⁶ "^6")
-        (?⁷ "^7") (?⁸ "^8") (?⁹ "^9") (?₀ "_0") (?₁ "_1")
-        (?₂ "_2") (?₃ "_3") (?₄ "_4") (?₅ "_5") (?₆ "_6") (?₇ "_7")
-        (?₈ "_8") (?₉ "_9") (?⁺ "^+") (?⁻ "^-") (?√ "\\sqrt")
-        (?λ "\\lambda") (?∫ "\\int") (?∈ "\\in") (?Λ "\\Lambda") (?μ "\\mu")
-        (?Μ "\\Mu") (?ν "\\nu") (?Ν "\\Nu") (?ν "\\vega") (?ν "\\Vega")
-        (?ξ "\\xi") (?Ξ "\\Xi") (?ο "\\omicron") (?Ο "\\Omicron") (?π "\\pi")
-        (?Π "\\Pi") (?ρ "\\rho") (?Ρ "\\Rho") (?σ "\\sigma") (?Σ "\\Sigma")
-        (?τ "\\tau") (?Τ "\\Tau") (?υ "\\upsilon") (?Y "\\Upsilon") (?φ "\\phi")
-        (?Φ "\\Phi") (?χ "\\chi") (?Χ "\\Chi") (?ψ "\\psi") (?Ψ "\\Psi")
-        (?ω "\\omega") (?Ω "\\Omega") (?∇ "\\nabla") (?∮ "\\oint") (?× "\\times")
-        (?· "\\cdot") (?Σ "\\sum") (?± "\\pm") (?∓ "\\mp") (?≈ "\\approx")
-        (?≠ "\\neq") (?≤ "\\leq") (?≥ "\\geq") (?⟶ "\\rightarrow") (?⟵ "\\leftarrow")
-        (?⟹ "\\Rightarrow") (?⟸ "\\Leftarrow") (?⟼ "\\mapsto") (?↷ "\\curvearrowright")
-        (?⟷ "\\leftrightarrow") (?d "\\mathrm{d}") (?∂ "\\partial") (?≡ "\\equiv")
-        (?≪ "\\ll") (?≫ "\\gg") (?~ "\\sim")))
+      (mapc (lambda (x) (add-to-list 'pretty-symbol-patterns
+                                       (list (car x) 'knu-custom
+                                             (regexp-quote (cadr x))
+                                             '(org-mode latex-mode))))
+            '((?α "\\alpha") (?Α "\\Alpha") (?∞ "\\infty") (?ℝ "\\mathbb{R}") (?β "\\beta")
+              (?Β "\\Beta") (?γ "\\gamma") (?Γ "\\Gamma") (?δ "\\delta") (?Δ "\\Delta")
+              (?ε "\\epsilon") (?Ε "\\Epsilon") (?ζ "\\zeta") (?Ζ "\\Zeta") (?η "\\eta")
+              (?Η "\\Eta") (?θ "\\theta") (?Θ "\\Theta") (?ι "\\iota") (?Ι "\\Iota")
+              (?κ "\\kappa") (?K "\\Kappa") (?⊥ "\\perp") (10096 "\\left(") (10097 "\\right)")
+              (?_ "\\underline")
+              (12304 "\\left\\[") (12305 "\\right]") (?ħ "\\hbar") (?ᵃ "^a")
+              (?ᵇ "^b") (?ᶜ "^c") (?ᵈ "^d") (?ᵉ "^e") (?ᶠ "^f")
+              (?Ȧ "\\dot{A}") (?ȧ "\\dot{a}") (?Ḃ "\\dot{B}") (?ḃ "\\dot{b}")
+              (?Ċ "\\dot{C}") (?ċ "\\dot{c}") (?Ḋ "\\dot{D}") (?ḋ "\\dot{d}")
+              (?Ė "\\dot{E}") (?ė "\\dot{e}") (?Ḟ "\\dot{F}") (?ḟ "\\dot{f}")
+              (?Ġ "\\dot{G}") (?ġ "\\dot{g}") (?Ḣ "\\dot{H}") (?ḣ "\\dot{h}")
+              (?İ "\\dot{I}") (?Ṁ "\\dot{M}") (?ṁ "\\dot{m}")
+              (?Ṅ "\\dot{N}") (?ṅ "\\dot{n}") (?Ȯ "\\dot{O}") (?ȯ "\\dot{o}")
+              (?Ṗ "\\dot{P}") (?ṗ "\\dot{p}") (?Ṙ "\\dot{R}") (?ṙ "\\dot{r}")
+              (?Ṡ "\\dot{S}") (?ṡ "\\dot{s}") (?Ṫ "\\dot{T}") (?ṫ "\\dot{t}")
+              (?Ẇ "\\dot{W}") (?ẇ "\\dot{w}") (?Ẋ "\\dot{X}") (?ẋ "\\dot{x}")
+              (?Ẏ "\\dot{Y}") (?ẏ "\\dot{y}") (?Ż "\\dot{Z}") (?ż "\\dot{z}")
+              (?ᵍ "^g") (?ʰ "^h") (?ⁱ "^i") (?ʲ "^j") (?ᵏ "^k")
+              (?ˡ "^l") (?ᵐ "^m") (?ⁿ "^n") (?ᵒ "^o") (?ᵖ "^p")
+              (?ʳ "^r") (?ˢ "^s") (?ᵗ "^t") (?ᵘ "^u") (?ᵛ "^v")
+              (?ʷ "^w") (?ˣ "^x") (?ʸ "^y") (?ᶻ "^z") (?ₐ "_a")
+              (?ₑ "_e") (?ₕ "_h") (?ᵢ "_i") (?ⱼ "_j") (?ₖ "_k") (?ₗ "_l")
+              (?ₘ "_m") (?ₙ "_n") (?ₒ "_o") (?ₚ "_p") (?ᵣ "_r") (?ₛ "_s")
+              (?ₜ "_t") (?ᵤ "_u") (?ᵥ "_v") (?ₓ "_x") (?⁰ "^0") (?ⁱ "^1")
+              (?² "^2") (?³ "^3") (?⁴ "^4") (?⁵ "^5") (?⁶ "^6")
+              (?⁷ "^7") (?⁸ "^8") (?⁹ "^9") (?₀ "_0") (?₁ "_1")
+              (?₂ "_2") (?₃ "_3") (?₄ "_4") (?₅ "_5") (?₆ "_6") (?₇ "_7")
+              (?₈ "_8") (?₉ "_9") (?⁺ "^+") (?⁻ "^-") (?√ "\\sqrt")
+              (?λ "\\lambda") (?∫ "\\int") (?∈ "\\in") (?Λ "\\Lambda") (?μ "\\mu")
+              (?Μ "\\Mu") (?ν "\\nu") (?Ν "\\Nu") (?ν "\\vega") (?ν "\\Vega")
+              (?ξ "\\xi") (?Ξ "\\Xi") (?ο "\\omicron") (?Ο "\\Omicron") (?π "\\pi")
+              (?Π "\\Pi") (?ρ "\\rho") (?Ρ "\\Rho") (?σ "\\sigma") (?Σ "\\Sigma")
+              (?τ "\\tau") (?Τ "\\Tau") (?υ "\\upsilon") (?Y "\\Upsilon") (?φ "\\phi")
+              (?Φ "\\Phi") (?χ "\\chi") (?Χ "\\Chi") (?ψ "\\psi") (?Ψ "\\Psi")
+              (?ω "\\omega") (?Ω "\\Omega") (?∇ "\\nabla") (?∮ "\\oint") (?× "\\times")
+              (?· "\\cdot") (?Σ "\\sum") (?± "\\pm") (?∓ "\\mp") (?≈ "\\approx")
+              (?≠ "\\neq") (?≤ "\\leq") (?≥ "\\geq") (?⟶ "\\rightarrow") (?⟵ "\\leftarrow")
+              (?⟹ "\\Rightarrow") (?⟸ "\\Leftarrow") (?⟼ "\\mapsto") (?↷ "\\curvearrowright")
+              (?⟷ "\\leftrightarrow") (?d "\\mathrm{d}") (?∂ "\\partial") (?≡ "\\equiv")
+              (?≪ "\\ll") (?≫ "\\gg") (?~ "\\sim")))
 
-(mapc (lambda (x) (add-to-list 'pretty-symbol-patterns
-                                 (list (car x) 'knu-custom
-                                       (cadr x) '(haskell-mode))))
-        '((?∷ "::") (?ℤ "Integer") (?ℤ "Int") (?ℚ "Double") (?ℚ "Float")))
+      (mapc (lambda (x) (add-to-list 'pretty-symbol-patterns
+                                       (list (car x) 'knu-custom
+                                             (cadr x) '(haskell-mode))))
+            '((?⟷ "<->")
+              ))
+
+  (defconst haskell-unicode-conversions
+    '(
+
+          ("[ (]\\(\\[|\\)[) \n]" . ?⟦)
+          ("[ (]\\(|\\]\\)[) \n]" . ?⟧)
+    ("[ (]\\(>>\\)[) \n]" . ?⟫)  
+    ("[ (]\\(<<\\)[) \n]" . ?⟪)
+     ("[ (]\\(->\\)[) \n]" . ?→)
+     ("[ (]\\(/=\\)[) ]" . ?≠)
+     ("[ (]\\(==\\)[) ]" . ?≡)
+     ("[ (]\\(/=\\)[) ]" . ?≢)
+     ("[ (]\\(<=\\)[) ]" . ?≤)
+     ("[ (]\\(>=\\)[) ]" . ?≥)
+     ;;("[ (]\\(=\\)[) ]" . ?≡)
+     ("[ (]\\(\\.\\)[) ]" . ?∘)
+     ("[ (]\\(&&\\)[) ]" . ?∧)
+     ("[ (]\\(||\\)[) ]" . ?∨)
+     ("[ (]\\(\\*\\)[) ]" . ?×)
+     ("[ (]\\(\\\\\\)[(_a-z]" . ?λ)
+     (" \\(<-\\)[ \n]" . ?←)
+     ;; (" \\(-<\\) " . ?↢)
+     ;; (" \\(>-\\) " . ?↣)
+     (" \\(=>\\)[ \n]" . ?⟹)
+     ;;(" \\(>=>\\) " . ?↣)
+     ;;(" \\(<=<\\) " . ?↢)
+     ;;(" \\(>>=\\) " . ?↦)
+     ;;(" \\(=<<\\) " . ?↤)
+     ("[ (]\\(\\<not\\>\\)[ )]" . ?¬)
+     ;;("[ (]\\(<<<\\)[ )]" . ?⋘)
+     ;;("[ (]\\(>>>\\)[ )]" . ?⋙)
+     (" \\(::\\) " . ?∷)
+     ("\\(`union`\\)" . ?⋃)
+     ("\\(`intersect`\\)" . ?⋂)
+     ("\\(`elem`\\)" . ?∈)
+     ("\\(`notElem`\\)" . ?∉)
+     ;;("\\<\\(mempty\\)\\>" . ??)
+     ;; ("\\(`mappend`\\)" . ?⨂)
+     ;; ("\\(`msum`\\)" . ?⨁)
+     ;; ("\\(\\<True\\>\\)" . "𝗧𝗿𝘂𝗲")
+     ;; ("\\(\\<False\\>\\)" . "𝗙𝗮𝗹𝘀𝗲")
+     ("\\(\\<undefined\\>\\)" . ?⊥)
+     ("\\<\\(forall \\)\\>" . ?∀)))
+
+
+    (font-lock-add-keywords
+    'haskell-mode
+    (append (mapcar (lambda (chars)
+    `(,(car chars)
+    ,(if (characterp (cdr chars))
+    `(0 (ignore
+    (compose-region (match-beginning 1)
+    (match-end 1)
+    ,(cdr chars))))
+    `(0 ,(cdr chars)))))
+    haskell-unicode-conversions)
+    '(("(\\|)" . 'esk-paren-face)
+    ;; ("\\<[a-zA-Z]+\\([0-9]\\)\\>"
+    ;; 1 haskell-subscript)
+    )))
 
 #+END_SRC
 
@@ -1179,48 +1252,49 @@
 ** hooks
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'haskell-mode-hook (lambda ()
-                               (structured-haskell-mode)
-                               (ghc-init)
-                               (company-mode)
-                               (pretty-symbols-mode)))
-(add-hook 'structured-haskell-mode-hook (lambda ()
-                                          (define-key shm-map (kbd "RET") 'shm/newline-indent)))
-(add-to-list 'company-backends 'company-ghc)
+  (add-hook 'haskell-mode-hook (lambda ()
+                                 (pretty-symbols-mode)
+                                 (when (buffer-file-name)
+                                   (structured-haskell-mode)
+                                   (ghc-init)
+                                   (company-mode))))
+  (add-hook 'structured-haskell-mode-hook (lambda ()
+                                            (define-key shm-map (kbd "RET") 'shm/newline-indent)))
+  (add-to-list 'company-backends 'company-ghc)
 
-(add-hook 'c-mode-hook 'paredit-mode)
-(add-hook 'w3m-fontify-after-hook (lambda ()
-                                    (knu-w3m-cleanup)
-                                    (knu-w3m-orgify)))
-(add-hook 'kill-emacs-hook (lambda ()
-                             (when (fboundp 'gnus-group-exit)
-                               (defun gnus-y-or-n-p (yes) yes)
-                               (gnus-group-exit))))
-(add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
-(add-hook 'after-change-major-mode-hook (lambda ()
-                                          (highlight-parentheses-mode)))
-(add-hook 'LilyPond-mode-hook (lambda () (highlight-parentheses-mode)
-                                (lilypond-pretty-beat-mode)))
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-(add-hook 'org-mode-hook (lambda ()
-                           (auto-fill-mode)
-                           (num3-mode)
-                           (whitespace-mode)
-                           (pretty-symbols-mode)))
-(add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-(add-hook 'prog-mode-hook (lambda ()
-                            (num3-mode)
-                            (whitespace-mode)
-                            (indentation-tree-mode)
-                            (hs-minor-mode)))
-(add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-(add-hook 'post-command-hook
-          (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
-                               (equal major-mode 'lisp-interaction-mode))
-                       (when (not (equal buffer-undo-list-tmp buffer-undo-list))
-                         (auto-indent-sexps)
-                         (setq buffer-undo-list-tmp buffer-undo-list)))))
+  (add-hook 'c-mode-hook 'paredit-mode)
+  (add-hook 'w3m-fontify-after-hook (lambda ()
+                                      (knu-w3m-cleanup)
+                                      (knu-w3m-orgify)))
+  (add-hook 'kill-emacs-hook (lambda ()
+                               (when (fboundp 'gnus-group-exit)
+                                 (defun gnus-y-or-n-p (yes) yes)
+                                 (gnus-group-exit))))
+  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+  (add-hook 'after-change-major-mode-hook (lambda ()
+                                            (highlight-parentheses-mode)))
+  (add-hook 'LilyPond-mode-hook (lambda () (highlight-parentheses-mode)
+                                  (lilypond-pretty-beat-mode)))
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+  (add-hook 'org-mode-hook (lambda ()
+                             (auto-fill-mode)
+                             (num3-mode)
+                             (whitespace-mode)
+                             (pretty-symbols-mode)))
+  (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
+  (add-hook 'prog-mode-hook (lambda ()
+                              (num3-mode)
+                              (whitespace-mode)
+                              (indentation-tree-mode)
+                              (hs-minor-mode)))
+  (add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'post-command-hook
+            (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
+                                 (equal major-mode 'lisp-interaction-mode))
+                         (when (not (equal buffer-undo-list-tmp buffer-undo-list))
+                           (auto-indent-sexps)
+                           (setq buffer-undo-list-tmp buffer-undo-list)))))
 #+END_SRC
 
 ** tramp
