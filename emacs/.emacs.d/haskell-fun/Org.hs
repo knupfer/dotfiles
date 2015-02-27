@@ -35,4 +35,4 @@ stripNum = filter (any ("0" /=))
 splitDelimiter :: [T.Text] -> [[T.Text]]
 splitDelimiter s = maybe [s] cells delim
   where cells  c = map (map T.strip . T.split (c ==)) s
-        delim    = find (\c -> all (T.any (c ==)) s) "\t,;| "
+        delim    = find (\c -> all (T.any (c ==)) s) ("\t,;| " :: String)
