@@ -61,7 +61,7 @@ module Text ( append
 
 import           Data.Text (Text)
 import qualified Data.Text as T
-import           Prelude   (Bool, Char, Int, Maybe, String, uncurry)
+import           Prelude   (Bool, Char, Int, Maybe, String)
 
 append :: Text -> Text -> Text
 append = T.append

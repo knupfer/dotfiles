@@ -394,85 +394,85 @@
 *** misc
 
 #+BEGIN_SRC emacs-lisp
-(setq org-catch-invisible-edits 'error
-      org-confirm-babel-evaluate nil
-      org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
-      org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
-      org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")
-      org-export-backends '(ascii html latex odt)
-      org-export-headline-levels 4
-      org-format-latex-options '(:foreground "#0da"
-                                             :background default
-                                             :scale 2.0
-                                             :html-foreground "Black"
-                                             :html-background "Transparent"
-                                             :html-scale 1.0
-                                             :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
-      org-hierarchical-todo-statistics nil
-      org-highlight-latex-and-related '(latex script entities)
-      org-image-actual-width 200
-      org-latex-classes '(("article" "\\documentclass[11pt]{scrartcl}"
-                           ("\\section{%s}" . "\\section*{%s}")
-                           ("\\subsection{%s}" . "\\subsection*{%s}")
-                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                           ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                          ("report" "\\documentclass[11pt]{report}"
-                           ("\\part{%s}" . "\\part*{%s}")
-                           ("\\chapter{%s}" . "\\chapter*{%s}")
-                           ("\\section{%s}" . "\\section*{%s}")
-                           ("\\subsection{%s}" . "\\subsection*{%s}")
-                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-                          ("book" "\\documentclass[11pt]{book}"
-                           ("\\part{%s}" . "\\part*{%s}")
-                           ("\\chapter{%s}" . "\\chapter*{%s}")
-                           ("\\section{%s}" . "\\section*{%s}")
-                           ("\\subsection{%s}" . "\\subsection*{%s}")
-                           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
-      org-latex-preview-ltxpng-directory "~/ltxpreview/"
-      org-list-empty-line-terminates-plain-lists t
-      org-log-done 'time
-      org-replace-disputed-keys t
-      org-src-fontify-natively t
-      org-startup-align-all-tables t
-      org-startup-folded t
-      org-startup-indented t
-      org-startup-with-inline-images t
-      org-todo-keyword-faces '(("FAILED" . "#f00") ("CANCELED" . "#ee3"))
-      org-todo-keywords '((sequence "TODO" "|" "DONE" "CANCELED" "FAILED"))
-      org-format-latex-header "\\documentclass{article}
-\\usepackage[usenames]{color}
-\\usepackage{etoolbox}
-\\usepackage{mdframed}
-[PACKAGES]
-[DEFAULT-PACKAGES]
-\\pagestyle{empty}             % do not remove
-% The settings below are copied from fullpage.sty
-\\setlength{\\textwidth}{\\paperwidth}
-\\addtolength{\\textwidth}{-13cm}
-\\setlength{\\oddsidemargin}{1.5cm}
-\\addtolength{\\oddsidemargin}{-2.54cm}
-\\setlength{\\evensidemargin}{\\oddsidemargin}
-\\setlength{\\textheight}{\\paperheight}
-\\addtolength{\\textheight}{-\\headheight}
-\\addtolength{\\textheight}{-\\headsep}
-\\addtolength{\\textheight}{-\\footskip}
-\\addtolength{\\textheight}{-3cm}
-\\setlength{\\topmargin}{1.5cm}
-\\addtolength{\\topmargin}{-2.54cm}
-\\definecolor{bg}{rgb}{0,0.1,0.1}\\definecolor{fg}{rgb}{0.2,1,0.7}
-\\BeforeBeginEnvironment{align*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-\\AfterEndEnvironment{align*}{\\end{mdframed}}
-\\BeforeBeginEnvironment{align}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-\\AfterEndEnvironment{align}{\\end{mdframed}}
-\\BeforeBeginEnvironment{gather*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-\\AfterEndEnvironment{gather*}{\\end{mdframed}}
-\\BeforeBeginEnvironment{gather}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-\\AfterEndEnvironment{gather}{\\end{mdframed}}
-\\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
-\\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
-\\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
-\\newcommand{\\e}{\\mathrm{e}}")
+  (setq org-catch-invisible-edits 'error
+        org-confirm-babel-evaluate nil
+        org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
+        org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
+        org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")
+        org-export-backends '(ascii html latex odt)
+        org-export-headline-levels 4
+        org-format-latex-options '(:foreground "#0da"
+                                               :background default
+                                               :scale 2.0
+                                               :html-foreground "Black"
+                                               :html-background "Transparent"
+                                               :html-scale 1.0
+                                               :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+        org-hierarchical-todo-statistics nil
+        org-highlight-latex-and-related '(latex script entities)
+        org-image-actual-width 200
+        org-latex-classes '(("article" "\\documentclass[11pt]{scrartcl}"
+                             ("\\section{%s}" . "\\section*{%s}")
+                             ("\\subsection{%s}" . "\\subsection*{%s}")
+                             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                             ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                             ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                            ("report" "\\documentclass[11pt]{report}"
+                             ("\\part{%s}" . "\\part*{%s}")
+                             ("\\chapter{%s}" . "\\chapter*{%s}")
+                             ("\\section{%s}" . "\\section*{%s}")
+                             ("\\subsection{%s}" . "\\subsection*{%s}")
+                             ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+                            ("book" "\\documentclass[11pt]{book}"
+                             ("\\part{%s}" . "\\part*{%s}")
+                             ("\\chapter{%s}" . "\\chapter*{%s}")
+                             ("\\section{%s}" . "\\section*{%s}")
+                             ("\\subsection{%s}" . "\\subsection*{%s}")
+                             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+        org-latex-preview-ltxpng-directory "~/ltxpreview/"
+        org-list-empty-line-terminates-plain-lists t
+        org-log-done 'time
+        org-replace-disputed-keys t
+        org-src-fontify-natively t
+        org-startup-align-all-tables t
+        org-startup-folded t
+        org-startup-indented t
+        org-startup-with-inline-images t
+        org-todo-keyword-faces '(("FAILED" . "#f00") ("CANCELED" . "#ee3") ("WAIT" . "#f0f"))
+        org-todo-keywords '((sequence "TODO" "WAIT" "|" "DONE" "CANCELED" "FAILED"))
+        org-format-latex-header "\\documentclass{article}
+  \\usepackage[usenames]{color}
+  \\usepackage{etoolbox}
+  \\usepackage{mdframed}
+  [PACKAGES]
+  [DEFAULT-PACKAGES]
+  \\pagestyle{empty}             % do not remove
+  % The settings below are copied from fullpage.sty
+  \\setlength{\\textwidth}{\\paperwidth}
+  \\addtolength{\\textwidth}{-13cm}
+  \\setlength{\\oddsidemargin}{1.5cm}
+  \\addtolength{\\oddsidemargin}{-2.54cm}
+  \\setlength{\\evensidemargin}{\\oddsidemargin}
+  \\setlength{\\textheight}{\\paperheight}
+  \\addtolength{\\textheight}{-\\headheight}
+  \\addtolength{\\textheight}{-\\headsep}
+  \\addtolength{\\textheight}{-\\footskip}
+  \\addtolength{\\textheight}{-3cm}
+  \\setlength{\\topmargin}{1.5cm}
+  \\addtolength{\\topmargin}{-2.54cm}
+  \\definecolor{bg}{rgb}{0,0.1,0.1}\\definecolor{fg}{rgb}{0.2,1,0.7}
+  \\BeforeBeginEnvironment{align*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+  \\AfterEndEnvironment{align*}{\\end{mdframed}}
+  \\BeforeBeginEnvironment{align}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+  \\AfterEndEnvironment{align}{\\end{mdframed}}
+  \\BeforeBeginEnvironment{gather*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+  \\AfterEndEnvironment{gather*}{\\end{mdframed}}
+  \\BeforeBeginEnvironment{gather}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
+  \\AfterEndEnvironment{gather}{\\end{mdframed}}
+  \\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
+  \\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
+  \\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
+  \\newcommand{\\e}{\\mathrm{e}}")
 #+END_SRC
 
 
