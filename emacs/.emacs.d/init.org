@@ -394,6 +394,7 @@
 *** misc
 
 #+BEGIN_SRC emacs-lisp
+  (setq org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
   (setq org-catch-invisible-edits 'error
         org-confirm-babel-evaluate nil
         org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
