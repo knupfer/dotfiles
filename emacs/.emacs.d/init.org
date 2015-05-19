@@ -1,85 +1,58 @@
-# -*- eval: (add-hook 'after-save-hook (lambda () (org-babel-load-file (buffer-file-name) t)) nil t) -*-
 * initializing
-
 ** packages
-
 #+BEGIN_SRC emacs-lisp
-(package-initialize)
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
-        ("melpa" . "http://melpa.milkbox.net/packages/")))
+  (package-initialize)
+  (setq package-archives
+        '(("gnu" . "http://elpa.gnu.org/packages/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")
+          ("melpa" . "http://melpa.milkbox.net/packages/")))
 #+END_SRC
-
 ** loadpath
-
 #+BEGIN_SRC emacs-lisp
-(mapc (lambda (x) (add-to-list 'load-path x))
-      '("~/.emacs.d/lisp/"
-        "~/git/indentation-tree.el/"
-        "~/git/indentation-tree/"
-        "~/git/lilypond-pretty-print/"
-        "~/git/macro-type/"
-        "~/git/org-panes/"
-        "~/git/hs-align/"
-        "~/git/haskell-emacs/"))
+  (mapc (lambda (x) (add-to-list 'load-path x))
+        '("~/.emacs.d/lisp/"
+          "~/git/org-panes/"
+          "~/git/haskell-emacs/"))
 #+END_SRC
-
 ** require packages
-
 #+BEGIN_SRC emacs-lisp
-(mapc 'require '(hl-defined
-                 indentation-tree
-                 lilypond-pretty-print
-                 pretty-symbols
-                 yasnippet
-                 macro-type
-                 org
-                 org-panes
-                 hs-align
-                 password-store
-                 company
-                 haskell-emacs
-                 ace-jump-mode))
+  (mapc 'require '(hl-defined
+                   yasnippet
+                   org
+                   org-panes
+                   password-store
+                   company
+                   ace-jump-mode
+                   haskell-mode
+                   haskell-emacs))
 #+END_SRC
-
 ** initialize packages
-
 #+BEGIN_SRC emacs-lisp
 (haskell-emacs-init)
 #+END_SRC
-
 ** theming
-
 #+BEGIN_SRC emacs-lisp
 (load-theme 'deeper-blue)
 #+END_SRC
-
 ** default layout
-
 *** modes
-
 #+BEGIN_SRC emacs-lisp
-(display-time-mode t)
-(scroll-bar-mode -1)
-(fringe-mode '(0 . nil))
-(column-number-mode 1)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+  (display-time-mode t)
+  (scroll-bar-mode -1)
+  (fringe-mode '(0 . nil))
+  (column-number-mode 1)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
 #+END_SRC
-
 *** vars
-
 #+BEGIN_SRC emacs-lisp
-(setq font-use-system-font nil
-      inhibit-startup-screen t
-      split-height-threshold 500
-      visual-line-fringe-indicators '(nil right-curly-arrow)
-      display-time-24hr-format t)
+  (setq ;; font-use-system-font nil
+        inhibit-startup-screen t
+        ;; split-height-threshold 500
+        visual-line-fringe-indicators '(nil right-curly-arrow)
+        display-time-24hr-format t)
 #+END_SRC
-
 *** faces
-
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'mode-line nil
                       :background "#033"
@@ -149,252 +122,73 @@
                       :foreground "green"
                       :weight 'bold)
 #+END_SRC
-
 ** cursor
-
 #+BEGIN_SRC emacs-lisp
-(blink-cursor-mode -1)
-(defvar hcz-set-cursor-color-color "")
-(defvar hcz-set-cursor-color-buffer "")
-(defun hcz-set-cursor-color-according-to-mode ()
-  "change cursor color according to some minor modes."
-  (let ((color (if (and (boundp 'knu-org-mode-map)
-                        (org-inside-LaTeX-fragment-p)) "#2a6"
-                 (if buffer-read-only "white"
-                   (if overwrite-mode "#fa0"
-                     "#909")))))
-    (unless (and
-             (string= color hcz-set-cursor-color-color)
-             (string= (buffer-name) hcz-set-cursor-color-buffer))
-      (set-cursor-color (setq hcz-set-cursor-color-color color))
-      (setq hcz-set-cursor-color-buffer (buffer-name)))))
+  (blink-cursor-mode -1)
+  (defvar hcz-set-cursor-color-color "")
+  (defvar hcz-set-cursor-color-buffer "")
+  (defun hcz-set-cursor-color-according-to-mode ()
+    "change cursor color according to some minor modes."
+    (let ((color (if (and (boundp 'knu-org-mode-map)
+                          (org-inside-LaTeX-fragment-p)) "#2a6"
+                   (if buffer-read-only "white"
+                     (if overwrite-mode "#fa0"
+                       "#909")))))
+      (unless (and
+               (string= color hcz-set-cursor-color-color)
+               (string= (buffer-name) hcz-set-cursor-color-buffer))
+        (set-cursor-color (setq hcz-set-cursor-color-color color))
+        (setq hcz-set-cursor-color-buffer (buffer-name)))))
 #+END_SRC
-
 ** key-map
-
 #+BEGIN_SRC emacs-lisp
-(mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
-      '(("<M-left>" backward-sentence)
-        ("<M-right>" forward-sentence)
-        ("<M-backspace>" backward-kill-sentence)
-        ("<M-delete>" kill-sentence)
-        ("\C-cm" magit-status)
-        ("S-SPC" ace-jump-mode)))
+  (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
+        '(("<M-left>" backward-sentence)
+          ("<M-right>" forward-sentence)
+          ("<M-backspace>" backward-kill-sentence)
+          ("<M-delete>" kill-sentence)
+          ("\C-cm" magit-status)
+          ("S-SPC" ace-jump-mode)))
 #+END_SRC
-
 ** got root?
-
 #+BEGIN_SRC emacs-lisp
 (when (equal (getenv "USER") "root")
   (set-face-background 'mode-line "#400")
   (set-face-foreground 'mode-line "#b00")
   (set-face-foreground 'mode-line-buffer-id "#ee5555"))
 #+END_SRC
-
 * major-modes
-
 ** org-caldav
 #+BEGIN_SRC emacs-lisp
-(setq org-caldav-url "https://80.240.140.83/owncloud/remote.php/caldav/calendars/quxbar")
-(setq org-caldav-calendar-id "private")
-(setq org-caldav-inbox "/home/quxbar/org/calendar.org")
+  (setq org-caldav-url "https://80.240.140.83/owncloud/remote.php/caldav/calendars/quxbar")
+  (setq org-caldav-calendar-id "private")
+  (setq org-caldav-inbox "/home/quxbar/org/calendar.org")
 #+END_SRC
-
 ** python
 #+BEGIN_SRC emacs-lisp
-(require 'jedi)
-(require 'auto-complete)
-(setq python-environment-virtualenv
-      (append python-environment-virtualenv
-              '("--python" "python3")))
-(setq py-shell-name "python3")
-(setq python-shell-exec-path "python3")
-(setq jedi:environment-root "jedi"
-      jedi:environment-virtualenv
-      (append python-environment-virtualenv
-              '("--python" "python3")))
-(setq python-shell-interpreter "python3")
-(add-hook 'python-mode-hook
-          (lambda ()
-            (jedi:setup)
-            (jedi:ac-setup)))
+  (require 'jedi)
+  (require 'auto-complete)
+  (setq python-environment-virtualenv
+        (append python-environment-virtualenv
+                '("--python" "python3")))
+  (setq py-shell-name "python3")
+  (setq python-shell-exec-path "python3")
+  (setq jedi:environment-root "jedi"
+        jedi:environment-virtualenv
+        (append python-environment-virtualenv
+                '("--python" "python3")))
+  (setq python-shell-interpreter "python3")
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (jedi:setup)
+              (jedi:ac-setup)))
 #+END_SRC
-
 ** org
-
-*** key-map
-
 #+BEGIN_SRC emacs-lisp
-(eval-after-load 'org
-  '(mapc (lambda (x) (define-key org-mode-map (kbd (car x)) (cadr x)))
-         '(("<f5>" knu-org-latex-snip) ("<f6>" knu-org-del-overlay)
-           ("<M-left>" org-shiftmetaleft) ("<M-right>" org-shiftmetaright)
-           ("α" "\\alpha") ("β" "\\beta")
-           ("γ" "\\gamma") ("δ" "\\delta")
-           ("ε" "\\epsilon") ("ζ" "\\zeta")
-           ("θ" "\\theta") ("ι" "\\iota")
-           ("κ" "\\kappa") ("λ" "\\lambda")
-           ("μ" "\\mu") ("ν" "\\nu")
-           ("ξ" "\\xi") ("ο" "\\omicron")
-           ("π" "\\pi") ("ρ" "\\rho")
-           ("σ" "\\sigma") ("τ" "\\tau")
-           ("φ" "\\phi") ("χ" "\\chi")
-           ("ψ" "\\psi") ("ω" "\\omega"))))
-#+END_SRC
-
-*** TODO functions
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'org
-  '(progn
-     (defun knu-org-latex-snip ()
-       (interactive)
-       (insert "\\begin{align*}\n\n")
-       (insert "\\end{align*}")
-       (forward-line -1))
-
-     (defun knu-org-del-overlay ()
-       (when (equal mode-name "Org")
-         (mapc (lambda (o)
-                 (if (eq (overlay-get o 'org-overlay-type)
-                         'org-latex-overlay)
-                     (delete-overlay o)))
-               (overlays-at (point)))))
-
-     (defun knu-org-auto-preview ()
-       (setq knu-org-auto-preview-count nil)
-       (when (equal mode-name "Org")
-         (while-no-input (progn (when (not knu-org-auto-preview-count)
-                                  (setq knu-org-auto-preview-count t)
-                                  (knu-org-preview-latex-fragment)
-                                  (redisplay)
-                                  (knu-org-preview-latex-fragment))))
-         (cd (file-name-directory buffer-file-name))))
-
-     (defun knu-org-preview-latex-fragment ()
-       (unless buffer-file-name
-         (user-error "Can't preview LaTeX fragment in a non-file buffer"))
-       (when (display-graphic-p)
-         (save-excursion
-           (save-restriction
-             (let (beg end at msg pos at-snippet)
-               (setq at-snippet (org-inside-LaTeX-fragment-p))
-               (when (not at-snippet) (setq at-snippet t))
-               (setq pos (point))
-               (setq beg (window-start) end (window-end))
-               (narrow-to-region beg end)
-               (goto-char beg)
-               (knu-org-format-latex
-                (concat org-latex-preview-ltxpng-directory
-                        (file-name-sans-extension
-                         (file-name-nondirectory
-                          buffer-file-name)))
-                default-directory 'overlays nil at 'forbuffer
-                org-latex-create-formula-image-program pos at-snippet))))))
-
-     (defun knu-org-format-latex (prefix &optional
-                                         dir overlays msg at forbuffer
-                                         processing-type pos at-snippet)
-       (if (and overlays (fboundp 'clear-image-cache)) (clear-image-cache))
-       (let* ((prefixnodir (file-name-nondirectory prefix))
-              (absprefix (expand-file-name prefix dir))
-              (todir (file-name-directory absprefix))
-              (opt org-format-latex-options)
-              (optnew org-format-latex-options)
-              (matchers (plist-get opt :matchers))
-              (re-list org-latex-regexps)
-              (cnt 0) txt hash link beg end re e checkdir
-              string
-              m n block-type block linkfile movefile ov)
-         ;; Check the different regular expressions
-         (while (setq e (pop re-list))
-           (setq m (car e) re (nth 1 e) n (nth 2 e) block-type (nth 3 e)
-                 block (if block-type "\n\n" ""))
-           (when (member m matchers)
-             (goto-char (point-min))
-             (while (re-search-forward re nil t)
-               (when (and (or (not at) (equal (cdr at) (match-beginning n)))
-                          (or (not overlays)
-                              (not (eq (get-char-property (match-beginning n)
-                                                          'org-overlay-type)
-                                       'org-latex-overlay))))
-                 (setq txt (match-string n)
-                       beg (match-beginning n) end (match-end n)
-                       cnt (1+ cnt))
-                 (when (not (and (> (+ pos 1) beg) (< pos end)))
-                   (let ((face (face-at-point))
-                         (fg (plist-get opt :foreground))
-                         (bg (plist-get opt :background))
-                         ;; Ensure full list is printed.
-                         print-length print-level)
-                     (when forbuffer
-                       ;; Get the colors from the face at point.
-                       (goto-char beg)
-                       (when (eq fg 'auto)
-                         (setq fg (face-attribute face :foreground nil
-                                                  'default)))
-                       (when (eq bg 'auto)
-                         (setq bg (face-attribute face :background nil
-                                                  'default)))
-                       (setq optnew (copy-sequence opt))
-                       (plist-put optnew :foreground fg)
-                       (plist-put optnew :background bg))
-                     (setq hash (sha1 (prin1-to-string
-                                       (list org-format-latex-header
-                                             org-latex-default-packages-alist
-                                             org-latex-packages-alist
-                                             org-format-latex-options
-                                             forbuffer txt fg bg)))
-                           linkfile (format "%s_%s.png" prefix hash)
-                           movefile (format "%s_%s.png" absprefix hash)))
-                   (setq link (concat block "[[file:" linkfile "]]" block))
-                   (goto-char beg)
-                   (unless checkdir     ; Ensure the directory exists.
-                     (setq checkdir t)
-                     (or (file-directory-p todir) (make-directory todir t)))
-                   (unless (file-exists-p movefile)
-                     (org-create-formula-image
-                      txt movefile optnew forbuffer processing-type)
-                     (save-excursion
-                       (goto-char pos)
-                       (redisplay)))
-                   (if overlays
-                       (progn
-                         (mapc (lambda (o)
-                                 (if (eq (overlay-get o 'org-overlay-type)
-                                         'org-latex-overlay)
-                                     (delete-overlay o)))
-                               (overlays-in beg end))
-                         (setq ov (make-overlay beg end))
-                         (overlay-put ov 'org-overlay-type 'org-latex-overlay)
-                         (if (featurep 'xemacs)
-                             (progn
-                               (overlay-put ov 'invisible t)
-                               (overlay-put
-                                ov 'end-glyph
-                                (make-glyph (vector 'png :file movefile))))
-                           (overlay-put
-                            ov 'display
-                            (list 'image
-                                   :type 'png
-                                  :file movefile
-                                  :ascent 'center)))
-                         (push ov org-latex-fragment-image-overlays)
-                         (goto-char end))
-                     (delete-region beg end)
-                     (insert (org-add-props link
-                                 (list 'org-latex-src
-                                       (replace-regexp-in-string
-                                        "\"" "" txt)
-                                       'org-latex-src-embed-type
-                                       (if block-type 'paragraph
-                                         'character))))))))))))))
-#+END_SRC
-
-*** misc
-
-#+BEGIN_SRC emacs-lisp
-  (setq org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
+  (setq org-time-clocksum-format '(:hours "%d"
+                                          :require-hours t
+                                          :minutes ":%02d"
+                                          :require-minutes t))
   (setq org-catch-invisible-edits 'error
         org-confirm-babel-evaluate nil
         org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
@@ -433,9 +227,7 @@
         org-latex-preview-ltxpng-directory "~/ltxpreview/"
         org-list-empty-line-terminates-plain-lists t
         org-log-done 'time
-        org-replace-disputed-keys t
         org-src-fontify-natively t
-        org-startup-align-all-tables t
         org-startup-folded t
         org-startup-indented t
         org-startup-with-inline-images t
@@ -475,7 +267,6 @@
   \\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
   \\newcommand{\\e}{\\mathrm{e}}")
 #+END_SRC
-
 
 ** lilypond
 
@@ -619,98 +410,18 @@
 #+END_SRC
 
 *** functions
-
 #+BEGIN_SRC emacs-lisp
-(eval-after-load 'w3m
-  '(progn
-     (defun knu-w3m-cleanup ()
-       (save-excursion
-         (goto-char (point-min))
-         (while (re-search-forward "^ *\\*+ *$\\| +$" nil t)
-           (replace-match ""))))
-
-     (defun knu-w3m-orgify ()
-       (require 'org)
-       (setq knu-headings nil
-             knu-headings-number nil)
-       (let ((curr-url w3m-current-url))
-         (with-temp-buffer
-           (w3m-retrieve (concat "about://source/" curr-url))
-           (goto-char (point-min))
-           (while (re-search-forward
-                   "<h\\([0-9]+\\)[^>]*\\(><[^>]+\\)*> *\\([^<]+\\)" nil t)
-             (add-to-list 'knu-headings (list (string-to-number (match-string-no-properties 1)) (match-string-no-properties 3)) t)
-             (add-to-list 'knu-headings-number (string-to-number (match-string-no-properties 1)))
-             (let ((y 0))
-               (setq knu-headings-number (sort knu-headings-number '<))
-               (setq knu-headings-array (make-vector (1+ (car (last knu-headings-number))) 0))
-               (mapc (lambda (x) (setq y (1+ y)) (aset knu-headings-array x (- y x)))
-                     knu-headings-number))))
+  (eval-after-load 'w3m
+    '(progn
+       (defun knu-w3m-cleanup ()
          (save-excursion
            (goto-char (point-min))
-           (when org-startup-indented
-             (org-indent-mode 1))
-           (while knu-headings
-             (let ((level (+ (caar knu-headings)
-                             (elt knu-headings-array (caar knu-headings))))
-                   (heading (cadr (pop knu-headings)))
-                   face1
-                   face2)
-               (save-excursion
-                 (re-search-forward (concat "\\("
-                                            (make-string (1- level) ?.)
-                                            "\\)\\(..\\)") nil t)
-                 (setq face1 (org-get-level-face 1)
-                       face2 (org-get-level-face 2))
-                 (while (re-search-forward "^*+ *$" nil t)
-                   (replace-match "")))
-               (when (re-search-forward (concat "^" heading ".*\n\n") nil t)
-                 (replace-match
-                  (concat
-                   (propertize
-                    (make-string (1- level) ?*) 'face face1)
-                   (propertize (concat "* " heading "\n\n") 'face face2)))))))))
+           (while (re-search-forward "^ *\\*+ *$\\| +$" nil t)
+             (replace-match ""))))
 
-     (defun w3m-filter-find-relationships (url next previous)
-       "Add <LINK> tags if they don't yet exist."
-       (let ((case-fold-search t))
-         (goto-char (point-max))
-         (when (re-search-backward next nil t)
-           (when (re-search-backward "href=\"?\\([^\" \t\n]+\\)" nil t)
-             (setq w3m-next-url (match-string 1))))
-         (when (re-search-backward previous nil t)
-           (when (re-search-backward "href=\"?\\([^\" \t\n]+\\)" nil t)
-             (setq w3m-previous-url (match-string 1))))))
-
-     (defun w3m-download-with-wget ()
-       (interactive)
-       (let ((url (or (w3m-anchor) (w3m-image))))
-         (cd "~/")
-         (if url
-             (let ((proc (start-process "wget" "*wget*"
-                                        "wget" "-nv"
-                                        "-P" "Downloads" url)))
-               (message "Download started")
-               (with-current-buffer (process-buffer proc) (insert "\n"))
-               (set-process-sentinel proc (lambda (proc str)
-                                            (message "wget download done"))))
-           (message "Nothing to get"))))
-
-     (defun sacha/w3m-open-in-firefox ()
-       (interactive)
-       (browse-url-firefox w3m-current-url))
-
-     (defun browse-apropos-url (text &optional new-window)
-       (interactive (browse-url-interactive-arg "Location: "))
-       (let ((text (replace-regexp-in-string
-                    "^ *\\| *$" ""
-                    (replace-regexp-in-string "[ \t\n]+" " " text)))
-             ___braplast)
-         (let ((url (or (assoc-if
-                         (lambda (a) (string-match a text))
-                         apropos-url-alist)
-                        text)))
-           (browse-url (replace-regexp-in-string (car url) (cdr url) text) new-window))))))
+       (defun sacha/w3m-open-in-firefox ()
+         (interactive)
+         (browse-url-firefox w3m-current-url))))
 #+END_SRC
 
 *** key-map
@@ -763,7 +474,6 @@
 #+END_SRC
 
 * minor-modes
-
 ** fill-column-indicator
 #+BEGIN_SRC emacs-lisp
 (setq fci-always-use-textual-rule t
@@ -779,249 +489,155 @@
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
-  (defun display-haskell-message-or-buffer (message
-                                            &optional buffer-name not-this-window frame)
-          "Display MESSAGE in the echo area if possible, otherwise in a pop-up buffer.
-        MESSAGE may be either a string or a buffer.
-
-        A buffer is displayed using `display-buffer' if MESSAGE is too long for
-        the maximum height of the echo area, as defined by `max-mini-window-height'
-        if `resize-mini-windows' is non-nil.
-
-        Returns either the string shown in the echo area, or when a pop-up
-        buffer is used, the window used to display it.
-
-        If MESSAGE is a string, then the optional argument BUFFER-NAME is the
-        name of the buffer used to display it in the case where a pop-up buffer
-        is used, defaulting to `*Message*'.  In the case where MESSAGE is a
-        string and it is displayed in the echo area, it is not specified whether
-        the contents are inserted into the buffer anyway.
-
-        Optional arguments NOT-THIS-WINDOW and FRAME are as for `display-buffer',
-        and only used if a buffer is displayed."
-          (let ((curr-mod major-mode))
-            (cond ((and (stringp message) (not (string-match "\n" message)))
-                   ;; Trivial case where we can use the echo area
-                   (message "%s" message))
-                  ((and (stringp message)
-                        (= (string-match "\n" message) (1- (length message))))
-                   ;; Trivial case where we can just remove single trailing newline
-                   (message "%s" (substring message 0 (1- (length message)))))
-                  (t
-                   ;; General case
-                   (with-current-buffer
-                       (if (bufferp message)
-                           message
-                         (get-buffer-create (or buffer-name "*Message*")))
-                     (unless (bufferp message)
-                       (erase-buffer)
-
-                       (insert (haskell-fontify-as-mode message curr-mod))
-                       (when (equal curr-mod 'haskell-mode)
-                         (goto-char (point-min))
-                         (while (re-search-forward " ‘\\([^’]+\\)’" nil t)
-                           (let ((tx (substring-no-properties (match-string 1))))
-                             (replace-match "")
-                             (insert (haskell-fontify-as-mode (concat " " tx) 'haskell-mode))))))
-
-                     (let ((lines
-                            (if (= (buffer-size) 0)
-                                0
-                              (count-screen-lines nil nil nil (minibuffer-window)))))
-                       (cond ((= lines 0))
-                             ((and (or (<= lines 1)
-                                       (<= lines
-                                           (if resize-mini-windows
-                                               (cond ((floatp max-mini-window-height)
-                                                      (* (frame-height)
-                                                         max-mini-window-height))
-                                                     ((integerp max-mini-window-height)
-                                                      max-mini-window-height)
-                                                     (t
-                                                      1))
-                                             1)))
-                                   ;; Don't use the echo area if the output buffer is
-                                   ;; already displayed in the selected frame.
-                                   (not (get-buffer-window (current-buffer))))
-                              ;; Echo area
-                              (goto-char (point-max))
-                              (when (bolp)
-                                (backward-char 1))
-                              (message "%s" (buffer-substring (point-min) (point))))
-                             (t
-                              ;; Buffer
-                              (goto-char (point-min))
-                              (display-buffer (current-buffer)
-                                              not-this-window frame)))))))))
-  (byte-compile 'display-haskell-message-or-buffer)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
- (global-flycheck-mode 1)
+  (global-flycheck-mode 1)
   (eval-after-load 'flycheck
     '(progn
-       (defun flycheck-display-error-messages (errors)
-         "Display the messages of ERRORS.
+        (flycheck-define-checker haskell-hlint-extensions
+          "Use hlint extensions
 
-  Concatenate all non-nil messages of ERRORS separated by empty
-  lines, and display them with `display-message-or-buffer', which
-  shows the messages either in the echo area or in a separate
-  buffer, depending on the number of lines.  See Info
-  node `(elisp)Displaying Messages' for more information.
-
-  In the latter case, show messages in
-  `flycheck-error-message-buffer'."
-         (let ((messages (delq nil (mapcar #'flycheck-error-message errors))))
-           (when (and errors (flycheck-may-use-echo-area-p))
-             (display-haskell-message-or-buffer (string-join messages "\n\n")
-                                                flycheck-error-message-buffer))))
-
-       (flycheck-define-checker haskell-hlint-extensions
-         "Use hlint extensions
-
-    See URL `https://github.com/ndmitchell/hlint'."
-         :command ("hlint" "--hint=Dollar" source-inplace)
-         :error-patterns
-         ((info line-start
-                (file-name) ":" line ":" column
-                ": Warning: "
-                (message (one-or-more not-newline)
-                         (one-or-more "\n" (one-or-more not-newline)))
-                line-end)
-          (info line-start
-                (file-name) ":" line ":" column
-                ": Error: "
-                (message (one-or-more not-newline)
-                         (one-or-more "\n" (one-or-more not-newline)))
-                line-end))
-         :modes haskell-mode
-         :next-checkers ((t . haskell-ghc-2)))
-       (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
-       (add-to-list 'flycheck-checkers 'haskell-ghc-2)
-
-       (defun flycheck-mode-line-status-text (&optional status)
-         "Get a text describing STATUS for use in the mode line.
-
-    STATUS defaults to `flycheck-last-status-change' if omitted or
-    nil."
-         (let ((text
-                (pcase (or status flycheck-last-status-change)
-                  (`not-checked "")
-                  (`no-checker " [  -  ]")
-                  (`running " [  *  ]")
-                  (`errored " [  !  ]")
-                  (`finished
-                   (if flycheck-current-errors
-                       (let ((error-counts (flycheck-count-errors
-                                            flycheck-current-errors)))
-                         (format " [%s:%s:%s]"
-                                 (or (cdr (assq 'error error-counts)) " ")
-                                 (or (cdr (assq 'warning error-counts)) " ")
-                                 (or (cdr (assq 'info error-counts)) " ")))
-                     ""))
-                  (`interrupted " [  -  ]")
-                  (`suspicious " [  ?  ]"))))
-           text))
-
-
-       (flycheck-define-checker haskell-ghc-2
-         "A Haskell syntax and type checker using ghc.
-
-    See URL `http://www.haskell.org/ghc/'."
-         :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
-                   (option-flag "-no-user-package-db"
-                                flycheck-ghc-no-user-package-database)
-                   (option-list "-package-db" flycheck-ghc-package-databases)
-                   (option-list "-i" flycheck-ghc-search-path concat)
-                   ;; Include the parent directory of the current module tree, to
-                   ;; properly resolve local imports
-                   (eval (concat
-                          "-i"
-                          (flycheck-module-root-directory
-                           (flycheck-find-in-buffer flycheck-haskell-module-re))))
-                   (option-list "-X" flycheck-ghc-language-extensions concat)
-                   ;; Force GHC to treat the file as Haskell file, even if it doesn't
-                   ;; have an extension.  Otherwise GHC would fail on files without an
-                   ;; extension
-                   "-x" "hs" source)
-         :error-patterns
-         ((info line-start (file-name) ":" line ":" column ":"
-                (or " " "\n    ") "Found hole" (optional "\n")
-                (message
-                 (one-or-more " ") (one-or-more not-newline)
-                 (zero-or-more "\n"
-                               (one-or-more " ")
-                               (one-or-more not-newline)))
-                line-end)
-          (warning line-start (file-name) ":" line ":" column ":"
-                   (or " " "\n    ") "Warning:" (optional "\n")
-                   (message
-                    (one-or-more " ") (one-or-more not-newline)
-                    (zero-or-more "\n"
-                                  (one-or-more " ")
-                                  (one-or-more not-newline)))
-                   line-end)
-          (error line-start (file-name) ":" line ":" column ":"
-                 (or (message (one-or-more not-newline))
-                     (and "\n"
-                          (message
-                           (one-or-more " ") (one-or-more not-newline)
-                           (zero-or-more "\n"
-                                         (one-or-more " ")
-                                         (one-or-more not-newline)))))
+     See URL `https://github.com/ndmitchell/hlint'."
+          :command ("hlint" "--hint=Dollar" source-inplace)
+          :error-patterns
+          ((info line-start
+                 (file-name) ":" line ":" column
+                 ": Warning: "
+                 (message (one-or-more not-newline)
+                          (one-or-more "\n" (one-or-more not-newline)))
+                 line-end)
+           (info line-start
+                 (file-name) ":" line ":" column
+                 ": Error: "
+                 (message (one-or-more not-newline)
+                          (one-or-more "\n" (one-or-more not-newline)))
                  line-end))
-         :error-filter
-         (lambda (errors)
-           (flycheck-sanitize-errors (flycheck-dedent-error-messages errors))
-           (mapc (lambda (x) (aset x 6
-                                   (let ((txt (elt x 6)))
-                                     (with-temp-buffer
-                                       (insert txt)
-                                       (goto-char (point-min))
-                                       (while (re-search-forward "\n +\\(with type\\)" nil t)
-                                         (replace-match (concat " " (match-string 1))))
-                                       (goto-char (point-min))
-                                       (when (re-search-forward "^‘\\([^’]+\\)’ with type:" nil t)
-                                         (replace-match (concat "Hole " (match-string 1) " ::")))
-                                       (while (re-search-forward " *(bound at\\(\n\\|[^)]\\)+)" nil t)
-                                         (replace-match ""))
-                                       (goto-char (point-min))
-                                       (while (re-search-forward " *at /tmp/.*" nil t)
-                                         (replace-match ""))
-                                       (goto-char (point-min))
-                                       (forward-line)
-                                       (while (re-search-forward "^ *\\(from the context\\|bound by the type\\|.+is a rigid type\\|Expected type\\|Actual type\\|Relevant bindings\\|in the second\\|in the first\\|in the expression\\|in an equation\\)" nil t)
-                                         (replace-match (concat "-- " (match-string 1))))
-                                       (goto-char (point-min))
-                                       (while (re-search-forward "\\(, namely\\|variable bound by\\)\n +" nil t)
-                                         (replace-match (concat (match-string 1) " ")))
-                                       (goto-char (point-min))
-                                       (while (re-search-forward "-- .*\n\\( +\\)" nil t)
-                                         (let ((len (length (match-string 1))))
-                                           (beginning-of-line)
-                                           (while (re-search-forward (concat "^" (make-string len ?\s)) (point-at-eol) t)
-                                             (replace-match "")
-                                             (forward-line))))
-                                       (buffer-string)))))
-                 errors))
-         :modes haskell-mode
-         :next-checkers ((warning . haskell-hlint)))
+          :modes haskell-mode
+          :next-checkers ((t . haskell-ghc-2)))
+        (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
+        (add-to-list 'flycheck-checkers 'haskell-ghc-2)
 
-       (set-face-attribute 'flycheck-error nil
-                           :foreground "#D00"
-                           :background "#222"
-                           :underline nil
-                           :weight 'ultrabold)
-       (set-face-attribute 'flycheck-warning nil
-                           :foreground "#CC0"
-                           :background "#222"
-                           :underline nil
-                           :weight 'ultrabold)
-       (set-face-attribute 'flycheck-info nil
-                           :foreground "#66F"
-                           :background "#008"
-                           :underline nil
-                           :weight 'ultrabold)))
+        (defun flycheck-mode-line-status-text (&optional status)
+          "Get a text describing STATUS for use in the mode line.
+
+     STATUS defaults to `flycheck-last-status-change' if omitted or
+     nil."
+          (let ((text
+                 (pcase (or status flycheck-last-status-change)
+                   (`not-checked "")
+                   (`no-checker " [  -  ]")
+                   (`running " [  *  ]")
+                   (`errored " [  !  ]")
+                   (`finished
+                    (if flycheck-current-errors
+                        (let ((error-counts (flycheck-count-errors
+                                             flycheck-current-errors)))
+                          (format " [%s:%s:%s]"
+                                  (or (cdr (assq 'error error-counts)) " ")
+                                  (or (cdr (assq 'warning error-counts)) " ")
+                                  (or (cdr (assq 'info error-counts)) " ")))
+                      ""))
+                   (`interrupted " [  -  ]")
+                   (`suspicious " [  ?  ]"))))
+            text))
+
+
+        (flycheck-define-checker haskell-ghc-2
+          "A Haskell syntax and type checker using ghc.
+
+     See URL `http://www.haskell.org/ghc/'."
+          :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
+                    (option-flag "-no-user-package-db"
+                                 flycheck-ghc-no-user-package-database)
+                    (option-list "-package-db" flycheck-ghc-package-databases)
+                    (option-list "-i" flycheck-ghc-search-path concat)
+                    ;; Include the parent directory of the current module tree, to
+                    ;; properly resolve local imports
+                    (eval (concat
+                           "-i"
+                           (flycheck-module-root-directory
+                            (flycheck-find-in-buffer flycheck-haskell-module-re))))
+                    (option-list "-X" flycheck-ghc-language-extensions concat)
+                    ;; Force GHC to treat the file as Haskell file, even if it doesn't
+                    ;; have an extension.  Otherwise GHC would fail on files without an
+                    ;; extension
+                    "-x" "hs" source)
+          :error-patterns
+          ((info line-start (file-name) ":" line ":" column ":"
+                 (or " " "\n    ") "Found hole" (optional "\n")
+                 (message
+                  (one-or-more " ") (one-or-more not-newline)
+                  (zero-or-more "\n"
+                                (one-or-more " ")
+                                (one-or-more not-newline)))
+                 line-end)
+           (warning line-start (file-name) ":" line ":" column ":"
+                    (or " " "\n    ") "Warning:" (optional "\n")
+                    (message
+                     (one-or-more " ") (one-or-more not-newline)
+                     (zero-or-more "\n"
+                                   (one-or-more " ")
+                                   (one-or-more not-newline)))
+                    line-end)
+           (error line-start (file-name) ":" line ":" column ":"
+                  (or (message (one-or-more not-newline))
+                      (and "\n"
+                           (message
+                            (one-or-more " ") (one-or-more not-newline)
+                            (zero-or-more "\n"
+                                          (one-or-more " ")
+                                          (one-or-more not-newline)))))
+                  line-end))
+          :error-filter
+          (lambda (errors)
+            (flycheck-sanitize-errors (flycheck-dedent-error-messages errors))
+            (mapc (lambda (x) (aset x 6
+                                    (let ((txt (elt x 6)))
+                                      (with-temp-buffer
+                                        (insert txt)
+                                        (goto-char (point-min))
+                                        (while (re-search-forward "\n +\\(with type\\)" nil t)
+                                          (replace-match (concat " " (match-string 1))))
+                                        (goto-char (point-min))
+                                        (when (re-search-forward "^‘\\([^’]+\\)’ with type:" nil t)
+                                          (replace-match (concat "Hole " (match-string 1) " ::")))
+                                        (while (re-search-forward " *(bound at\\(\n\\|[^)]\\)+)" nil t)
+                                          (replace-match ""))
+                                        (goto-char (point-min))
+                                        (while (re-search-forward " *at /tmp/.*" nil t)
+                                          (replace-match ""))
+                                        (goto-char (point-min))
+                                        (forward-line)
+                                        (while (re-search-forward "^ *\\(from the context\\|bound by the type\\|.+is a rigid type\\|Expected type\\|Actual type\\|Relevant bindings\\|in the second\\|in the first\\|in the expression\\|in an equation\\)" nil t)
+                                          (replace-match (concat "-- " (match-string 1))))
+                                        (goto-char (point-min))
+                                        (while (re-search-forward "\\(, namely\\|variable bound by\\)\n +" nil t)
+                                          (replace-match (concat (match-string 1) " ")))
+                                        (goto-char (point-min))
+                                        (while (re-search-forward "-- .*\n\\( +\\)" nil t)
+                                          (let ((len (length (match-string 1))))
+                                            (beginning-of-line)
+                                            (while (re-search-forward (concat "^" (make-string len ?\s)) (point-at-eol) t)
+                                              (replace-match "")
+                                              (forward-line))))
+                                        (buffer-string)))))
+                  errors))
+          :modes haskell-mode
+          :next-checkers ((warning . haskell-hlint)))
+
+        (set-face-attribute 'flycheck-error nil
+                            :foreground "#D00"
+                            :background "#222"
+                            :underline nil
+                            :weight 'ultrabold)
+        (set-face-attribute 'flycheck-warning nil
+                            :foreground "#CC0"
+                            :background "#222"
+                            :underline nil
+                            :weight 'ultrabold)
+        (set-face-attribute 'flycheck-info nil
+                            :foreground "#66F"
+                            :background "#008"
+                            :underline nil
+                            :weight 'ultrabold)))
 #+END_SRC
 ** keyfreq
 
@@ -1108,125 +724,6 @@
                        :underline nil))
 #+END_SRC
 
-** pretty-symbol
-
-#+BEGIN_SRC emacs-lisp
- (setq pretty-symbol-categories '(knu-custom))
-
-      (mapc (lambda (x) (add-to-list 'pretty-symbol-patterns
-                                       (list (car x) 'knu-custom
-                                             (regexp-quote (cadr x))
-                                             '(org-mode latex-mode))))
-            '((?α "\\alpha") (?Α "\\Alpha") (?∞ "\\infty") (?ℝ "\\mathbb{R}") (?β "\\beta")
-              (?Β "\\Beta") (?γ "\\gamma") (?Γ "\\Gamma") (?δ "\\delta") (?Δ "\\Delta")
-              (?ε "\\epsilon") (?Ε "\\Epsilon") (?ζ "\\zeta") (?Ζ "\\Zeta") (?η "\\eta")
-              (?Η "\\Eta") (?θ "\\theta") (?Θ "\\Theta") (?ι "\\iota") (?Ι "\\Iota")
-              (?κ "\\kappa") (?K "\\Kappa") (?⊥ "\\perp") (10096 "\\left(") (10097 "\\right)")
-              (?_ "\\underline")
-              (12304 "\\left\\[") (12305 "\\right]") (?ħ "\\hbar") (?ᵃ "^a")
-              (?ᵇ "^b") (?ᶜ "^c") (?ᵈ "^d") (?ᵉ "^e") (?ᶠ "^f")
-              (?Ȧ "\\dot{A}") (?ȧ "\\dot{a}") (?Ḃ "\\dot{B}") (?ḃ "\\dot{b}")
-              (?Ċ "\\dot{C}") (?ċ "\\dot{c}") (?Ḋ "\\dot{D}") (?ḋ "\\dot{d}")
-              (?Ė "\\dot{E}") (?ė "\\dot{e}") (?Ḟ "\\dot{F}") (?ḟ "\\dot{f}")
-              (?Ġ "\\dot{G}") (?ġ "\\dot{g}") (?Ḣ "\\dot{H}") (?ḣ "\\dot{h}")
-              (?İ "\\dot{I}") (?Ṁ "\\dot{M}") (?ṁ "\\dot{m}")
-              (?Ṅ "\\dot{N}") (?ṅ "\\dot{n}") (?Ȯ "\\dot{O}") (?ȯ "\\dot{o}")
-              (?Ṗ "\\dot{P}") (?ṗ "\\dot{p}") (?Ṙ "\\dot{R}") (?ṙ "\\dot{r}")
-              (?Ṡ "\\dot{S}") (?ṡ "\\dot{s}") (?Ṫ "\\dot{T}") (?ṫ "\\dot{t}")
-              (?Ẇ "\\dot{W}") (?ẇ "\\dot{w}") (?Ẋ "\\dot{X}") (?ẋ "\\dot{x}")
-              (?Ẏ "\\dot{Y}") (?ẏ "\\dot{y}") (?Ż "\\dot{Z}") (?ż "\\dot{z}")
-              (?ᵍ "^g") (?ʰ "^h") (?ⁱ "^i") (?ʲ "^j") (?ᵏ "^k")
-              (?ˡ "^l") (?ᵐ "^m") (?ⁿ "^n") (?ᵒ "^o") (?ᵖ "^p")
-              (?ʳ "^r") (?ˢ "^s") (?ᵗ "^t") (?ᵘ "^u") (?ᵛ "^v")
-              (?ʷ "^w") (?ˣ "^x") (?ʸ "^y") (?ᶻ "^z") (?ₐ "_a")
-              (?ₑ "_e") (?ₕ "_h") (?ᵢ "_i") (?ⱼ "_j") (?ₖ "_k") (?ₗ "_l")
-              (?ₘ "_m") (?ₙ "_n") (?ₒ "_o") (?ₚ "_p") (?ᵣ "_r") (?ₛ "_s")
-              (?ₜ "_t") (?ᵤ "_u") (?ᵥ "_v") (?ₓ "_x") (?⁰ "^0") (?ⁱ "^1")
-              (?² "^2") (?³ "^3") (?⁴ "^4") (?⁵ "^5") (?⁶ "^6")
-              (?⁷ "^7") (?⁸ "^8") (?⁹ "^9") (?₀ "_0") (?₁ "_1")
-              (?₂ "_2") (?₃ "_3") (?₄ "_4") (?₅ "_5") (?₆ "_6") (?₇ "_7")
-              (?₈ "_8") (?₉ "_9") (?⁺ "^+") (?⁻ "^-") (?√ "\\sqrt")
-              (?λ "\\lambda") (?∫ "\\int") (?∈ "\\in") (?Λ "\\Lambda") (?μ "\\mu")
-              (?Μ "\\Mu") (?ν "\\nu") (?Ν "\\Nu") (?ν "\\vega") (?ν "\\Vega")
-              (?ξ "\\xi") (?Ξ "\\Xi") (?ο "\\omicron") (?Ο "\\Omicron") (?π "\\pi")
-              (?Π "\\Pi") (?ρ "\\rho") (?Ρ "\\Rho") (?σ "\\sigma") (?Σ "\\Sigma")
-              (?τ "\\tau") (?Τ "\\Tau") (?υ "\\upsilon") (?Y "\\Upsilon") (?φ "\\phi")
-              (?Φ "\\Phi") (?χ "\\chi") (?Χ "\\Chi") (?ψ "\\psi") (?Ψ "\\Psi")
-              (?ω "\\omega") (?Ω "\\Omega") (?∇ "\\nabla") (?∮ "\\oint") (?× "\\times")
-              (?· "\\cdot") (?Σ "\\sum") (?± "\\pm") (?∓ "\\mp") (?≈ "\\approx")
-              (?≠ "\\neq") (?≤ "\\leq") (?≥ "\\geq") (?⟶ "\\rightarrow") (?⟵ "\\leftarrow")
-              (?⟹ "\\Rightarrow") (?⟸ "\\Leftarrow") (?⟼ "\\mapsto") (?↷ "\\curvearrowright")
-              (?⟷ "\\leftrightarrow") (?d "\\mathrm{d}") (?∂ "\\partial") (?≡ "\\equiv")
-              (?≪ "\\ll") (?≫ "\\gg") (?~ "\\sim")))
-
-      (mapc (lambda (x) (add-to-list 'pretty-symbol-patterns
-                                       (list (car x) 'knu-custom
-                                             (cadr x) '(haskell-mode))))
-            '((?⟷ "<->")
-              ))
-
-  (defconst haskell-unicode-conversions
-    '(
-
-          ("[ (]\\(\\[|\\)[) \n]" . ?⟦)
-          ("[ (]\\(|\\]\\)[) \n]" . ?⟧)
-    ("[ (]\\(>>\\)[) \n]" . ?⟫)  
-    ("[ (]\\(<<\\)[) \n]" . ?⟪)
-     ("[ (]\\(->\\)[) \n]" . ?→)
-     ("[ (]\\(/=\\)[) ]" . ?≠)
-     ("[ (]\\(==\\)[) ]" . ?≡)
-     ("[ (]\\(/=\\)[) ]" . ?≢)
-     ("[ (]\\(<=\\)[) ]" . ?≤)
-     ("[ (]\\(>=\\)[) ]" . ?≥)
-     ;;("[ (]\\(=\\)[) ]" . ?≡)
-     ("[ (]\\(\\.\\)[) ]" . ?∘)
-     ("[ (]\\(&&\\)[) ]" . ?∧)
-     ("[ (]\\(||\\)[) ]" . ?∨)
-     ("[ (]\\(\\*\\)[) ]" . ?×)
-     ("[ (]\\(\\\\\\)[(_a-z]" . ?λ)
-     (" \\(<-\\)[ \n]" . ?←)
-     ;; (" \\(-<\\) " . ?↢)
-     ;; (" \\(>-\\) " . ?↣)
-     (" \\(=>\\)[ \n]" . ?⟹)
-     ;;(" \\(>=>\\) " . ?↣)
-     ;;(" \\(<=<\\) " . ?↢)
-     ;;(" \\(>>=\\) " . ?↦)
-     ;;(" \\(=<<\\) " . ?↤)
-     ("[ (]\\(\\<not\\>\\)[ )]" . ?¬)
-     ;;("[ (]\\(<<<\\)[ )]" . ?⋘)
-     ;;("[ (]\\(>>>\\)[ )]" . ?⋙)
-     (" \\(::\\) " . ?∷)
-     ("\\(`union`\\)" . ?⋃)
-     ("\\(`intersect`\\)" . ?⋂)
-     ("\\(`elem`\\)" . ?∈)
-     ("\\(`notElem`\\)" . ?∉)
-     ;;("\\<\\(mempty\\)\\>" . ??)
-     ;; ("\\(`mappend`\\)" . ?⨂)
-     ;; ("\\(`msum`\\)" . ?⨁)
-     ;; ("\\(\\<True\\>\\)" . "𝗧𝗿𝘂𝗲")
-     ;; ("\\(\\<False\\>\\)" . "𝗙𝗮𝗹𝘀𝗲")
-     ("\\(\\<undefined\\>\\)" . ?⊥)
-     ("\\<\\(forall \\)\\>" . ?∀)))
-
-
-    (font-lock-add-keywords
-    'haskell-mode
-    (append (mapcar (lambda (chars)
-    `(,(car chars)
-    ,(if (characterp (cdr chars))
-    `(0 (ignore
-    (compose-region (match-beginning 1)
-    (match-end 1)
-    ,(cdr chars))))
-    `(0 ,(cdr chars)))))
-    haskell-unicode-conversions)
-    '(("(\\|)" . 'esk-paren-face)
-    ;; ("\\<[a-zA-Z]+\\([0-9]\\)\\>"
-    ;; 1 haskell-subscript)
-    )))
-
-#+END_SRC
-
 ** highlight-parentheses
 
 #+BEGIN_SRC emacs-lisp
@@ -1251,81 +748,63 @@
 #+END_SRC
 
 ** hooks
-
 #+BEGIN_SRC emacs-lisp
   (add-hook 'haskell-mode-hook (lambda ()
-                                 (pretty-symbols-mode)
-                                 (when (buffer-file-name)
-                                   (structured-haskell-mode)
-                                   (ghc-init)
-                                   (company-mode))))
-  (add-hook 'structured-haskell-mode-hook (lambda ()
-                                            (define-key shm-map (kbd "RET") 'shm/newline-indent)))
+                                 (buffer-file-name)
+                                 (structured-haskell-mode)
+                                 (ghc-init)
+                                 (company-mode)))
   (add-to-list 'company-backends 'company-ghc)
-
-  (add-hook 'c-mode-hook 'paredit-mode)
-  (add-hook 'w3m-fontify-after-hook (lambda ()
-                                      (knu-w3m-cleanup)
-                                      (knu-w3m-orgify)))
   (add-hook 'kill-emacs-hook (lambda ()
-                               (when (fboundp 'gnus-group-exit)
-                                 (defun gnus-y-or-n-p (yes) yes)
-                                 (gnus-group-exit))))
+                                 (when (fboundp 'gnus-group-exit)
+                                   (defun gnus-y-or-n-p (yes) yes)
+                                   (gnus-group-exit))))
   (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
   (add-hook 'after-change-major-mode-hook (lambda ()
-                                            (highlight-parentheses-mode)))
-  (add-hook 'LilyPond-mode-hook (lambda () (highlight-parentheses-mode)
-                                  (lilypond-pretty-beat-mode)))
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+                                              (highlight-parentheses-mode)))
+  (add-hook 'LilyPond-mode-hook (lambda () (highlight-parentheses-mode)))
   (add-hook 'org-mode-hook (lambda ()
-                             (auto-fill-mode)
-                             (num3-mode)
-                             (whitespace-mode)
-                             (pretty-symbols-mode)))
+                               (auto-fill-mode)
+                               (num3-mode)
+                               (whitespace-mode)))
   (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
   (add-hook 'prog-mode-hook (lambda ()
-                              (num3-mode)
-                              (whitespace-mode)
-                              (indentation-tree-mode)
-                              (hs-minor-mode)))
+                                (num3-mode)
+                                (whitespace-mode)))
   (add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'post-command-hook
-            (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
-                                 (equal major-mode 'lisp-interaction-mode))
-                         (when (not (equal buffer-undo-list-tmp buffer-undo-list))
-                           (auto-indent-sexps)
-                           (setq buffer-undo-list-tmp buffer-undo-list)))))
+  ;; (add-hook 'post-command-hook
+  ;;             (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
+  ;;                                  (equal major-mode 'lisp-interaction-mode))
+  ;;                          (when (not (equal buffer-undo-list-tmp buffer-undo-list))
+  ;;                            (auto-indent-sexps)
+  ;;                            (setq buffer-undo-list-tmp buffer-undo-list)))))
 #+END_SRC
-
 ** tramp
-
 #+BEGIN_SRC emacs-lisp
-(setq tramp-default-method "ssh"
-      tramp-default-method-alist
-      '(("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb")
-        ("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'"
-         "\\`root\\'" "su")
-        (nil "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp\\." nil "ftp"))
-      tramp-default-proxies-alist
-      '(("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:")))
+  (setq tramp-default-method "ssh"
+        tramp-default-method-alist
+        '(("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb")
+          ("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'"
+           "\\`root\\'" "su")
+          (nil "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp\\." nil "ftp"))
+        tramp-default-proxies-alist
+        '(("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:")))
 #+END_SRC
-
 ** misc
-
 #+BEGIN_SRC emacs-lisp
-(defalias 'yes-or-no-p 'y-or-n-p)
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq c-default-style '((c-mode . "stroustrup")
-                        (java-mode . "java")
-                        (awk-mode . "awk")
-                        (other . "gnu"))
-      ess-default-style 'C++)
+  (setq c-default-style '((c-mode . "stroustrup")
+                          (java-mode . "java")
+                          (awk-mode . "awk")
+                          (other . "gnu"))
+        ess-default-style 'C++)
 
-(setq kill-do-not-save-duplicates t)
+  (setq kill-do-not-save-duplicates t)
 #+END_SRC
 * Customize
 #+BEGIN_SRC emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
 #+END_SRC
