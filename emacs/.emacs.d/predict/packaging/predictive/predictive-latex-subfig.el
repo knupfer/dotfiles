@@ -1,1 +1,0 @@
-../../predictive-latex-subfig.el

@@ -1,6 +1,0 @@
-character
-complex
-double precision
-integer
-logical
-real

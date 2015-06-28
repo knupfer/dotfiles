@@ -1,1 +1,0 @@
-../../docs/predictive-user-manual/predictive-user-manual.texinfo

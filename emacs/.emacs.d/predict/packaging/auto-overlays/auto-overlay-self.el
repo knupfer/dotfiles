@@ -1,1 +1,0 @@
-../../auto-overlay-self.el
