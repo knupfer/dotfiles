@@ -490,154 +490,21 @@
 ** flycheck
 #+BEGIN_SRC emacs-lisp
   (global-flycheck-mode 1)
-  (eval-after-load 'flycheck
-    '(progn
-        (flycheck-define-checker haskell-hlint-extensions
-          "Use hlint extensions
-
-     See URL `https://github.com/ndmitchell/hlint'."
-          :command ("hlint" "--hint=Dollar" source-inplace)
-          :error-patterns
-          ((info line-start
-                 (file-name) ":" line ":" column
-                 ": Warning: "
-                 (message (one-or-more not-newline)
-                          (one-or-more "\n" (one-or-more not-newline)))
-                 line-end)
-           (info line-start
-                 (file-name) ":" line ":" column
-                 ": Error: "
-                 (message (one-or-more not-newline)
-                          (one-or-more "\n" (one-or-more not-newline)))
-                 line-end))
-          :modes haskell-mode
-          :next-checkers ((t . haskell-ghc-2)))
-        (add-to-list 'flycheck-checkers 'haskell-hlint-extensions)
-        (add-to-list 'flycheck-checkers 'haskell-ghc-2)
-
-        (defun flycheck-mode-line-status-text (&optional status)
-          "Get a text describing STATUS for use in the mode line.
-
-     STATUS defaults to `flycheck-last-status-change' if omitted or
-     nil."
-          (let ((text
-                 (pcase (or status flycheck-last-status-change)
-                   (`not-checked "")
-                   (`no-checker " [  -  ]")
-                   (`running " [  *  ]")
-                   (`errored " [  !  ]")
-                   (`finished
-                    (if flycheck-current-errors
-                        (let ((error-counts (flycheck-count-errors
-                                             flycheck-current-errors)))
-                          (format " [%s:%s:%s]"
-                                  (or (cdr (assq 'error error-counts)) " ")
-                                  (or (cdr (assq 'warning error-counts)) " ")
-                                  (or (cdr (assq 'info error-counts)) " ")))
-                      ""))
-                   (`interrupted " [  -  ]")
-                   (`suspicious " [  ?  ]"))))
-            text))
-
-
-        (flycheck-define-checker haskell-ghc-2
-          "A Haskell syntax and type checker using ghc.
-
-     See URL `http://www.haskell.org/ghc/'."
-          :command ("ghc" "-Wall" "-fno-code" "-fno-warn-type-defaults" "-fwarn-incomplete-patterns"
-                    (option-flag "-no-user-package-db"
-                                 flycheck-ghc-no-user-package-database)
-                    (option-list "-package-db" flycheck-ghc-package-databases)
-                    (option-list "-i" flycheck-ghc-search-path concat)
-                    ;; Include the parent directory of the current module tree, to
-                    ;; properly resolve local imports
-                    (eval (concat
-                           "-i"
-                           (flycheck-module-root-directory
-                            (flycheck-find-in-buffer flycheck-haskell-module-re))))
-                    (option-list "-X" flycheck-ghc-language-extensions concat)
-                    ;; Force GHC to treat the file as Haskell file, even if it doesn't
-                    ;; have an extension.  Otherwise GHC would fail on files without an
-                    ;; extension
-                    "-x" "hs" source)
-          :error-patterns
-          ((info line-start (file-name) ":" line ":" column ":"
-                 (or " " "\n    ") "Found hole" (optional "\n")
-                 (message
-                  (one-or-more " ") (one-or-more not-newline)
-                  (zero-or-more "\n"
-                                (one-or-more " ")
-                                (one-or-more not-newline)))
-                 line-end)
-           (warning line-start (file-name) ":" line ":" column ":"
-                    (or " " "\n    ") "Warning:" (optional "\n")
-                    (message
-                     (one-or-more " ") (one-or-more not-newline)
-                     (zero-or-more "\n"
-                                   (one-or-more " ")
-                                   (one-or-more not-newline)))
-                    line-end)
-           (error line-start (file-name) ":" line ":" column ":"
-                  (or (message (one-or-more not-newline))
-                      (and "\n"
-                           (message
-                            (one-or-more " ") (one-or-more not-newline)
-                            (zero-or-more "\n"
-                                          (one-or-more " ")
-                                          (one-or-more not-newline)))))
-                  line-end))
-          :error-filter
-          (lambda (errors)
-            (flycheck-sanitize-errors (flycheck-dedent-error-messages errors))
-            (mapc (lambda (x) (aset x 6
-                                    (let ((txt (elt x 6)))
-                                      (with-temp-buffer
-                                        (insert txt)
-                                        (goto-char (point-min))
-                                        (while (re-search-forward "\n +\\(with type\\)" nil t)
-                                          (replace-match (concat " " (match-string 1))))
-                                        (goto-char (point-min))
-                                        (when (re-search-forward "^‘\\([^’]+\\)’ with type:" nil t)
-                                          (replace-match (concat "Hole " (match-string 1) " ::")))
-                                        (while (re-search-forward " *(bound at\\(\n\\|[^)]\\)+)" nil t)
-                                          (replace-match ""))
-                                        (goto-char (point-min))
-                                        (while (re-search-forward " *at /tmp/.*" nil t)
-                                          (replace-match ""))
-                                        (goto-char (point-min))
-                                        (forward-line)
-                                        (while (re-search-forward "^ *\\(from the context\\|bound by the type\\|.+is a rigid type\\|Expected type\\|Actual type\\|Relevant bindings\\|in the second\\|in the first\\|in the expression\\|in an equation\\)" nil t)
-                                          (replace-match (concat "-- " (match-string 1))))
-                                        (goto-char (point-min))
-                                        (while (re-search-forward "\\(, namely\\|variable bound by\\)\n +" nil t)
-                                          (replace-match (concat (match-string 1) " ")))
-                                        (goto-char (point-min))
-                                        (while (re-search-forward "-- .*\n\\( +\\)" nil t)
-                                          (let ((len (length (match-string 1))))
-                                            (beginning-of-line)
-                                            (while (re-search-forward (concat "^" (make-string len ?\s)) (point-at-eol) t)
-                                              (replace-match "")
-                                              (forward-line))))
-                                        (buffer-string)))))
-                  errors))
-          :modes haskell-mode
-          :next-checkers ((warning . haskell-hlint)))
-
-        (set-face-attribute 'flycheck-error nil
-                            :foreground "#D00"
-                            :background "#222"
-                            :underline nil
-                            :weight 'ultrabold)
-        (set-face-attribute 'flycheck-warning nil
-                            :foreground "#CC0"
-                            :background "#222"
-                            :underline nil
-                            :weight 'ultrabold)
-        (set-face-attribute 'flycheck-info nil
-                            :foreground "#66F"
-                            :background "#008"
-                            :underline nil
-                            :weight 'ultrabold)))
+  (set-face-attribute 'flycheck-error nil
+                      :foreground "#D00"
+                      :background "#222"
+                      :underline nil
+                      :weight 'ultrabold)
+  (set-face-attribute 'flycheck-warning nil
+                      :foreground "#CC0"
+                      :background "#222"
+                      :underline nil
+                      :weight 'ultrabold)
+  (set-face-attribute 'flycheck-info nil
+                      :foreground "#66F"
+                      :background "#008"
+                      :underline nil
+                      :weight 'ultrabold)
 #+END_SRC
 ** keyfreq
 
