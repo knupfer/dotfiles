@@ -1,1 +1,1 @@
-/home/quxbar/git/haskell-emacs/HaskellEmacsTest.hs
+/home/knupfer/git/haskell-emacs/HaskellEmacsTest.hs
