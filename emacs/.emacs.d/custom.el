@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(global-pretty-sha-path-mode t)
  '(indent-tabs-mode nil)
+ '(org-agenda-files nil)
  '(org-babel-load-languages
    (quote
     ((python . t)
@@ -22,6 +23,7 @@
  '(paradox-github-token t)
  '(pretty-sha-path-char 955)
  '(pretty-sha-path-regexp "\\(/\\(?:gnu\\|nix\\)/store/[0-9a-df-np-sv-z]\\{32\\}\\)")
+ '(send-mail-function (quote mailclient-send-it))
  '(truncate-lines t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
