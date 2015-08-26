@@ -9,10 +9,12 @@
 #+END_SRC
 ** loadpath
 #+BEGIN_SRC emacs-lisp
-  (mapc (lambda (x) (add-to-list 'load-path x))
-        '("~/.emacs.d/lisp/"
-          "~/git/org-panes/"
-          "~/git/haskell-emacs/"))
+    (mapc (lambda (x) (add-to-list 'load-path x))
+          '("~/.emacs.d/lisp/"
+            "~/git/org-panes/"
+            "~/git/haskell-emacs/"
+            "~/git/liquid-types.el/"))
+  (setq exec-path (cons "/home/knupfer/.cabal/bin" exec-path))
 #+END_SRC
 ** require packages
 #+BEGIN_SRC emacs-lisp
