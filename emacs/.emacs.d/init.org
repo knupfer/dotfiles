@@ -12,9 +12,15 @@
     (mapc (lambda (x) (add-to-list 'load-path x))
           '("~/.emacs.d/lisp/"
             "~/git/org-panes/"
-            "~/git/haskell-emacs/"
-            "~/git/liquid-types.el/"))
+            "~/git/haskell-emacs/"))
   (setq exec-path (cons "/home/knupfer/.cabal/bin" exec-path))
+#+END_SRC
+** environment
+#+BEGIN_SRC emacs-lisp
+  (setq exec-path (cons "/home/knupfer/.cabal/bin" exec-path))
+  (setq exec-path (cons "/run/current-system/sw/bin" exec-path))
+  (setenv "NIX_GHC" "/run/current-system/sw/bin/ghc")
+  (setenv "NIX_GHC_LIBDIR" (car (directory-files "/run/current-system/sw/lib/" t "ghc")))
 #+END_SRC
 ** require packages
 #+BEGIN_SRC emacs-lisp
@@ -26,7 +32,8 @@
                    company
                    ace-jump-mode
                    haskell-mode
-                   haskell-emacs))
+                   haskell-emacs
+                   liquid-tip))
 #+END_SRC
 ** initialize packages
 #+BEGIN_SRC emacs-lisp
@@ -507,6 +514,137 @@
                       :background "#008"
                       :underline nil
                       :weight 'ultrabold)
+  (flycheck-define-checker haskell-ghc
+    "A Haskell syntax and type checker using ghc.
+
+  See URL `http://www.haskell.org/ghc/'."
+    :command ("ghc" "-Wall" "-fno-code"
+              (option-flag "-no-user-package-db"
+                           flycheck-ghc-no-user-package-database)
+              (option-list "-package-db" flycheck-ghc-package-databases)
+              (option-list "-i" flycheck-ghc-search-path concat)
+              ;; Include the parent directory of the current module tree, to
+              ;; properly resolve local imports
+              (eval (concat
+                     "-i"
+                     (flycheck-module-root-directory
+                      (flycheck-find-in-buffer flycheck-haskell-module-re))))
+              (option-list "-X" flycheck-ghc-language-extensions concat)
+              (eval flycheck-ghc-args)
+              "-x" (eval
+                    (pcase major-mode
+                      (`haskell-mode "hs")
+                      (`literate-haskell-mode "lhs")))
+              source)
+    :error-patterns
+    ((error line-start (file-name) ":" line ":" column ":"
+              (or " " "\n    ") "Warning:" (optional "\n")
+              (message
+               (one-or-more " ") (one-or-more not-newline)
+               (zero-or-more "\n"
+                             (one-or-more " ")
+                             (one-or-more not-newline)))
+              line-end)
+     (error line-start (file-name) ":" line ":" column ":"
+            (or (message (one-or-more not-newline))
+                (and "\n"
+                     (message
+                      (one-or-more " ") (one-or-more not-newline)
+                      (zero-or-more "\n"
+                                    (one-or-more " ")
+                                    (one-or-more not-newline)))))
+            line-end))
+    :error-filter
+    (lambda (errors)
+      (flycheck-sanitize-errors (flycheck-dedent-error-messages errors)))
+    :modes (haskell-mode literate-haskell-mode)
+    :next-checkers (haskell-hlint))
+
+  (flycheck-define-checker haskell-hlint
+    "A Haskell style checker using hlint.
+
+  See URL `https://github.com/ndmitchell/hlint'."
+    :command ("hlint" source-inplace)
+    :error-patterns
+    ((warning line-start
+              (file-name) ":" line ":" column
+              ": Warning: "
+              (message (one-or-more not-newline)
+                       (one-or-more "\n" (one-or-more not-newline)))
+              line-end)
+     (warning line-start
+            (file-name) ":" line ":" column
+            ": Error: "
+            (message (one-or-more not-newline)
+                     (one-or-more "\n" (one-or-more not-newline)))
+            line-end))
+    :modes (haskell-mode literate-haskell-mode)
+    :next-checkers (haskell-liquid))
+
+  ;;; flycheck-liquid.el --- A flycheck checker for Haskell using liquid (i.e. liquidhaskell)
+
+  ;; Modified from flycheck-hdevtools.el by Steve Purcell
+
+  ;; Author: Ranjit Jhala <jhala@cs.ucsd.edu>
+  ;; URL: https://github.com/ucsd-progsys/liquidhaskell/flycheck-liquid.el
+  ;; Keywords: convenience languages tools
+  ;; Package-Requires: ((flycheck "0.15"))
+  ;; Version: 20140801.00
+  ;; X-Original-Version: DEV
+
+  ;; This file is not part of GNU Emacs.
+
+  ;; This program is free software; you can redistribute it and/or modify
+  ;; it under the terms of the GNU General Public License as published by
+  ;; the Free Software Foundation, either version 3 of the License, or
+  ;; (at your option) any later version.
+
+  ;; This program is distributed in the hope that it will be useful,
+  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ;; GNU General Public License for more details.
+
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  (flycheck-define-checker haskell-liquid
+    "A Haskell refinement type checker using liquidhaskell.
+
+  See URL `https://github.com/ucsd-progsys/liquidhaskell'."
+    :command
+    ("liquid" source-inplace)
+    :error-patterns
+    ((info line-start " " (file-name) ":" line ":" column ":"
+            (message
+             (one-or-more " ") (one-or-more not-newline)
+             (zero-or-more "\n"
+                           (one-or-more " ")
+                           (zero-or-more not-newline)))
+            line-end)
+
+     (info line-start " " (file-name) ":" line ":" column "-" (one-or-more digit) ":"
+            (message
+             (one-or-more " ") (one-or-more not-newline)
+             (zero-or-more "\n"
+                           (one-or-more " ")
+                           (zero-or-more not-newline)))
+            line-end)
+
+     (info line-start " " (file-name) ":(" line "," column ")-(" (one-or-more digit) "," (one-or-more digit) "):"
+            (message
+             (one-or-more " ") (one-or-more not-newline)
+             (zero-or-more "\n"
+                           (one-or-more " ")
+                           (zero-or-more not-newline)))
+            line-end)
+     )
+    :error-filter
+    (lambda (errors)
+      (-> errors
+        flycheck-dedent-error-messages
+        flycheck-sanitize-errors))
+    :modes (haskell-mode literate-haskell-mode))
+  (add-to-list 'flycheck-checkers 'haskell-liquid t)
 #+END_SRC
 ** keyfreq
 
@@ -622,7 +760,8 @@
                                  (buffer-file-name)
                                  (structured-haskell-mode)
                                  (ghc-init)
-                                 (company-mode)))
+                                 (company-mode)
+                                 (liquid-tip-mode)))
   (add-to-list 'company-backends 'company-ghc)
   (add-hook 'kill-emacs-hook (lambda ()
                                  (when (fboundp 'gnus-group-exit)
