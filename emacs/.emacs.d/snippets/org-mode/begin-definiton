@@ -1,8 +1,0 @@
-# -*- mode: snippet; require-final-newline: nil -*-
-# name: begin-definiton
-# key: bd
-# binding: direct-keybinding
-# --
-\begin{definition}
-$0
-\end{definition}

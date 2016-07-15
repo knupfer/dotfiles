@@ -1,51 +1,34 @@
 * initializing
 ** packages
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (package-initialize)
-  (setq package-archives
-        '(("gnu" . "http://elpa.gnu.org/packages/")
-          ("marmalade" . "http://marmalade-repo.org/packages/")
-          ("melpa" . "http://melpa.milkbox.net/packages/")))
 #+END_SRC
 ** loadpath
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
     (mapc (lambda (x) (add-to-list 'load-path x))
-          '("~/.emacs.d/lisp/"
-            "~/git/org-panes/"
-            "~/git/haskell-emacs/"))
-  (setq exec-path (cons "/home/knupfer/.cabal/bin" exec-path))
-#+END_SRC
-** environment
-#+BEGIN_SRC emacs-lisp
-  (setq exec-path (cons "/home/knupfer/.cabal/bin" exec-path))
-  (setq exec-path (cons "/run/current-system/sw/bin" exec-path))
-  (setenv "NIX_GHC" "/run/current-system/sw/bin/ghc")
-  (setenv "NIX_GHC_LIBDIR" (car (directory-files "/run/current-system/sw/lib/" t "ghc")))
+          '("~/git/haskell-emacs/"
+            "~/git/liquid-haskell-mode/"))
 #+END_SRC
 ** require packages
-#+BEGIN_SRC emacs-lisp
-  (mapc 'require '(hl-defined
-                   yasnippet
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (mapc 'require '(haskell-emacs
                    org
-                   org-panes
-                   password-store
-                   company
                    ace-jump-mode
-                   haskell-mode
-                   haskell-emacs
-                   liquid-tip))
+                   company
+                   liquid-haskell-mode))
 #+END_SRC
-** initialize packages
-#+BEGIN_SRC emacs-lisp
-(haskell-emacs-init)
+** indentation
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq-default indent-tabs-mode nil)
 #+END_SRC
 ** theming
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (load-theme 'deeper-blue)
 #+END_SRC
 ** default layout
 *** modes
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default truncate-lines t)
   (display-time-mode t)
   (scroll-bar-mode -1)
   (fringe-mode '(0 . nil))
@@ -54,15 +37,13 @@
   (tool-bar-mode -1)
 #+END_SRC
 *** vars
-#+BEGIN_SRC emacs-lisp
-  (setq ;; font-use-system-font nil
-        inhibit-startup-screen t
-        ;; split-height-threshold 500
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq inhibit-startup-screen t
         visual-line-fringe-indicators '(nil right-curly-arrow)
         display-time-24hr-format t)
 #+END_SRC
 *** faces
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (set-face-attribute 'mode-line nil
                       :background "#033"
                       :foreground "#9bb"
@@ -79,9 +60,7 @@
   (set-face-attribute 'default nil
                       :background "#000000"
                       :foreground "#ffffff"
-                      :height 100
-                      :foundry "unknown"
-                      :family "DejaVu Sans Mono")
+                      :family "Hasklig")
   (set-face-attribute 'fringe nil
                       :background "black"
                       :foreground "#0ff")
@@ -117,22 +96,13 @@
                       :background "#333"
                       :weight 'bold
                       :box '(:line-width -1 :color "#555"))
-  ;; (set-face-attribute 'popup-tip-face nil
-  ;;                     :foreground "#000"
-  ;;                     :background "#5cd")
-  ;; (set-face-attribute 'popup-face nil
-  ;;                     :foreground "#ccc"
-  ;;                     :background "#333")
-  ;; (set-face-attribute 'popup-menu-selection-face nil
-  ;;                     :foreground "#cff"
-  ;;                     :background "#555")
   (set-face-attribute 'ace-jump-face-foreground nil
                       :background "black"
                       :foreground "green"
                       :weight 'bold)
 #+END_SRC
 ** cursor
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (blink-cursor-mode -1)
   (defvar hcz-set-cursor-color-color "")
   (defvar hcz-set-cursor-color-buffer "")
@@ -150,7 +120,7 @@
         (setq hcz-set-cursor-color-buffer (buffer-name)))))
 #+END_SRC
 ** key-map
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
         '(("<M-left>" backward-sentence)
           ("<M-right>" forward-sentence)
@@ -159,49 +129,29 @@
           ("\C-cm" magit-status)
           ("S-SPC" ace-jump-mode)))
 #+END_SRC
-** got root?
-#+BEGIN_SRC emacs-lisp
+** nix-shell?
+#+BEGIN_SRC emacs-lisp :tangle yes
+(when (getenv "IN_NIX_SHELL")
+  (set-face-background 'mode-line "#220")
+  (set-face-foreground 'mode-line "#990")
+  (set-face-foreground 'mode-line-buffer-id "#ff5"))
+#+END_SRC
+** root?
+#+BEGIN_SRC emacs-lisp :tangle yes
 (when (equal (getenv "USER") "root")
   (set-face-background 'mode-line "#400")
   (set-face-foreground 'mode-line "#b00")
-  (set-face-foreground 'mode-line-buffer-id "#ee5555"))
+  (set-face-foreground 'mode-line-buffer-id "#e55"))
 #+END_SRC
 * major-modes
-** org-caldav
-#+BEGIN_SRC emacs-lisp
-  (setq org-caldav-url "https://80.240.140.83/owncloud/remote.php/caldav/calendars/quxbar")
-  (setq org-caldav-calendar-id "private")
-  (setq org-caldav-inbox "/home/quxbar/org/calendar.org")
-#+END_SRC
-** python
-#+BEGIN_SRC emacs-lisp
-  (require 'jedi)
-  (require 'auto-complete)
-  (setq python-environment-virtualenv
-        (append python-environment-virtualenv
-                '("--python" "python3")))
-  (setq py-shell-name "python3")
-  (setq python-shell-exec-path "python3")
-  (setq jedi:environment-root "jedi"
-        jedi:environment-virtualenv
-        (append python-environment-virtualenv
-                '("--python" "python3")))
-  (setq python-shell-interpreter "python3")
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (jedi:setup)
-              (jedi:ac-setup)))
-#+END_SRC
 ** org
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (setq org-time-clocksum-format '(:hours "%d"
                                           :require-hours t
                                           :minutes ":%02d"
                                           :require-minutes t))
   (setq org-catch-invisible-edits 'error
         org-confirm-babel-evaluate nil
-        org-ditaa-eps-jar-path "~/.emacs.d/DitaaEps.jar"
-        org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar"
         org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")
         org-export-backends '(ascii html latex odt)
         org-export-headline-levels 4
@@ -212,27 +162,8 @@
                                                :html-background "Transparent"
                                                :html-scale 1.0
                                                :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
-        org-hierarchical-todo-statistics nil
         org-highlight-latex-and-related '(latex script entities)
         org-image-actual-width 200
-        org-latex-classes '(("article" "\\documentclass[11pt]{scrartcl}"
-                             ("\\section{%s}" . "\\section*{%s}")
-                             ("\\subsection{%s}" . "\\subsection*{%s}")
-                             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                             ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                             ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-                            ("report" "\\documentclass[11pt]{report}"
-                             ("\\part{%s}" . "\\part*{%s}")
-                             ("\\chapter{%s}" . "\\chapter*{%s}")
-                             ("\\section{%s}" . "\\section*{%s}")
-                             ("\\subsection{%s}" . "\\subsection*{%s}")
-                             ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-                            ("book" "\\documentclass[11pt]{book}"
-                             ("\\part{%s}" . "\\part*{%s}")
-                             ("\\chapter{%s}" . "\\chapter*{%s}")
-                             ("\\section{%s}" . "\\section*{%s}")
-                             ("\\subsection{%s}" . "\\subsection*{%s}")
-                             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
         org-latex-preview-ltxpng-directory "~/ltxpreview/"
         org-list-empty-line-terminates-plain-lists t
         org-log-done 'time
@@ -276,41 +207,18 @@
   \\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
   \\newcommand{\\e}{\\mathrm{e}}")
 #+END_SRC
-
-** lilypond
-
-#+BEGIN_SRC emacs-lisp
-(setq LilyPond-indent-level 4)
-#+END_SRC
-
-** manpages
-
-#+BEGIN_SRC emacs-lisp
-(setq Man-notify-method 'pushy
-      Man-width 80)
-#+END_SRC
-
-** ediff
-
-#+BEGIN_SRC emacs-lisp
-(setq ediff-split-window-function 'split-window-horizontally
-      ediff-window-setup-function 'ediff-setup-windows-plain)
-#+END_SRC
-
 ** erc
-
-#+BEGIN_SRC emacs-lisp
-(setq erc-nick "quxbam"
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq erc-nick "knupfer"
       erc-prompt ">>>"
       erc-prompt-for-password nil
-      erc-system-name "foobar"
+      erc-system-name "knupfer"
       erc-timestamp-right-column 70)
 #+END_SRC
-
 ** gnus
-
-#+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Florian Knupfer"
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq send-mail-function 'mailclient-send-it
+        user-full-name "Florian Knupfer"
         user-mail-address "fknupfer@gmail.com"
         message-generate-headers-first t
         message-send-mail-function 'smtpmail-send-it
@@ -391,113 +299,26 @@
        (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
        (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)))
 #+END_SRC
-
-** w3m
-
-*** vars
-
-#+BEGIN_SRC emacs-lisp
-(setq w3m-enable-google-feeling-lucky nil
-      w3m-home-page "about:blank"
-      w3m-search-default-engine "duckduckgo"
-      w3m-fill-column 60
-      w3m-search-engine-alist
-      '(("duckduckgo" "https://duckduckgo.com/lite/?q=%s" undecided)
-        ("google" "https://www.google.com/search?q=%s&ie=utf-8&oe=utf-8" utf-8)
-        ("google-en" "https://www.google.com/search?q=%s&hl=en&ie=utf-8&oe=utf-8" utf-8)
-        ("emacswiki" "http://www.emacswiki.org/cgi-bin/wiki?search=%s" nil)
-        ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s" nil)
-        ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s" utf-8))
-      w3m-session-load-crashed-sessions nil
-      w3m-uri-replace-alist
-      '(("\\`enwi:" w3m-search-uri-replace "en.wikipedia")
-        ("\\`dewi:" w3m-search-uri-replace "de.wikipedia")
-        ("\\`dd:" w3m-search-uri-replace "duckduckgo")
-        ("\\`gg:" w3m-search-uri-replace "google"))
-      w3m-use-favicon nil
-      w3m-use-title-buffer-name t)
-#+END_SRC
-
-*** functions
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load 'w3m
-    '(progn
-       (defun knu-w3m-cleanup ()
-         (save-excursion
-           (goto-char (point-min))
-           (while (re-search-forward "^ *\\*+ *$\\| +$" nil t)
-             (replace-match ""))))
-
-       (defun sacha/w3m-open-in-firefox ()
-         (interactive)
-         (browse-url-firefox w3m-current-url))))
-#+END_SRC
-
-*** key-map
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'w3m
-  '(mapc (lambda (x) (define-key w3m-mode-map (kbd (car x)) (cadr x)))
-         '(("M-<left>" w3m-view-previous-page)
-           ("M-<right>" w3m-view-next-page)
-           ("RET" w3m-view-this-url-new-session)
-           ("C-w" w3m-delete-buffer)
-           ("S-RET" w3m-view-this-url)
-           ("<tab>" org-cycle)
-           ("<S-iso-lefttab>" org-shifttab)
-           ("d" w3m-download-with-wget)
-           ("g" w3m-goto-url)
-           ("G" w3m-goto-url-new-session)
-           ("C-f" sacha/w3m-open-in-firefox)
-           ("M-RET" w3m-view-this-url-new-session)
-           ("<left>" backward-char)
-           ("<right>" forward-char)
-           ("<up>" previous-line)
-           ("<down>" next-line)
-           ("M-<down>" w3m-next-anchor)
-           ("M-<up>" w3m-previous-anchor)
-           ("S-SPC" ace-jump-mode))))
-#+END_SRC
-
-*** faces
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'w3m
-  '(progn (set-face-attribute 'w3m-arrived-anchor nil :foreground "#8888ee")
-          (set-face-attribute 'w3m-current-anchor nil :weight 'ultra-bold)
-          (set-face-attribute 'w3m-tab-background nil :foreground "#88dddd" :background "black")
-          (set-face-attribute 'w3m-tab-selected nil :foreground "black" :background "grey75")
-          (set-face-attribute 'w3m-tab-selected-retrieving nil :foreground "black" :background "#dd6666")
-          (set-face-attribute 'w3m-tab-unselected nil :foreground "black" :background "grey30")
-          (set-face-attribute 'w3m-tab-unselected-retrieving nil :foreground "black" :background "#aa4444")
-          (set-face-attribute 'w3m-tab-unselected-unseen nil :foreground "black" :background "grey90")))
-#+END_SRC
-
-** volume
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'volume
-  '(progn (setq volume-amixer-default-channel "Speaker"
-                volume-backend 'volume-amixer-backend
-                volume-electric-mode t)))
-#+END_SRC
-
 * minor-modes
+** shakespeare
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-to-list 'auto-mode-alist '("\\.hamlet\\'" . shakespeare-hamlet-mode))
+(add-to-list 'auto-mode-alist '("\\.julius\\'" . shakespeare-julius-mode))
+#+END_SRC
 ** fill-column-indicator
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (setq fci-always-use-textual-rule t
       fci-rule-column 80
       fci-rule-color "#cc0000")
 #+END_SRC
-
 ** autocomplete
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (setq ac-override-local-map nil
       ac-use-menu-map t
       ac-candidate-limit 20)
 #+END_SRC
 ** flycheck
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (global-flycheck-mode 1)
   (set-face-attribute 'flycheck-error nil
                       :foreground "#D00"
@@ -514,163 +335,20 @@
                       :background "#008"
                       :underline nil
                       :weight 'ultrabold)
-  (flycheck-define-checker haskell-ghc
-    "A Haskell syntax and type checker using ghc.
-
-  See URL `http://www.haskell.org/ghc/'."
-    :command ("ghc" "-Wall" "-fno-code"
-              (option-flag "-no-user-package-db"
-                           flycheck-ghc-no-user-package-database)
-              (option-list "-package-db" flycheck-ghc-package-databases)
-              (option-list "-i" flycheck-ghc-search-path concat)
-              ;; Include the parent directory of the current module tree, to
-              ;; properly resolve local imports
-              (eval (concat
-                     "-i"
-                     (flycheck-module-root-directory
-                      (flycheck-find-in-buffer flycheck-haskell-module-re))))
-              (option-list "-X" flycheck-ghc-language-extensions concat)
-              (eval flycheck-ghc-args)
-              "-x" (eval
-                    (pcase major-mode
-                      (`haskell-mode "hs")
-                      (`literate-haskell-mode "lhs")))
-              source)
-    :error-patterns
-    ((error line-start (file-name) ":" line ":" column ":"
-              (or " " "\n    ") "Warning:" (optional "\n")
-              (message
-               (one-or-more " ") (one-or-more not-newline)
-               (zero-or-more "\n"
-                             (one-or-more " ")
-                             (one-or-more not-newline)))
-              line-end)
-     (error line-start (file-name) ":" line ":" column ":"
-            (or (message (one-or-more not-newline))
-                (and "\n"
-                     (message
-                      (one-or-more " ") (one-or-more not-newline)
-                      (zero-or-more "\n"
-                                    (one-or-more " ")
-                                    (one-or-more not-newline)))))
-            line-end))
-    :error-filter
-    (lambda (errors)
-      (flycheck-sanitize-errors (flycheck-dedent-error-messages errors)))
-    :modes (haskell-mode literate-haskell-mode)
-    :next-checkers (haskell-hlint))
-
-  (flycheck-define-checker haskell-hlint
-    "A Haskell style checker using hlint.
-
-  See URL `https://github.com/ndmitchell/hlint'."
-    :command ("hlint" source-inplace)
-    :error-patterns
-    ((warning line-start
-              (file-name) ":" line ":" column
-              ": Warning: "
-              (message (one-or-more not-newline)
-                       (one-or-more "\n" (one-or-more not-newline)))
-              line-end)
-     (warning line-start
-            (file-name) ":" line ":" column
-            ": Error: "
-            (message (one-or-more not-newline)
-                     (one-or-more "\n" (one-or-more not-newline)))
-            line-end))
-    :modes (haskell-mode literate-haskell-mode)
-    :next-checkers (haskell-liquid))
-
-  ;;; flycheck-liquid.el --- A flycheck checker for Haskell using liquid (i.e. liquidhaskell)
-
-  ;; Modified from flycheck-hdevtools.el by Steve Purcell
-
-  ;; Author: Ranjit Jhala <jhala@cs.ucsd.edu>
-  ;; URL: https://github.com/ucsd-progsys/liquidhaskell/flycheck-liquid.el
-  ;; Keywords: convenience languages tools
-  ;; Package-Requires: ((flycheck "0.15"))
-  ;; Version: 20140801.00
-  ;; X-Original-Version: DEV
-
-  ;; This file is not part of GNU Emacs.
-
-  ;; This program is free software; you can redistribute it and/or modify
-  ;; it under the terms of the GNU General Public License as published by
-  ;; the Free Software Foundation, either version 3 of the License, or
-  ;; (at your option) any later version.
-
-  ;; This program is distributed in the hope that it will be useful,
-  ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ;; GNU General Public License for more details.
-
-  ;; You should have received a copy of the GNU General Public License
-  ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-  (flycheck-define-checker haskell-liquid
-    "A Haskell refinement type checker using liquidhaskell.
-
-  See URL `https://github.com/ucsd-progsys/liquidhaskell'."
-    :command
-    ("liquid" source-inplace)
-    :error-patterns
-    ((info line-start " " (file-name) ":" line ":" column ":"
-            (message
-             (one-or-more " ") (one-or-more not-newline)
-             (zero-or-more "\n"
-                           (one-or-more " ")
-                           (zero-or-more not-newline)))
-            line-end)
-
-     (info line-start " " (file-name) ":" line ":" column "-" (one-or-more digit) ":"
-            (message
-             (one-or-more " ") (one-or-more not-newline)
-             (zero-or-more "\n"
-                           (one-or-more " ")
-                           (zero-or-more not-newline)))
-            line-end)
-
-     (info line-start " " (file-name) ":(" line "," column ")-(" (one-or-more digit) "," (one-or-more digit) "):"
-            (message
-             (one-or-more " ") (one-or-more not-newline)
-             (zero-or-more "\n"
-                           (one-or-more " ")
-                           (zero-or-more not-newline)))
-            line-end)
-     )
-    :error-filter
-    (lambda (errors)
-      (-> errors
-        flycheck-dedent-error-messages
-        flycheck-sanitize-errors))
-    :modes (haskell-mode literate-haskell-mode))
-  (add-to-list 'flycheck-checkers 'haskell-liquid t)
 #+END_SRC
-** keyfreq
-
-#+BEGIN_SRC emacs-lisp
-(keyfreq-autosave-mode 1)
-(keyfreq-mode 1)
-#+END_SRC
-
 ** whitespace
-
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (setq whitespace-style '(face trailing tabs)
       whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\|\\\\underline\\)")
-
 (eval-after-load 'whitespace
   '(set-face-attribute 'whitespace-tab nil
                        :background "nil"
                        :foreground "#00eeaa"
                        :weight 'ultra-bold))
 #+END_SRC
-
 ** paredit
-
 *** key-map
-
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (eval-after-load 'paredit
   '(mapc (lambda (x) (define-key paredit-mode-map (kbd (car x)) (cadr x)))
          '(("<C-right>" nil)
@@ -683,9 +361,6 @@
            ("<M-down>" paredit-backward-barf-sexp)
            ("<M-backspace>" backward-kill-sexp)
            ("<M-delete>" kill-sexp)
-           ("C-k" paredit-kill-and-join-forward)
-           ("<delete>" paredit-del-and-join-forward)
-           ("<backspace>" paredit-del-backward-and-join)
            ("<tab>" completion-at-point)
            ("<RET>" paredit-newline)
            ("<C-backspace>" paredit-backward-kill-word)
@@ -693,103 +368,72 @@
            ("{" paredit-open-curly)
            ("}" paredit-close-curly))))
 #+END_SRC
-
-*** functions
-
-#+BEGIN_SRC emacs-lisp
-(defvar buffer-undo-list-tmp nil)
-
-(defun auto-indent-sexps ()
-  (save-excursion (paredit-indent-sexps)))
-
-(defun paredit-del-and-join-forward (&optional arg)
-  (interactive "P")
-  (if (and (eolp) (not (bolp)))
-      (delete-indentation t)
-    (paredit-forward-delete arg)))
-
-(defun paredit-kill-and-join-forward (&optional arg)
-  (interactive "P")
-  (if (and (eolp) (not (bolp)))
-      (delete-indentation t)
-    (paredit-kill arg)))
-
-(defun paredit-del-backward-and-join (&optional arg)
-  (interactive "P")
-  (if (looking-back "\\(^ *\\)")
-      (delete-indentation)
-    (paredit-backward-delete arg)))
-#+END_SRC
-
-** num3
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'num3-mode
-  '(set-face-attribute 'num3-face-even nil
-                       :foreground "#fa0"
-                       :background "black"
-                       :underline nil))
-#+END_SRC
-
-** highlight-parentheses
-
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'highlight-parentheses
-  '(set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
-
-(setq hl-paren-colors '("#05ffff" "#e07fef"
-                        "#f0cf05" "#ee5555"
-                        "#ffffff" "#00ff00"))
-#+END_SRC
-
-** yasnippet
-
-#+BEGIN_SRC emacs-lisp
-(yas-global-mode 1)
-#+END_SRC
-
 * misc
-** passwordlength
-#+BEGIN_SRC emacs-lisp
-(setq password-store-password-length 20)
+** inits
+#+BEGIN_SRC emacs-lisp :tangle yes
+(global-whitespace-mode)
 #+END_SRC
-
 ** hooks
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'haskell-mode-hook (lambda ()
-                                 (buffer-file-name)
-                                 (structured-haskell-mode)
-                                 (ghc-init)
-                                 (company-mode)
-                                 (liquid-tip-mode)))
-  (add-to-list 'company-backends 'company-ghc)
-  (add-hook 'kill-emacs-hook (lambda ()
-                                 (when (fboundp 'gnus-group-exit)
-                                   (defun gnus-y-or-n-p (yes) yes)
-                                   (gnus-group-exit))))
-  (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
-  (add-hook 'after-change-major-mode-hook (lambda ()
-                                              (highlight-parentheses-mode)))
-  (add-hook 'LilyPond-mode-hook (lambda () (highlight-parentheses-mode)))
-  (add-hook 'org-mode-hook (lambda ()
-                               (auto-fill-mode)
-                               (num3-mode)
-                               (whitespace-mode)))
-  (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-  (add-hook 'prog-mode-hook (lambda ()
-                                (num3-mode)
-                                (whitespace-mode)))
-  (add-hook 'emacs-lisp-mode-hook 'hdefd-highlight-mode 'APPEND)
-  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  ;; (add-hook 'post-command-hook
-  ;;             (lambda () (when (or (equal major-mode 'emacs-lisp-mode)
-  ;;                                  (equal major-mode 'lisp-interaction-mode))
-  ;;                          (when (not (equal buffer-undo-list-tmp buffer-undo-list))
-  ;;                            (auto-indent-sexps)
-  ;;                            (setq buffer-undo-list-tmp buffer-undo-list)))))
+#+BEGIN_SRC emacs-lisp :tangle yes
+    (add-hook 'haskell-mode-hook (lambda ()
+              (setq prettify-symbols-alist
+                    (list (cons "&&" (decode-char 'ucs #XE100))
+                          (cons "***" (decode-char 'ucs #XE101))
+                          (cons "*>" (decode-char 'ucs #XE102))
+                          (cons "\\\\" (decode-char 'ucs #XE103))
+                          (cons "||" (decode-char 'ucs #XE104))
+                          (cons "|>" (decode-char 'ucs #XE105))
+                          (cons "::" (decode-char 'ucs #XE106))
+                          (cons "==" (decode-char 'ucs #XE107))
+                          (cons "===" (decode-char 'ucs #XE108))
+                          (cons "==>" (decode-char 'ucs #XE109))
+                          (cons "=>" (decode-char 'ucs #XE10A))
+                          (cons "=<<" (decode-char 'ucs #XE10B))
+                          (cons "!!" (decode-char 'ucs #XE10C))
+                          (cons ">>" (decode-char 'ucs #XE10D))
+                          (cons ">>=" (decode-char 'ucs #XE10E))
+                          (cons ">>>" (decode-char 'ucs #XE10F))
+                          (cons ">>-" (decode-char 'ucs #XE110))
+                          (cons ">-" (decode-char 'ucs #XE111))
+                          (cons "->" (decode-char 'ucs #XE112))
+                          (cons "-<" (decode-char 'ucs #XE113))
+                          (cons "-<<" (decode-char 'ucs #XE114))
+                          (cons "<*" (decode-char 'ucs #XE115))
+                          (cons "<*>" (decode-char 'ucs #XE116))
+                          (cons "<|" (decode-char 'ucs #XE117))
+                          (cons "<|>" (decode-char 'ucs #XE118))
+                          (cons "<$>" (decode-char 'ucs #XE119))
+                          (cons "<>" (decode-char 'ucs #XE11A))
+                          (cons "<-" (decode-char 'ucs #XE11B))
+                          (cons "<<" (decode-char 'ucs #XE11C))
+                          (cons "<<<" (decode-char 'ucs #XE11D))
+                          (cons "<+>" (decode-char 'ucs #XE11E))
+                          (cons ".." (decode-char 'ucs #XE11F))
+                          (cons "..." (decode-char 'ucs #XE120))
+                          (cons "++" (decode-char 'ucs #XE121))
+                          (cons "+++" (decode-char 'ucs #XE122))
+                          (cons "\\" 955)
+                          (cons "*" 215)
+                          (cons "/=" (decode-char 'ucs #XE123))))
+                                   (prettify-symbols-mode)
+                                   (buffer-file-name)
+                                   (ghc-init)
+                                   (company-mode)
+                                   (liquid-haskell-mode)))
+    (add-to-list 'company-backends 'company-ghc)
+    (add-hook 'kill-emacs-hook (lambda ()
+                                   (when (fboundp 'gnus-group-exit)
+                                     (defun gnus-y-or-n-p (yes) yes)
+                                     (gnus-group-exit))))
+    (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
+    (add-hook 'org-mode-hook (lambda ()
+                                 (auto-fill-mode)
+                                 (whitespace-mode)))
+    (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 #+END_SRC
 ** tramp
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (setq tramp-default-method "ssh"
         tramp-default-method-alist
         '(("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb")
@@ -800,19 +444,11 @@
         '(("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:")))
 #+END_SRC
 ** misc
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (defalias 'yes-or-no-p 'y-or-n-p)
-
-  (setq c-default-style '((c-mode . "stroustrup")
-                          (java-mode . "java")
-                          (awk-mode . "awk")
-                          (other . "gnu"))
-        ess-default-style 'C++)
-
   (setq kill-do-not-save-duplicates t)
 #+END_SRC
 * Customize
-#+BEGIN_SRC emacs-lisp
-  (setq custom-file "~/.emacs.d/custom.el")
-  (load custom-file)
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq custom-file "/dev/null")
 #+END_SRC
