@@ -1,6 +1,9 @@
 * initializing
 ** packages
 #+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'package)
+  (setq package-archives nil)
+  (setq package-enable-at-startup nil)
   (package-initialize)
 #+END_SRC
 ** loadpath
