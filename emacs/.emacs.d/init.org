@@ -59,8 +59,7 @@
                       :weight 'light)
   (set-face-attribute 'default nil
                       :background "#000000"
-                      :foreground "#ffffff"
-                      :family "Hasklig")
+                      :foreground "#ffffff")
   (set-face-attribute 'fringe nil
                       :background "black"
                       :foreground "#0ff")
@@ -298,6 +297,10 @@
              gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
        (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
        (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)))
+       (add-hook 'gnus-article-mode-hook (lambda ()
+                 (face-remap-add-relative 'default '(:family "Linux Biolinum O" :height 120))))
+       (add-hook 'message-mode-hook (lambda ()
+                 (face-remap-add-relative 'default '(:family "Linux Biolinum O" :height 120))))
 #+END_SRC
 * minor-modes
 ** shakespeare
@@ -376,6 +379,7 @@
 ** hooks
 #+BEGIN_SRC emacs-lisp :tangle yes
     (add-hook 'haskell-mode-hook (lambda ()
+              (face-remap-add-relative 'default '(:family "Hasklig"))
               (setq prettify-symbols-alist
                     (list (cons "&&" (decode-char 'ucs #XE100))
                           (cons "***" (decode-char 'ucs #XE101))
