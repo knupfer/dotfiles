@@ -15,6 +15,7 @@
 ** require packages
 #+BEGIN_SRC emacs-lisp :tangle yes
   (mapc 'require '(haskell-emacs
+                   haskell-font-lock
                    org
                    ace-jump-mode
                    company
@@ -428,6 +429,7 @@
                                    (company-mode)
                                    (liquid-haskell-mode)))
     (add-to-list 'company-backends 'company-ghc)
+    (add-to-list 'company-backends 'company-nixos-options)
     (add-hook 'kill-emacs-hook (lambda ()
                                    (when (fboundp 'gnus-group-exit)
                                      (defun gnus-y-or-n-p (yes) yes)
@@ -438,6 +440,7 @@
                                  (whitespace-mode)))
     (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
     (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+    (add-hook 'nix-mode-hook 'company-mode)
 #+END_SRC
 ** tramp
 #+BEGIN_SRC emacs-lisp :tangle yes
