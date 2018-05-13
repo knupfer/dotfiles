@@ -6,20 +6,27 @@
   (setq package-enable-at-startup nil)
   (package-initialize)
 #+END_SRC
-** loadpath
-#+BEGIN_SRC emacs-lisp :tangle yes
-    (mapc (lambda (x) (add-to-list 'load-path x))
-          '("~/git/haskell-emacs/"
-            "~/git/liquid-haskell-mode/"))
-#+END_SRC
 ** require packages
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (mapc 'require '(haskell-emacs
-                   haskell-font-lock
+  (mapc 'require '(haskell-font-lock
                    org
                    ace-jump-mode
-                   company
-                   liquid-haskell-mode))
+                   use-package
+                   company))
+#+END_SRC
+** dante
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package dante
+  :ensure t
+  :after haskell-mode
+  :commands 'dante-mode
+  :init
+  (add-hook 'haskell-mode-hook 'dante-mode)
+  (add-hook 'haskell-mode-hook 'flycheck-mode))
+
+(add-hook 'dante-mode-hook
+  '(lambda () (flycheck-add-next-checker 'haskell-dante
+               '(warning . haskell-hlint))))
 #+END_SRC
 ** indentation
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -55,6 +62,17 @@
   (set-face-attribute 'mode-line-buffer-id nil
                       :foreground "#99dddd"
                       :box nil)
+  (set-face-attribute 'font-lock-function-name-face nil
+                      :foreground "#ff1493")
+  (set-face-attribute 'haskell-type-face nil
+                      :foreground "#f0f"
+                      :inherit nil)
+  (set-face-attribute 'haskell-pragma-face nil
+                      :foreground "#055"
+                      :inherit nil)
+  (set-face-attribute 'haskell-operator-face nil
+                      :foreground "#0f0"
+                      :inherit nil)
   (set-face-attribute 'mode-line-inactive nil
                       :inherit 'mode-line
                       :background "gray32"
@@ -88,17 +106,6 @@
                       :inherit 'font-lock-function-name-face
                       :foreground "SkyBlue1"
                       :weight 'bold)
-  (make-face 'my-gnus-face-6)
-  (set-face-attribute 'my-gnus-face-6 nil
-                      :foreground "#9EE"
-                      :background "#333"
-                      :weight 'bold)
-  (make-face 'my-gnus-face-7)
-  (set-face-attribute 'my-gnus-face-7 nil
-                      :foreground "#9EE"
-                      :background "#333"
-                      :weight 'bold
-                      :box '(:line-width -1 :color "#555"))
   (set-face-attribute 'ace-jump-face-foreground nil
                       :background "black"
                       :foreground "green"
@@ -129,22 +136,14 @@
           ("<M-right>" forward-sentence)
           ("<M-backspace>" backward-kill-sentence)
           ("<M-delete>" kill-sentence)
+          ("<f13>" set-mark-command)
+          ("<f14>" undo)
+          ("<f15>" backward-kill-word)
+          ("<f16>" kill-word)
+          ("<f17>" left-word)
+          ("<f18>" right-word)
           ("\C-cm" magit-status)
           ("S-SPC" ace-jump-mode)))
-#+END_SRC
-** nix-shell?
-#+BEGIN_SRC emacs-lisp :tangle yes
-(when (getenv "IN_NIX_SHELL")
-  (set-face-background 'mode-line "#220")
-  (set-face-foreground 'mode-line "#990")
-  (set-face-foreground 'mode-line-buffer-id "#ff5"))
-#+END_SRC
-** root?
-#+BEGIN_SRC emacs-lisp :tangle yes
-(when (equal (getenv "USER") "root")
-  (set-face-background 'mode-line "#400")
-  (set-face-foreground 'mode-line "#b00")
-  (set-face-foreground 'mode-line-buffer-id "#e55"))
 #+END_SRC
 * major-modes
 ** org
@@ -218,106 +217,7 @@
       erc-system-name "knupfer"
       erc-timestamp-right-column 70)
 #+END_SRC
-** gnus
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq send-mail-function 'mailclient-send-it
-        user-full-name "Florian Knupfer"
-        user-mail-address "fknupfer@gmail.com"
-        message-generate-headers-first t
-        message-send-mail-function 'smtpmail-send-it
-        smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-        smtpmail-auth-credentials '(("smtp.gmail.com" 587
-                                     "fknupfer@gmail.com" nil))
-        smtpmail-default-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587
-        starttls-use-gnutls t
-        mail-user-agent 'gnus-user-agent
-        gnus-default-adaptive-word-score-alist '((82 . 1) (67 . -1)
-                                                 (75 . -2) (114 . -1))
-        gnus-treat-fill-article t
-        gnus-treat-leading-whitespace t
-        gnus-treat-strip-multiple-blank-lines t
-        gnus-treat-strip-trailing-blank-lines t
-        gnus-treat-unsplit-urls t)
-
-  (eval-after-load "mm-decode"
-    '(progn
-       (add-to-list 'mm-discouraged-alternatives "text/html")
-       (add-to-list 'mm-discouraged-alternatives "text/richtext")))
-
-  (eval-after-load 'gnus
-    '(progn
-       (setq gnus-select-method '(nnimap "gmail"
-                                         (nnimap-address "imap.gmail.com")
-                                         (nnimap-server-port 993)
-                                         (nnimap-stream ssl)))
-
-       (add-to-list 'gnus-secondary-select-methods
-                    '(nntp "eternal september"
-                           (nntp-address "reader443.eternal-september.org")
-                           (nntp-authinfo-force t)))
-       (add-to-list 'gnus-secondary-select-methods
-                    '(nntp "gmane"
-                           (nntp-address "news.gmane.org")))
-       (add-to-list 'gnus-secondary-select-methods
-                    '(nnimap "Musikschule"
-                             (nnimap-address "secure.emailsrvr.com")
-                             (nnimap-server-port 993)
-                             (nnimap-stream ssl)))
-
-       (setq-default gnus-summary-mark-below -300
-                     gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
-       (setq gnus-face-5 'font-lock-comment-face)
-       (setq gnus-face-6 'my-gnus-face-6)
-       (setq gnus-face-7 'my-gnus-face-7)
-       (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
-             gnus-thread-sort-functions '((not gnus-thread-sort-by-date))
-             gnus-summary-line-format
-             "%U%R%z %5{│%}%6{ %d %}%5{│%} %-23,23f %5{│%}%* %5{%B%}%s\\n"
-             gnus-sum-thread-tree-false-root "• "
-             gnus-sum-thread-tree-indent "  "
-             gnus-sum-thread-tree-single-indent "  "
-             gnus-sum-thread-tree-leaf-with-other "├─▶ "
-             gnus-sum-thread-tree-root "• "
-             gnus-sum-thread-tree-single-leaf "└─▶ "
-             gnus-sum-thread-tree-vertical "│ "
-             gnus-group-line-format "%M%S%p%P%5y:%B%(%G%)\n"
-             gnus-posting-styles '((message-news-p
-                                    (name "quxbam")
-                                    (address "no@news.invalid"))))
-       (setq gnus-use-adaptive-scoring '(word))
-       (setq gnus-parameters
-             '(("WIKI"
-                (gnus-summary-line-format
-                 "%U%R %5{│%}%6{ %5,5i %}%5{│%}%* %-40,40f %5{│ %s%}\\n")
-                (gnus-article-sort-functions '(gnus-article-sort-by-author gnus-article-sort-by-subject gnus-article-sort-by-score))
-                (gnus-show-threads nil))
-               ("musikschule"
-                (gnus-article-sort-functions '((not gnus-article-sort-by-date)))
-                (gnus-show-threads nil))))
-       (setq nnml-use-compressed-files t
-             gnus-topic-display-empty-topics nil
-             gnus-topic-line-format "%i%i%7{ %(%-12n%)%7A %}\n")
-       (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-       (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)))
-       (add-hook 'gnus-article-mode-hook (lambda ()
-                 (face-remap-add-relative 'default '(:family "Linux Biolinum O" :height 120))))
-       (add-hook 'message-mode-hook (lambda ()
-                 (face-remap-add-relative 'default '(:family "Linux Biolinum O" :height 120))))
-#+END_SRC
 * minor-modes
-** shakespeare
-#+BEGIN_SRC emacs-lisp :tangle yes
-(add-to-list 'auto-mode-alist '("\\.hamlet\\'" . shakespeare-hamlet-mode))
-(add-to-list 'auto-mode-alist '("\\.julius\\'" . shakespeare-julius-mode))
-#+END_SRC
-** fill-column-indicator
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq fci-always-use-textual-rule t
-      fci-rule-column 80
-      fci-rule-color "#cc0000")
-#+END_SRC
 ** autocomplete
 #+BEGIN_SRC emacs-lisp :tangle yes
 (setq ac-override-local-map nil
@@ -346,36 +246,78 @@
 ** whitespace
 #+BEGIN_SRC emacs-lisp :tangle yes
 (setq whitespace-style '(face trailing tabs)
-      whitespace-tab-regexp "\\(\\\\alpha\\|\\\\beta\\|\\\\gamma\\|\\\\mu\\|\\\\nu\\|\\\\epsilon\\|\\\\lambda\\|\\\\sigma\\|\\\\tau\\|\\\\eta\\|\\\\omega\\|\\\\theta\\|\\\\rho\\|\\\\phi\\|\\\\psi\\|\\\\upsilon\\|\\\\pi\\|\\\\delta\\|\\\\kappa\\|\\\\xi\\|\\\\chi\\|\\\\Pi\\|\\\\Phi\\|\\\\Gamma\\|\\\\Omega\\|\\\\Lambda\\|\\\\nabla\\|\\\\Delta\\|\\\\int\\|\\\\oint\\|\\\\times\\|\\\\cdot\\|\\\\sum\\|\\\\pm\\|\\\\mp\\|\\\\geq\\|\\\\leq\\|\\\\neq\\|\\\\approx\\|\\\\rightarrow\\|\\\\leftarrow\\|\\\\Rightarrow\\|\\\\Leftarrow\\|\\\\mapsto\\|\\\\curvearrowright\\|\\\\leftrightarrow\\|\\\\mathrm{d}\\|\\\\infty\\|\\\\partial\\|\\\\equiv\\|\\\\ll\\|IO \\|\\\\underline\\)")
+      whitespace-tab-regexp "\\(IO \\)")
 (eval-after-load 'whitespace
   '(set-face-attribute 'whitespace-tab nil
                        :background "nil"
-                       :foreground "#00eeaa"
+                       :foreground "#f00"
                        :weight 'ultra-bold))
 #+END_SRC
-** paredit
-*** key-map
-#+BEGIN_SRC emacs-lisp :tangle yes
-(eval-after-load 'paredit
-  '(mapc (lambda (x) (define-key paredit-mode-map (kbd (car x)) (cadr x)))
-         '(("<C-right>" nil)
-           ("<C-left>" nil)
-           ("<M-right>" paredit-forward)
-           ("<M-left>" paredit-backward)
-           ("<C-up>" paredit-forward-barf-sexp)
-           ("<C-down>" paredit-forward-slurp-sexp)
-           ("<M-up>" paredit-backward-slurp-sexp)
-           ("<M-down>" paredit-backward-barf-sexp)
-           ("<M-backspace>" backward-kill-sexp)
-           ("<M-delete>" kill-sexp)
-           ("<tab>" completion-at-point)
-           ("<RET>" paredit-newline)
-           ("<C-backspace>" paredit-backward-kill-word)
-           ("<C-delete>" paredit-forward-kill-word)
-           ("{" paredit-open-curly)
-           ("}" paredit-close-curly))))
-#+END_SRC
 * misc
+** Hasklig
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defconst hasklig-font-lock-keywords-alist
+  (mapcar (lambda (regex-char-pair)
+            `(,(car regex-char-pair)
+              (0 (prog1 ()
+                   (compose-region (match-beginning 1)
+                                   (match-end 1)
+                                   ;; The first argument to concat is a string containing a literal tab
+                                   ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+          '(("\\(&&\\)"                    #Xe100)
+            ("\\(\\*\\*\\*\\)"             #Xe101)
+            ("\\(\\*>\\)"                  #Xe102)
+            ("\\(\\\\\\\\\\)"              #Xe103)
+            ("\\(||\\)"                    #Xe104)
+            ("\\(|>\\)"                    #Xe105)
+            ("\\(::\\)"                    #Xe106)
+            ("[^!/]\\(==\\)[^>]"           #Xe107)
+            ("\\(===\\)"                   #Xe108)
+            ("\\(==>\\)"                   #Xe109)
+            ("[^=]\\(=>\\)"                #Xe10A)
+            ("\\(=<<\\)"                   #Xe10B)
+            ("\\(!!\\)"                    #Xe10C)
+            ("[^-=]\\(>>\\)"               #Xe10D)
+            ("\\(>>=\\)"                   #Xe10E)
+            ("\\(>>>\\)"                   #Xe10F)
+            ("\\(>>-\\)"                   #Xe110)
+            ("\\(>-\\)"                    #Xe111)
+            ("[^-]\\(->\\)"                #Xe112)
+            ("\\(-<\\)"                    #Xe113)
+            ("\\(-<<\\)"                   #Xe114)
+            ("\\(<\\*\\)"                  #Xe115)
+            ("\\(<\\*>\\)"                 #Xe116)
+            ("\\(<|\\)"                    #Xe117)
+            ("\\(<|>\\)"                   #Xe118)
+            ("\\(<\\$>\\)"                 #Xe119)
+            ("\\(<>\\)"                    #Xe11A)
+            ("\\(<-\\)"                    #Xe11B)
+            ("[^-=]\\(<<\\)"               #Xe11C)
+            ("\\(<<<\\)"                   #Xe11D)
+            ("\\(<\\+>\\)"                 #Xe11E)
+            ("\\(\\.\\.\\)"                #Xe11F)
+            ("\\(\\.\\.\\.\\)"             #Xe120)
+            ("\\(\\+\\+\\)"                #Xe121)
+            ("\\(\\+\\+\\+\\)"             #Xe122)
+            ("\\(/=\\)"                    #Xe123)
+            ("\\(:::\\)"                   #Xe124)
+            ("\\(>=>\\)"                   #Xe125)
+            ("\\(->>\\)"                   #Xe126)
+            ("\\(<=>\\)"                   #Xe127)
+            ("\\(<=<\\)"                   #Xe128)
+            ("\\(<->\\)"                   #Xe129)
+            (" \\(\\.\\)[a-zA-Z
+ (]"                  ?\∘)
+            ("\\(\\\\\\)[a-zA-Z(]" ?\λ)
+            ("[a-zA-Z ]\\(=\\)[a-zA-Z
+ ]" ?\≔))))
+
+
+(defun add-hasklig-code-symbol-keywords ()
+  (font-lock-add-keywords nil hasklig-font-lock-keywords-alist))
+
+(add-hook 'haskell-mode-hook #'add-hasklig-code-symbol-keywords)
+#+END_SRC
 ** inits
 #+BEGIN_SRC emacs-lisp :tangle yes
 (global-whitespace-mode)
@@ -384,62 +326,13 @@
 #+BEGIN_SRC emacs-lisp :tangle yes
     (add-hook 'haskell-mode-hook (lambda ()
               (face-remap-add-relative 'default '(:family "Hasklig"))
-              (setq prettify-symbols-alist
-                    (list (cons "&&" (decode-char 'ucs #XE100))
-                          (cons "***" (decode-char 'ucs #XE101))
-                          (cons "*>" (decode-char 'ucs #XE102))
-                          (cons "\\\\" (decode-char 'ucs #XE103))
-                          (cons "||" (decode-char 'ucs #XE104))
-                          (cons "|>" (decode-char 'ucs #XE105))
-                          (cons "::" (decode-char 'ucs #XE106))
-                          (cons "==" (decode-char 'ucs #XE107))
-                          (cons "===" (decode-char 'ucs #XE108))
-                          (cons "==>" (decode-char 'ucs #XE109))
-                          (cons "=>" (decode-char 'ucs #XE10A))
-                          (cons "=<<" (decode-char 'ucs #XE10B))
-                          (cons "!!" (decode-char 'ucs #XE10C))
-                          (cons ">>" (decode-char 'ucs #XE10D))
-                          (cons ">>=" (decode-char 'ucs #XE10E))
-                          (cons ">>>" (decode-char 'ucs #XE10F))
-                          (cons ">>-" (decode-char 'ucs #XE110))
-                          (cons ">-" (decode-char 'ucs #XE111))
-                          (cons "->" (decode-char 'ucs #XE112))
-                          (cons "-<" (decode-char 'ucs #XE113))
-                          (cons "-<<" (decode-char 'ucs #XE114))
-                          (cons "<*" (decode-char 'ucs #XE115))
-                          (cons "<*>" (decode-char 'ucs #XE116))
-                          (cons "<|" (decode-char 'ucs #XE117))
-                          (cons "<|>" (decode-char 'ucs #XE118))
-                          (cons "<$>" (decode-char 'ucs #XE119))
-                          (cons "<>" (decode-char 'ucs #XE11A))
-                          (cons "<-" (decode-char 'ucs #XE11B))
-                          (cons "<<" (decode-char 'ucs #XE11C))
-                          (cons "<<<" (decode-char 'ucs #XE11D))
-                          (cons "<+>" (decode-char 'ucs #XE11E))
-                          (cons ".." (decode-char 'ucs #XE11F))
-                          (cons "..." (decode-char 'ucs #XE120))
-                          (cons "++" (decode-char 'ucs #XE121))
-                          (cons "+++" (decode-char 'ucs #XE122))
-                          (cons "\\" 955)
-                          (cons "*" 215)
-                          (cons "/=" (decode-char 'ucs #XE123))))
-                                   (prettify-symbols-mode)
-                                   (buffer-file-name)
-                                   (ghc-init)
-                                   (company-mode)
-                                   (liquid-haskell-mode)))
-    (add-to-list 'company-backends 'company-ghc)
+              (company-mode)))
     (add-to-list 'company-backends 'company-nixos-options)
-    (add-hook 'kill-emacs-hook (lambda ()
-                                   (when (fboundp 'gnus-group-exit)
-                                     (defun gnus-y-or-n-p (yes) yes)
-                                     (gnus-group-exit))))
     (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
     (add-hook 'org-mode-hook (lambda ()
                                  (auto-fill-mode)
                                  (whitespace-mode)))
     (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
     (add-hook 'nix-mode-hook 'company-mode)
 #+END_SRC
 ** tramp
@@ -462,3 +355,7 @@
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq custom-file "/dev/null")
 #+END_SRC
+
+# Local Variables:
+# org-src-preserve-indentation: t
+# End:

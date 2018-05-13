@@ -76,6 +76,7 @@ keycode 25 = i  		I		slash		Greek_iota	Left		Left		integral	NoSymbol
 keycode 26 = e  		E		braceleft	Greek_epsilon	Down		Down		U2200		NoSymbol
 keycode 27 = a  		A		braceright	Greek_alpha	Right		Right		U2203		NoSymbol
 keycode 28 = o  		O		asterisk	Greek_omicron	End		End		elementof	NoSymbol
+keycode 29 = XF86Switch_VT_1    XF86Switch_VT_1 XF86Switch_VT_1 XF86Switch_VT_1 XF86Switch_VT_1 XF86Switch_VT_1 XF86Switch_VT_1 XF86Switch_VT_1
 keycode 30 = d  		D		question	Greek_delta	questiondown	NoSymbol	Greek_DELTA	Greek_DELTA
 keycode 31 = t  		T		parenleft	Greek_tau	4		4		U2115		NoSymbol
 keycode 32 = r  		R		parenright	Greek_rho	5		5		U211D		NoSymbol
