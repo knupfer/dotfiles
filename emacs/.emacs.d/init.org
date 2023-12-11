@@ -148,15 +148,9 @@
 * major-modes
 ** dante
 #+BEGIN_SRC emacs-lisp :tangle yes
-(setq dante-repl-command-line-methods-alist  `((styx  . ,(lambda (root) (dante-repl-by-file root '("styx.yaml") '("styx" "repl" dante-target))))
-    (nix   . ,(lambda (root) (dante-repl-by-file root '("shell.nix" "default.nix")
-                                                      '("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))))
-    (stack . ,(lambda (root) (dante-repl-by-file root '("stack.yaml") '("stack" "repl" dante-target))))
-    (mafia . ,(lambda (root) (dante-repl-by-file root '("mafia") '("mafia" "repl" dante-target))))
-    (new-build . ,(lambda (root) (when (or (directory-files root nil ".+\\.cabal$") (file-exists-p "cabal.project"))
-                                   '("cabal" "new-repl" dante-target "--builddir=dist/dante"))))
-    (bare  . ,(lambda (_) '("cabal" "repl" dante-target "--builddir=dist/dante")))
-    (bare-ghci  . ,(lambda (_) '("ghci")))))
+(setq dante-methods-alist '((new-impure-nix "default.nix"
+                  ("nix-shell" "--run"
+                   (concat "cabal repl " dante-target " --builddir=dist/dante")))))
 #+END_SRC
 ** org
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -272,9 +266,6 @@
 #+END_SRC
 ** hooks
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (add-hook 'haskell-mode-hook (lambda ()
-              (face-remap-add-relative 'default '(:family "Hasklig"))
-              (company-mode)))
     (add-to-list 'company-backends 'company-nixos-options)
     (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
     (add-hook 'org-mode-hook (lambda ()
