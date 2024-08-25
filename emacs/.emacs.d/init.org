@@ -55,7 +55,8 @@
 #+END_SRC
 *** faces
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (set-face-attribute 'mode-line nil
+(add-to-list 'default-frame-alist '(font . "Iosevka Extended 10" ))
+(set-face-attribute 'mode-line nil
                       :background "#033"
                       :foreground "#9bb"
                       :box nil)
