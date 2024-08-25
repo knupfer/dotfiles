@@ -1,36 +1,9 @@
 * initializing
-** packages
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (require 'package)
-  (setq package-archives nil)
-  (setq package-enable-at-startup nil)
-  (package-initialize)
-#+END_SRC
 ** require packages
 #+BEGIN_SRC emacs-lisp :tangle yes
   (mapc 'require '(haskell-font-lock
                    org
-                   ace-jump-mode
-                   use-package
-                   company))
-#+END_SRC
-** dante
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package dante
-  :ensure t
-  :after haskell-mode
-  :commands 'dante-mode
-  :init
-  (add-hook 'haskell-mode-hook 'dante-mode)
-  (add-hook 'haskell-mode-hook 'flycheck-mode))
-
-(add-hook 'dante-mode-hook
-  '(lambda () (flycheck-add-next-checker 'haskell-dante
-               '(warning . haskell-hlint))))
-#+END_SRC
-** indentation
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq-default indent-tabs-mode nil)
+                   ace-jump-mode))
 #+END_SRC
 ** theming
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -39,78 +12,40 @@
 ** default layout
 *** modes
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default truncate-lines t)
-  (display-time-mode t)
   (scroll-bar-mode -1)
   (fringe-mode '(0 . nil))
-  (column-number-mode 1)
+  (column-number-mode)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
+  (indent-tabs-mode -1)
 #+END_SRC
 *** vars
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq inhibit-startup-screen t
-        visual-line-fringe-indicators '(nil right-curly-arrow)
-        display-time-24hr-format t)
+  (setq-default inhibit-startup-screen t
+                visual-line-fringe-indicators '(nil right-curly-arrow)
+                display-time-24hr-format t
+                truncate-lines t)
 #+END_SRC
 *** faces
 #+BEGIN_SRC emacs-lisp :tangle yes
-(add-to-list 'default-frame-alist '(font . "Iosevka Extended 10" ))
+(set-face-attribute 'default nil
+                      :background "#000000"
+                      :foreground "#ffffff"
+                      :font "Iosevka Extended 10")
 (set-face-attribute 'mode-line nil
                       :background "#033"
                       :foreground "#9bb"
                       :box nil)
-  (set-face-attribute 'mode-line-buffer-id nil
+(set-face-attribute 'mode-line-buffer-id nil
                       :foreground "#99dddd"
                       :box nil)
-  (set-face-attribute 'font-lock-function-name-face nil
-                      :foreground "#ff1493")
-  (set-face-attribute 'haskell-type-face nil
-                      :foreground "#f0f"
-                      :inherit nil)
-  (set-face-attribute 'haskell-pragma-face nil
-                      :foreground "#055"
-                      :inherit nil)
-  (set-face-attribute 'haskell-operator-face nil
-                      :foreground "#0f0"
-                      :inherit nil)
-  (set-face-attribute 'mode-line-inactive nil
+(set-face-attribute 'mode-line-inactive nil
                       :inherit 'mode-line
-                      :background "gray32"
-                      :foreground "black"
                       :box nil
                       :weight 'light)
-  (set-face-attribute 'default nil
-                      :background "#000000"
-                      :foreground "#ffffff")
-  (set-face-attribute 'fringe nil
+(set-face-attribute 'fringe nil
                       :background "black"
                       :foreground "#0ff")
-  (set-face-attribute 'region nil
-                      :background "#505")
-  (set-face-attribute 'cursor nil
-                      :background "#709")
-  (set-face-attribute 'org-archived nil
-                      :foreground "#254555")
-  (set-face-attribute 'org-checkbox nil
-                      :inherit 'bold
-                      :foreground "#2f2")
-  (set-face-attribute 'org-done nil
-                      :foreground "#5f5"
-                      :weight 'ultra-bold)
-  (set-face-attribute 'org-hide nil
-                      :foreground "#777")
-  (set-face-attribute 'org-todo nil
-                      :foreground "#faa"
-                      :weight 'ultra-bold)
-  (set-face-attribute 'outline-1 nil
-                      :inherit 'font-lock-function-name-face
-                      :foreground "SkyBlue1"
-                      :weight 'bold)
-  (set-face-attribute 'ace-jump-face-foreground nil
-                      :background "black"
-                      :foreground "green"
-                      :weight 'bold)
 #+END_SRC
 ** cursor
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -137,118 +72,23 @@
           ("<M-right>" forward-sentence)
           ("<M-backspace>" backward-kill-sentence)
           ("<M-delete>" kill-sentence)
-          ("<f13>" set-mark-command)
-          ("<f14>" undo)
-          ("<f15>" backward-kill-word)
-          ("<f16>" kill-word)
-          ("<f17>" left-word)
-          ("<f18>" right-word)
+          ("<C-prior>" beginning-of-buffer)
+          ("<C-next>" end-of-buffer)
           ("\C-cm" magit-status)
-          ("S-SPC" ace-jump-mode)))
+          ("\C-a" ace-jump-mode)))
 #+END_SRC
 * major-modes
-** dante
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq dante-methods-alist '((new-impure-nix "default.nix"
-                  ("nix-shell" "--run"
-                   (concat "cabal repl " dante-target " --builddir=dist/dante")))))
-#+END_SRC
 ** org
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-time-clocksum-format '(:hours "%d"
-                                          :require-hours t
-                                          :minutes ":%02d"
-                                          :require-minutes t))
-  (setq org-catch-invisible-edits 'error
-        org-confirm-babel-evaluate nil
-        org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "INIT")
-        org-export-backends '(ascii html latex odt)
-        org-export-headline-levels 4
-        org-format-latex-options '(:foreground "#0da"
-                                               :background default
-                                               :scale 2.0
-                                               :html-foreground "Black"
-                                               :html-background "Transparent"
-                                               :html-scale 1.0
-                                               :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
-        org-highlight-latex-and-related '(latex script entities)
-        org-image-actual-width 200
-        org-latex-preview-ltxpng-directory "~/ltxpreview/"
-        org-list-empty-line-terminates-plain-lists t
-        org-log-done 'time
-        org-src-fontify-natively t
+  (setq org-log-done 'time
         org-startup-folded t
         org-startup-indented t
-        org-startup-with-inline-images t
-        org-todo-keyword-faces '(("FAILED" . "#f00") ("CANCELED" . "#ee3") ("WAIT" . "#f0f"))
-        org-todo-keywords '((sequence "TODO" "WAIT" "|" "DONE" "CANCELED" "FAILED"))
-        org-format-latex-header "\\documentclass{article}
-  \\usepackage[usenames]{color}
-  \\usepackage{etoolbox}
-  \\usepackage{mdframed}
-  [PACKAGES]
-  [DEFAULT-PACKAGES]
-  \\pagestyle{empty}             % do not remove
-  % The settings below are copied from fullpage.sty
-  \\setlength{\\textwidth}{\\paperwidth}
-  \\addtolength{\\textwidth}{-13cm}
-  \\setlength{\\oddsidemargin}{1.5cm}
-  \\addtolength{\\oddsidemargin}{-2.54cm}
-  \\setlength{\\evensidemargin}{\\oddsidemargin}
-  \\setlength{\\textheight}{\\paperheight}
-  \\addtolength{\\textheight}{-\\headheight}
-  \\addtolength{\\textheight}{-\\headsep}
-  \\addtolength{\\textheight}{-\\footskip}
-  \\addtolength{\\textheight}{-3cm}
-  \\setlength{\\topmargin}{1.5cm}
-  \\addtolength{\\topmargin}{-2.54cm}
-  \\definecolor{bg}{rgb}{0,0.1,0.1}\\definecolor{fg}{rgb}{0.2,1,0.7}
-  \\BeforeBeginEnvironment{align*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-  \\AfterEndEnvironment{align*}{\\end{mdframed}}
-  \\BeforeBeginEnvironment{align}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-  \\AfterEndEnvironment{align}{\\end{mdframed}}
-  \\BeforeBeginEnvironment{gather*}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-  \\AfterEndEnvironment{gather*}{\\end{mdframed}}
-  \\BeforeBeginEnvironment{gather}{\\begin{mdframed}[backgroundcolor=bg, innertopmargin=-0.2cm]\\color{fg}}
-  \\AfterEndEnvironment{gather}{\\end{mdframed}}
-  \\newenvironment{definition}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Definition:}} }{\\end{mdframed}}
-  \\newenvironment{note}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Bemerkung:}} }{\\end{mdframed}}
-  \\newenvironment{example}{\\begin{mdframed}[backgroundcolor=bg]\\color{fg} \\textbf{\\textsc{Beispiel:}} }{\\end{mdframed}}
-  \\newcommand{\\e}{\\mathrm{e}}")
-#+END_SRC
-** erc
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq erc-nick "knupfer"
-      erc-prompt ">>>"
-      erc-prompt-for-password nil
-      erc-system-name "knupfer"
-      erc-timestamp-right-column 70)
+        org-startup-with-inline-images t)
 #+END_SRC
 * minor-modes
-** autocomplete
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq ac-override-local-map nil
-      ac-use-menu-map t
-      ac-candidate-limit 20)
-#+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp :tangle yes
   (global-flycheck-mode 1)
-  (set-face-attribute 'flycheck-error nil
-                      :foreground "#D00"
-                      :background "#222"
-                      :underline nil
-                      :weight 'ultrabold)
-  (set-face-attribute 'flycheck-warning nil
-                      :foreground "#CC0"
-                      :background "#222"
-                      :underline nil
-                      :weight 'ultrabold)
-  (set-face-attribute 'flycheck-info nil
-                      :foreground "#66F"
-                      :background "#008"
-                      :underline nil
-                      :weight 'ultrabold)
 #+END_SRC
 ** whitespace
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -267,35 +107,13 @@
 #+END_SRC
 ** hooks
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (add-to-list 'company-backends 'company-nixos-options)
-    (add-hook 'ibuffer-mode-hook 'ibuffer-auto-mode)
-    (add-hook 'org-mode-hook (lambda ()
-                                 (auto-fill-mode)
-                                 (whitespace-mode)))
     (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-    (add-hook 'nix-mode-hook 'company-mode)
-#+END_SRC
-** tramp
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq tramp-default-method "ssh"
-        tramp-default-method-alist
-        '(("80\\.240\\.140\\.83#50683" "quxbar" "scpc") (nil "%" "smb")
-          ("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'"
-           "\\`root\\'" "su")
-          (nil "\\`\\(anonymous\\|ftp\\)\\'" "ftp") ("\\`ftp\\." nil "ftp"))
-        tramp-default-proxies-alist
-        '(("80.240.140.83#50683" "root" "/ssh:quxbar@80.240.140.83#50683:")))
 #+END_SRC
 ** misc
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defalias 'yes-or-no-p 'y-or-n-p)
-  (setq kill-do-not-save-duplicates t)
 #+END_SRC
 * Customize
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq custom-file "/dev/null")
 #+END_SRC
-
-# Local Variables:
-# org-src-preserve-indentation: t
-# End:
