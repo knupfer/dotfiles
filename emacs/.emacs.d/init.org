@@ -1,119 +1,68 @@
 * initializing
 ** require packages
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (mapc 'require '(haskell-font-lock
-                   org
-                   ace-jump-mode))
+(mapc 'require '(haskell-font-lock
+                 org
+                 ace-jump-mode))
 #+END_SRC
 ** theming
 #+BEGIN_SRC emacs-lisp :tangle yes
-(load-theme 'deeper-blue)
+(load-theme 'modus-vivendi)
 #+END_SRC
 ** default layout
 *** modes
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (scroll-bar-mode -1)
-  (fringe-mode '(0 . nil))
-  (column-number-mode)
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (indent-tabs-mode -1)
+(scroll-bar-mode -1)
+(fringe-mode '(0 . nil))
+(column-number-mode)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(indent-tabs-mode -1)
+(blink-cursor-mode -1)
+(global-flycheck-mode 1)
 #+END_SRC
 *** vars
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default inhibit-startup-screen t
-                visual-line-fringe-indicators '(nil right-curly-arrow)
-                display-time-24hr-format t
-                truncate-lines t)
+(setq-default inhibit-startup-screen t
+              truncate-lines t)
 #+END_SRC
 *** faces
 #+BEGIN_SRC emacs-lisp :tangle yes
 (set-face-attribute 'default nil
-                      :background "#000000"
-                      :foreground "#ffffff"
-                      :font "Iosevka Extended 10")
+                    :font "Iosevka Extended 10")
 (set-face-attribute 'mode-line nil
-                      :background "#033"
-                      :foreground "#9bb"
-                      :box nil)
-(set-face-attribute 'mode-line-buffer-id nil
-                      :foreground "#99dddd"
-                      :box nil)
+                    :background "#033"
+                    :box nil)
 (set-face-attribute 'mode-line-inactive nil
-                      :inherit 'mode-line
-                      :box nil
-                      :weight 'light)
+                    :weight 'light
+                    :box nil)
 (set-face-attribute 'fringe nil
-                      :background "black"
-                      :foreground "#0ff")
-#+END_SRC
-** cursor
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (blink-cursor-mode -1)
-  (defvar hcz-set-cursor-color-color "")
-  (defvar hcz-set-cursor-color-buffer "")
-  (defun hcz-set-cursor-color-according-to-mode ()
-    "change cursor color according to some minor modes."
-    (let ((color (if (and (boundp 'knu-org-mode-map)
-                          (org-inside-LaTeX-fragment-p)) "#2a6"
-                   (if buffer-read-only "white"
-                     (if overwrite-mode "#fa0"
-                       "#909")))))
-      (unless (and
-               (string= color hcz-set-cursor-color-color)
-               (string= (buffer-name) hcz-set-cursor-color-buffer))
-        (set-cursor-color (setq hcz-set-cursor-color-color color))
-        (setq hcz-set-cursor-color-buffer (buffer-name)))))
+                    :background "black"
+                    :foreground "#0ff")
 #+END_SRC
 ** key-map
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
-        '(("<M-left>" backward-sentence)
-          ("<M-right>" forward-sentence)
-          ("<M-backspace>" backward-kill-sentence)
-          ("<M-delete>" kill-sentence)
-          ("<C-prior>" beginning-of-buffer)
-          ("<C-next>" end-of-buffer)
-          ("\C-cm" magit-status)
-          ("\C-a" ace-jump-mode)))
+(mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
+      '(("<M-left>" backward-sentence)
+        ("<M-right>" forward-sentence)
+        ("<M-backspace>" backward-kill-sentence)
+        ("<M-delete>" kill-sentence)
+        ("<C-prior>" beginning-of-buffer)
+        ("<C-next>" end-of-buffer)
+        ("\C-cm" magit-status)
+        ("\C-a" ace-jump-mode)))
 #+END_SRC
 * major-modes
 ** org
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-log-done 'time
-        org-startup-folded t
-        org-startup-indented t
-        org-startup-with-inline-images t)
-#+END_SRC
-* minor-modes
-** flycheck
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (global-flycheck-mode 1)
-#+END_SRC
-** whitespace
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq whitespace-style '(face trailing tabs)
-      whitespace-tab-regexp "\\(IO \\)")
-(eval-after-load 'whitespace
-  '(set-face-attribute 'whitespace-tab nil
-                       :background "nil"
-                       :foreground "#f00"
-                       :weight 'ultra-bold))
+(setq org-log-done 'time
+      org-startup-folded t
+      org-startup-indented t
+      org-indent-mode-turns-on-hiding-stars nil
+      org-indent-indentation-per-level 1)
 #+END_SRC
 * misc
-** inits
 #+BEGIN_SRC emacs-lisp :tangle yes
-(global-whitespace-mode)
-#+END_SRC
-** hooks
-#+BEGIN_SRC emacs-lisp :tangle yes
-    (add-hook 'post-command-hook 'hcz-set-cursor-color-according-to-mode)
-#+END_SRC
-** misc
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-* Customize
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq custom-file "/dev/null")
+(defalias 'yes-or-no-p 'y-or-n-p)
+(setq custom-file "/dev/null")
 #+END_SRC
