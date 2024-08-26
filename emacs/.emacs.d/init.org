@@ -8,26 +8,8 @@
 ** theming
 #+BEGIN_SRC emacs-lisp :tangle yes
 (load-theme 'modus-vivendi)
-#+END_SRC
-** default layout
-*** modes
-#+BEGIN_SRC emacs-lisp :tangle yes
-(scroll-bar-mode -1)
-(fringe-mode '(0 . nil))
-(column-number-mode)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(indent-tabs-mode -1)
-(blink-cursor-mode -1)
-(global-flycheck-mode 1)
-#+END_SRC
-*** vars
-#+BEGIN_SRC emacs-lisp :tangle yes
 (setq-default inhibit-startup-screen t
               truncate-lines t)
-#+END_SRC
-*** faces
-#+BEGIN_SRC emacs-lisp :tangle yes
 (set-face-attribute 'default nil
                     :font "Iosevka Extended 10")
 (set-face-attribute 'mode-line nil
@@ -39,6 +21,17 @@
 (set-face-attribute 'fringe nil
                     :background "black"
                     :foreground "#0ff")
+#+END_SRC
+** modes
+#+BEGIN_SRC emacs-lisp :tangle yes
+(scroll-bar-mode -1)
+(fringe-mode '(0 . nil))
+(column-number-mode)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(indent-tabs-mode -1)
+(blink-cursor-mode -1)
+(global-flycheck-mode 1)
 #+END_SRC
 ** key-map
 #+BEGIN_SRC emacs-lisp :tangle yes
