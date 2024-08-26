@@ -1,26 +1,26 @@
 * initializing
 ** require packages
 #+BEGIN_SRC emacs-lisp :tangle yes
-(mapc 'require '(haskell-font-lock
-                 org
-                 ace-jump-mode))
+  (mapc 'require '(haskell-font-lock
+		   org
+		   ace-jump-mode))
 #+END_SRC
 ** theming
 #+BEGIN_SRC emacs-lisp :tangle yes
-(load-theme 'modus-vivendi)
-(setq-default inhibit-startup-screen t
-              truncate-lines t)
-(set-face-attribute 'default nil
-                    :font "Iosevka Extended 10")
-(set-face-attribute 'mode-line nil
-                    :background "#033"
-                    :box nil)
-(set-face-attribute 'mode-line-inactive nil
-                    :weight 'light
-                    :box nil)
-(set-face-attribute 'fringe nil
-                    :background "black"
-                    :foreground "#0ff")
+  (load-theme 'modus-vivendi)
+  (setq-default inhibit-startup-screen t
+                truncate-lines t)
+  (add-to-list 'default-frame-alist
+                 '(font . "Iosevka Extended 10"))
+  (set-face-attribute 'mode-line nil
+                        :background "#033"
+                        :box nil)
+  (set-face-attribute 'mode-line-inactive nil
+                        :weight 'light
+                        :box nil)
+  (set-face-attribute 'fringe nil
+                        :background "black"
+                        :foreground "#0ff")
 #+END_SRC
 ** modes
 #+BEGIN_SRC emacs-lisp :tangle yes
