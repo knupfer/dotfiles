@@ -70,13 +70,11 @@ strings as usual
 
                 keycode   2 = +ssharp
         altgr   keycode   2 = Prior
-        ctrll   keycode   2 = Prior
 
                 keycode   4 = u
         shiftl  keycode   4 = +U
         altgr   keycode   4 = Delete
         ctrll   keycode   4 = underscore
-  control altgr keycode   4 = F15
 
                 keycode   5 = udiaeresis
         shiftl  keycode   5 = +Udiaeresis
@@ -86,7 +84,6 @@ strings as usual
                 keycode   6 = period
         altgr   keycode   6 = Remove
         ctrll   keycode   6 = bracketright
-  control altgr keycode   6 = F16
 
                 keycode   7 = adiaeresis
         shiftl  keycode   7 = +Adiaeresis
@@ -95,7 +92,6 @@ strings as usual
 
                 keycode   8 = v
         shiftl  keycode   8 = +V
-        altgr   keycode   8 = exclamdown
         ctrll   keycode   8 = exclam
 
                 keycode   9 = g
@@ -129,7 +125,6 @@ strings as usual
                 keycode  17 = i
         shiftl  keycode  17 = +I
         altgr   keycode  17 = Left
-  control altgr keycode  17 = F17
         ctrll   keycode  17 = slash
 
                 keycode  18 = e
@@ -140,7 +135,6 @@ strings as usual
                 keycode  19 = a
         shiftl  keycode  19 = +A
         altgr   keycode  19 = Right
-  control altgr keycode  19 = F18
         ctrll   keycode  19 = braceright
 
                 keycode  20 = o
@@ -148,41 +142,31 @@ strings as usual
         altgr   keycode  20 = End
         ctrll   keycode  20 = asterisk
 
-                keycode  21 = Console_7
-
                 keycode  22 = d
         shiftl  keycode  22 = +D
-        altgr   keycode  22 = questiondown
         ctrll   keycode  22 = question
 
                 keycode  23 = t
         shiftl  keycode  23 = +T
         altgr   keycode  23 = four
         ctrll   keycode  23 = parenleft
-        alt     keycode  23 = Console_1
 
                 keycode  24 = r
         shiftl  keycode  24 = +R
         altgr   keycode  24 = five
         ctrll   keycode  24 = parenright
-        alt     keycode  24 = Console_2
 
                 keycode  25 = n
         shiftl  keycode  25 = +N
         altgr   keycode  25 = six
         ctrll   keycode  25 = minus
-        alt     keycode  25 = Console_3
 
                 keycode  26 = s
         shiftl  keycode  26 = +S
-        altgr   keycode  26 = comma
         ctrll   keycode  26 = colon
-        alt     keycode  26 = Console_4
-    alt ctrll   keycode  26 = Meta_colon
 
                 keycode  27 = f
         shiftl  keycode  27 = +F
-        altgr   keycode  27 = period
         ctrll   keycode  27 = at
 
                 keycode  30 = x
@@ -206,7 +190,6 @@ strings as usual
 
                 keycode  34 = q
         shiftl  keycode  34 = +Q
-        altgr   keycode  34 = F14
         ctrll   keycode  34 = grave
 
                 keycode  36 = b
@@ -231,12 +214,10 @@ strings as usual
 
                 keycode  40 = z
         shiftl  keycode  40 = +Z
-        altgr   keycode  40 = semicolon
         ctrll   keycode  40 = semicolon
 
                 keycode  50 = space
         alt     keycode  50 = Meta_space
         altgr   keycode  50 = zero
-        control keycode  50 = F13
 
 #==========================================================================
