@@ -1,0 +1,108 @@
+# INSTALLATION: write this file to the following location:
+#
+# ~/.sway/config
+#
+
+# Read `man 5 sway` for a complete reference.
+### Variables
+#
+set $mod Mod4
+# set $term foot --override=colors.background=000000 --override=colors.foreground=ffffff --font="monospace:size=10"
+# set $menu wmenu-run -f "monospace 13" -N 000000 -S 00AAAA | xargs swaymsg exec --
+
+default_border pixel 3
+focus_follows_mouse no
+smart_borders on
+client.focused #aaaaaa #00AAAA #FFFFFF #005555
+
+### Output configuration
+#
+output * bg #000000 solid_color
+# output * scale 1
+#
+# Example configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+input type:keyboard xkb_layout knu
+input type:touchpad middle_emulation enabled
+
+### Key bindings
+#
+    bindsym XF86AudioMute exec amixer -q set Master toggle
+    bindsym XF86AudioLowerVolume exec amixer -q set Master 2%-
+    bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+
+    bindsym XF86MonBrightnessDown exec light -U 1
+    bindsym XF86MonBrightnessUp exec light -A 1
+
+    # Start a terminal
+    bindsym $mod+h exec foot --override=colors.background=000000 --override=colors.foreground=ffffff --font="monospace:size=10"
+
+    # Start emacs
+    bindsym $mod+Shift+h exec emacsclient -c --alternate-editor=""
+
+    # Kill focused window
+    bindsym $mod+Shift+c kill
+
+    # Start your launcher
+    bindsym $mod+p exec wmenu-run -f "monospace 13" -N 000000 -S 00AAAA | xargs swaymsg exec --
+
+    # Reload the configuration file
+    bindsym $mod+Shift+return reload
+
+    # Move your focus around
+    bindsym $mod+i focus left
+    bindsym $mod+e focus down
+    bindsym $mod+udiaeresis focus up
+    bindsym $mod+a focus right
+
+    # Move the focused window
+    bindsym $mod+Shift+i move left
+    bindsym $mod+Shift+e move down
+    bindsym $mod+Shift+udiaeresis move up
+    bindsym $mod+Shift+a move right
+
+    # Switch to workspace
+    bindsym $mod+t workspace number 1
+    bindsym $mod+r workspace number 2
+    bindsym $mod+n workspace number 3
+    bindsym $mod+s workspace number 4
+    # Move focused container to workspace
+    bindsym $mod+Shift+t move container to workspace number 1
+    bindsym $mod+Shift+r move container to workspace number 2
+    bindsym $mod+Shift+n move container to workspace number 3
+    bindsym $mod+Shift+s move container to workspace number 4
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+    bindsym $mod+u resize shrink width 10px
+    bindsym $mod+period resize grow width 10px
+    bindsym $mod+y resize shrink height 10px
+    bindsym $mod+comma resize grow height 10px
+
+bar {
+    position top
+    status_command i3status-rs config-default.toml
+    status_edge_padding 0
+    status_padding 0
+    colors {
+        background #000000
+        focused_workspace #00BBBB #00BBBB #ffffff
+    }
+}

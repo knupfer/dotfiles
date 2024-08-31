@@ -1,0 +1,242 @@
+#==========================================================================
+
+keymaps 0-127
+compose as usual
+strings as usual
+
+#==========================================================================
+
+                keycode  29 = Control
+                keycode  46 = AltGr
+                keycode  47 = ShiftL
+                keycode  48 = Control
+                keycode  49 = Control
+                keycode  51 = CtrlL
+                keycode  56 = Alt
+                keycode  57 = Alt
+                keycode  97 = Control
+                keycode 100 = Alt
+
+#==========================================================================
+
+                keycode 103 = Up
+                keycode 105 = Left
+                keycode 106 = Right
+                keycode 108 = Down
+
+                keycode 113 = VoidSymbol
+                keycode 114 = VoidSymbol
+                keycode 115 = VoidSymbol
+                keycode 224 = VoidSymbol
+                keycode 225 = VoidSymbol
+
+                keycode   1 = Escape
+                keycode  14 = Delete
+                keycode  28 = Return
+
+                keycode 110 = Insert
+                keycode 111 = Remove
+                keycode 102 = Home
+                keycode 107 = End
+                keycode 104 = PageUp
+                keycode 109 = PageDown
+
+                keycode  59 = F1
+    control alt keycode  59 = Console_1
+                keycode  60 = F2
+    control alt keycode  60 = Console_2
+                keycode  61 = F3
+    control alt keycode  61 = Console_3
+                keycode  62 = F4
+    control alt keycode  62 = Console_4
+                keycode  63 = F5
+    control alt keycode  63 = Console_5
+                keycode  64 = F6
+    control alt keycode  64 = Console_6
+                keycode  65 = F7
+    control alt keycode  65 = Console_7
+                keycode  66 = F8
+    control alt keycode  66 = Console_8
+                keycode  67 = F9
+    control alt keycode  67 = Console_9
+                keycode  68 = F10
+    control alt keycode  68 = Console_10
+                keycode  87 = F11
+    control alt keycode  87 = Console_11
+                keycode  88 = F12
+    control alt keycode  88 = Console_12
+
+#==========================================================================
+
+                keycode   2 = +ssharp
+        altgr   keycode   2 = Prior
+        ctrll   keycode   2 = Prior
+
+                keycode   4 = u
+        shiftl  keycode   4 = +U
+        altgr   keycode   4 = Delete
+        ctrll   keycode   4 = underscore
+  control altgr keycode   4 = F15
+
+                keycode   5 = udiaeresis
+        shiftl  keycode   5 = +Udiaeresis
+        altgr   keycode   5 = Up
+        ctrll   keycode   5 = bracketleft
+
+                keycode   6 = period
+        altgr   keycode   6 = Remove
+        ctrll   keycode   6 = bracketright
+  control altgr keycode   6 = F16
+
+                keycode   7 = adiaeresis
+        shiftl  keycode   7 = +Adiaeresis
+        altgr   keycode   7 = Next
+        ctrll   keycode   7 = asciicircum
+
+                keycode   8 = v
+        shiftl  keycode   8 = +V
+        altgr   keycode   8 = exclamdown
+        ctrll   keycode   8 = exclam
+
+                keycode   9 = g
+        shiftl  keycode   9 = +G
+        altgr   keycode   9 = seven
+        ctrll   keycode   9 = less
+
+                keycode  10 = c
+        shiftl  keycode  10 = +C
+        altgr   keycode  10 = eight
+        ctrll   keycode  10 = greater
+
+                keycode  11 = l
+        shiftl  keycode  11 = +L
+        altgr   keycode  11 = nine
+        ctrll   keycode  11 = equal
+
+                keycode  13 = j
+        shiftl  keycode  13 = +J
+        altgr   keycode  13 = plus
+        ctrll   keycode  13 = ampersand
+
+                keycode  15 = k
+         shiftl keycode  15 = +K
+
+                keycode  16 = h
+        shiftl  keycode  16 = +H
+        altgr   keycode  16 = Home
+        ctrll   keycode  16 = backslash
+
+                keycode  17 = i
+        shiftl  keycode  17 = +I
+        altgr   keycode  17 = Left
+  control altgr keycode  17 = F17
+        ctrll   keycode  17 = slash
+
+                keycode  18 = e
+        shiftl  keycode  18 = +E
+        altgr   keycode  18 = Down
+        ctrll   keycode  18 = braceleft
+
+                keycode  19 = a
+        shiftl  keycode  19 = +A
+        altgr   keycode  19 = Right
+  control altgr keycode  19 = F18
+        ctrll   keycode  19 = braceright
+
+                keycode  20 = o
+        shiftl  keycode  20 = +O
+        altgr   keycode  20 = End
+        ctrll   keycode  20 = asterisk
+
+                keycode  21 = Console_7
+
+                keycode  22 = d
+        shiftl  keycode  22 = +D
+        altgr   keycode  22 = questiondown
+        ctrll   keycode  22 = question
+
+                keycode  23 = t
+        shiftl  keycode  23 = +T
+        altgr   keycode  23 = four
+        ctrll   keycode  23 = parenleft
+        alt     keycode  23 = Console_1
+
+                keycode  24 = r
+        shiftl  keycode  24 = +R
+        altgr   keycode  24 = five
+        ctrll   keycode  24 = parenright
+        alt     keycode  24 = Console_2
+
+                keycode  25 = n
+        shiftl  keycode  25 = +N
+        altgr   keycode  25 = six
+        ctrll   keycode  25 = minus
+        alt     keycode  25 = Console_3
+
+                keycode  26 = s
+        shiftl  keycode  26 = +S
+        altgr   keycode  26 = comma
+        ctrll   keycode  26 = colon
+        alt     keycode  26 = Console_4
+    alt ctrll   keycode  26 = Meta_colon
+
+                keycode  27 = f
+        shiftl  keycode  27 = +F
+        altgr   keycode  27 = period
+        ctrll   keycode  27 = at
+
+                keycode  30 = x
+        shiftl  keycode  30 = +X
+        altgr   keycode  30 = Escape
+        ctrll   keycode  30 = numbersign
+
+                keycode  31 = y
+        shiftl  keycode  31 = +Y
+        altgr   keycode  31 = Tab
+        ctrll   keycode  31 = dollar
+
+                keycode  32 = odiaeresis
+        shiftl  keycode  32 = +Odiaeresis
+        altgr   keycode  32 = Insert
+        ctrll   keycode  32 = bar
+
+                keycode  33 = comma
+        altgr   keycode  33 = Return
+        ctrll   keycode  33 = asciitilde
+
+                keycode  34 = q
+        shiftl  keycode  34 = +Q
+        altgr   keycode  34 = F14
+        ctrll   keycode  34 = grave
+
+                keycode  36 = b
+        shiftl  keycode  36 = +B
+        altgr   keycode  36 = colon
+        ctrll   keycode  36 = plus
+
+                keycode  37 = p
+        shiftl  keycode  37 = +P
+        altgr   keycode  37 = one
+        ctrll   keycode  37 = percent
+
+                keycode  38 = w
+        shiftl  keycode  38 = +W
+        altgr   keycode  38 = two
+        ctrll   keycode  38 = quotedbl
+
+                keycode  39 = m
+        shiftl  keycode  39 = +M
+        altgr   keycode  39 = three
+        ctrll   keycode  39 = apostrophe
+
+                keycode  40 = z
+        shiftl  keycode  40 = +Z
+        altgr   keycode  40 = semicolon
+        ctrll   keycode  40 = semicolon
+
+                keycode  50 = space
+        alt     keycode  50 = Meta_space
+        altgr   keycode  50 = zero
+        control keycode  50 = F13
+
+#==========================================================================

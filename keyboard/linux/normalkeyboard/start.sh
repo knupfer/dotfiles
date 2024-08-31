@@ -1,1 +1,0 @@
-setxkbmap de && xmodmap xmodmapneo

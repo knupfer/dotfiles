@@ -1,0 +1,72 @@
+// Inspired by German Neo-Layout Version 2 (http://www.neo-layout.org)
+
+// INSTALLATION: write this file to the following location:
+//
+// ~/.xkb/symbols/knu
+//
+
+partial alphanumeric_keys modifier_keys keypad_keys
+xkb_symbols "knu" {
+
+    include "knu(knu_base)"
+
+    name[Group1]= "Knumap";
+};
+
+partial alphanumeric_keys modifier_keys
+xkb_symbols "knu_base" {
+
+        // Number row
+    key.type[Group1] = "EIGHT_LEVEL";
+    key <TLDE> { [ dead_circumflex , dead_caron , NoSymbol     , NoSymbol, NoSymbol  , NoSymbol  ] };
+    key <AE01> { [ ssharp          , U1E9E      , NoSymbol     , NoSymbol, Prior     , Prior     ] };
+    key <AE03> { [ u               , U          , underscore   , NoSymbol, BackSpace , BackSpace ] };
+    key <AE04> { [ udiaeresis      , Udiaeresis , bracketleft  , NoSymbol, Up        , Up        ] };
+    key <AE05> { [ period          , NoSymbol   , bracketright , NoSymbol, Delete    , Delete    ] };
+    key <AE06> { [ adiaeresis      , Adiaeresis , asciicircum  , NoSymbol, Next      , Next      ] };
+    key <AE07> { [ v               , V          , exclam       , NoSymbol, NoSymbol  , NoSymbol  ] };
+    key <AE08> { [ g               , G          , less         , NoSymbol, 7         , 7         ] };
+    key <AE09> { [ c               , C          , greater      , NoSymbol, 8         , 8         ] };
+    key <AE10> { [ l               , L          , equal        , NoSymbol, 9         , 9         ] };
+    key <AE12> { [ j               , J          , ampersand    , NoSymbol, plus      , plus      ] };
+
+        // Top row
+    key  <TAB> { [ k               , K          , NoSymbol     , NoSymbol, NoSymbol  , NoSymbol  ] };
+    key <AD01> { [ h               , H          , backslash    , NoSymbol, Home      , Home      ] };
+    key <AD02> { [ i               , I          , slash        , NoSymbol, Left      , Left      ] };
+    key <AD03> { [ e               , E          , braceleft    , NoSymbol, Down      , Down      ] };
+    key <AD04> { [ a               , A          , braceright   , NoSymbol, Right     , Right     ] };
+    key <AD05> { [ o               , O          , asterisk     , NoSymbol, End       , End       ] };
+    key <AD07> { [ d               , D          , question     , NoSymbol, NoSymbol  , NoSymbol  ] };
+    key <AD08> { [ t               , T          , parenleft    , NoSymbol, 4         , 4         ] };
+    key <AD09> { [ r               , R          , parenright   , NoSymbol, 5         , 5         ] };
+    key <AD10> { [ n               , N          , minus        , NoSymbol, 6         , 6         ] };
+    key <AD11> { [ s               , S          , colon        , NoSymbol, NoSymbol  , NoSymbol  ] };
+    key <AD12> { [ f               , F          , at           , NoSymbol, NoSymbol  , NoSymbol  ] };
+
+        // Middle row
+    key <AC01> { [ x               , X          , numbersign   , NoSymbol, Escape    , Escape    ] };
+    key <AC02> { [ y               , Y          , dollar       , NoSymbol, Tab       , Tab       ] };
+    key <AC03> { [ odiaeresis      , Odiaeresis , bar          , NoSymbol, Insert    , Insert    ] };
+    key <AC04> { [ comma           , NoSymbol   , asciitilde   , NoSymbol, Return    , Return    ] };
+    key <AC05> { [ q               , Q          , grave        , NoSymbol, Undo      , Redo      ] };
+    key <AC07> { [ b               , B          , plus         , NoSymbol, colon     , NoSymbol  ] };
+    key <AC08> { [ p               , P          , percent      , NoSymbol, 1         , 1         ] };
+    key <AC09> { [ w               , W          , quotedbl     , NoSymbol, 2         , 2         ] };
+    key <AC10> { [ m               , M          , apostrophe   , NoSymbol, 3         , 3         ] };
+    key <AC11> { [ z               , Z          , semicolon    , NoSymbol, NoSymbol  , NoSymbol  ] };
+
+        // Bottom row
+    key <AB07> { [ space, space, NoSymbol, NoSymbol, 0, 0 ] };
+
+    key.type[Group1] = "ONE_LEVEL";
+    key <AB03> { [ ISO_Level5_Shift ] };
+    key <AB04> { [ Shift_L ] };
+    key <AB05> { [ Control_L ] };
+    modifier_map Control { <AB05>, <LCTL> };
+    key <AB06> { [ Control_R ] };
+    modifier_map Control { <AB06>, <RCTL> };
+    key <AB08> { [ ISO_Level3_Shift ] };
+    key <SPCE> { [ Alt_L ] };
+    key <RALT> { [ Super_L ] };
+};
