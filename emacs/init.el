@@ -2,7 +2,8 @@
 
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
-              truncate-lines t)
+              truncate-lines t
+	      auto-save-default nil)
 (add-to-list 'default-frame-alist
                '(font . "Iosevka Extended 10"))
 (set-face-attribute 'mode-line nil
