@@ -106,3 +106,5 @@ bar {
         focused_workspace #00BBBB #00BBBB #ffffff
     }
 }
+
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
