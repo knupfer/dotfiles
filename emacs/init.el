@@ -3,7 +3,8 @@
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
               truncate-lines t
-	      auto-save-default nil)
+	      auto-save-default nil
+	      epg-pinentry-mode 'loopback)
 (add-to-list 'default-frame-alist
                '(font . "Iosevka Extended 10"))
 (set-face-attribute 'mode-line nil
