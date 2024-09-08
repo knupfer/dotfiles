@@ -7,8 +7,7 @@
 ### Variables
 #
 set $mod Mod4
-# set $term foot --override=colors.background=000000 --override=colors.foreground=ffffff --font="monospace:size=10"
-set $menu wmenu-run -f "monospace 13" -N 000000 -S 00AAAA | xargs swaymsg exec --
+set $menu wmenu-run -f "monospace 10.5" -N 000000 -S 00AAAA | xargs swaymsg exec --
 
 default_border pixel 3
 focus_follows_mouse no
@@ -45,7 +44,7 @@ input type:touchpad middle_emulation enabled
     bindsym XF86MonBrightnessUp exec light -A 1
 
     # Start a terminal
-    bindsym $mod+h exec foot --override=colors.background=000000 --override=colors.foreground=ffffff --font="monospace:size=10"
+    bindsym $mod+h exec foot
 
     # Start emacs
     bindsym $mod+Shift+h exec emacsclient -c --alternate-editor=""
