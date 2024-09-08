@@ -6,7 +6,7 @@
 	      auto-save-default nil
 	      epg-pinentry-mode 'loopback)
 (add-to-list 'default-frame-alist
-               '(font . "Iosevka Extended 10"))
+               '(font . "Iosevka Extended:size=14"))
 (set-face-attribute 'mode-line nil
                       :background "#033"
                       :box nil)
