@@ -89,17 +89,5 @@ input type:touchpad middle_emulation enabled
     bindsym $mod+y resize shrink height 10px
     bindsym $mod+comma resize grow height 10px
 
-bar {
-    position top
-
-    status_command minstatus
-
-    status_edge_padding 0
-    status_padding 0
-    colors {
-        background #000000
-        focused_workspace #00BBBB #00BBBB #ffffff
-    }
-}
-
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
+exec yambar
