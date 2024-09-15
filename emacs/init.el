@@ -1,4 +1,11 @@
-(mapc 'require '(haskell-font-lock org ace-jump-mode))
+;;; init.el --- Summary
+;;; Commentary:
+;;; Code:
+(require 'flycheck)
+(require 'org)
+(require 'org-indent)
+(require 'ace-jump-mode)
+(require 'magit)
 
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
@@ -24,7 +31,8 @@
 (tool-bar-mode -1)
 (indent-tabs-mode -1)
 (blink-cursor-mode -1)
-(global-flycheck-mode 1)
+
+(global-flycheck-mode)
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
       '(("<M-left>" backward-sentence)
@@ -45,3 +53,6 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
 (server-stop-automatically 'delete-frame)
+
+(provide 'init)
+;;; init.el ends here
