@@ -4,8 +4,8 @@
 (require 'flycheck)
 (require 'org)
 (require 'org-indent)
-(require 'ace-jump-mode)
 (require 'magit)
+(require 'avy)
 
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
@@ -42,7 +42,7 @@
         ("<C-prior>" beginning-of-buffer)
         ("<C-next>" end-of-buffer)
         ("\C-cm" magit-status)
-        ("\C-a" ace-jump-mode)))
+        ("\C-a" avy-goto-word-1)))
 
 (setq org-log-done 'time
       org-startup-folded t
