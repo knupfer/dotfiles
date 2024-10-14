@@ -6,6 +6,9 @@
 (require 'org-indent)
 (require 'magit)
 (require 'avy)
+(require 'gnus)
+(require 'gnus-sum)
+(require 'gnus-topic)
 
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
@@ -53,6 +56,29 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
 (server-stop-automatically 'delete-frame)
+
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+
+(setq gnus-select-method '(nnnil nil))
+(setq gnus-summary-line-format "%R%O%* %&user-date;  %U  %B%(%-23,23f%)     %s\n")
+
+(setq gnus-sum-thread-tree-root ""
+      gnus-sum-thread-tree-false-root ""
+      gnus-sum-thread-tree-vertical "│ "
+      gnus-sum-thread-tree-indent "  "
+      gnus-sum-thread-tree-leaf-with-other "├─"
+      gnus-sum-thread-tree-single-leaf "└─")
+
+(set-face-attribute 'gnus-summary-normal-ancient nil :foreground "#777")
+
+(setq gnus-topic-line-format "%i%(%{%n%}%)%v\n")
+
+(setq gnus-user-date-format-alist '((t . "%d %b %y   %H:%M")))
+(setq gnus-parameters '((".*"  (gcc-self . t))))
+(setq gnus-thread-sort-functions '(gnus-thread-sort-by-date))
+(setq gnus-group-line-format "%P%3y: %(%G%)\n")
+(defvar gnus-gcc-mark-as-read t)
+(setq gnus-always-read-dribble-file t)
 
 (provide 'init)
 ;;; init.el ends here
