@@ -80,5 +80,12 @@
 (defvar gnus-gcc-mark-as-read t)
 (setq gnus-always-read-dribble-file t)
 
+(use-package ellama
+  :init
+  (require 'llm-ollama)
+  (setopt ellama-provider
+	  (make-llm-ollama
+	   :chat-model "mannix/gemma2-9b-simpo")))
+
 (provide 'init)
 ;;; init.el ends here
