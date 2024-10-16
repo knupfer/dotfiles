@@ -85,7 +85,7 @@
   (require 'llm-ollama)
   (setopt ellama-provider
 	  (make-llm-ollama
-	   :chat-model "mannix/gemma2-9b-simpo")))
+	   :chat-model "mannix/gemma2-9b-simpo:q6_k")))
 
 (provide 'init)
 ;;; init.el ends here
