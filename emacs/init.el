@@ -37,6 +37,15 @@
 
 (global-flycheck-mode)
 
+(use-package ellama
+  :init
+  (require 'llm-ollama)
+  (setopt ellama-provider
+	  (make-llm-ollama
+	   :chat-model "mannix/gemma2-9b-simpo:q6_k"))
+  (setopt ellama-auto-scroll t)
+  (setopt ellama-session-auto-save nil))
+
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
       '(("<M-left>" backward-sentence)
         ("<M-right>" forward-sentence)
@@ -44,8 +53,9 @@
         ("<M-delete>" kill-sentence)
         ("<C-prior>" beginning-of-buffer)
         ("<C-next>" end-of-buffer)
-        ("\C-cm" magit-status)
-        ("\C-a" avy-goto-word-1)))
+        ("C-c m" magit-status)
+        ("C-a" ellama-chat)
+	("M-a" avy-goto-word-1)))
 
 (setq org-log-done 'time
       org-startup-folded t
@@ -79,15 +89,6 @@
 (setq gnus-group-line-format "%P%3y: %(%G%)\n")
 (defvar gnus-gcc-mark-as-read t)
 (setq gnus-always-read-dribble-file t)
-
-(use-package ellama
-  :init
-  (require 'llm-ollama)
-  (setopt ellama-provider
-	  (make-llm-ollama
-	   :chat-model "mannix/gemma2-9b-simpo:q6_k"))
-  (setopt ellama-auto-scroll t)
-  (setopt ellama-session-auto-save nil))
 
 (provide 'init)
 ;;; init.el ends here
