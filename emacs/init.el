@@ -9,6 +9,7 @@
 (require 'gnus)
 (require 'gnus-sum)
 (require 'gnus-topic)
+(require 'ligature)
 
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
@@ -89,6 +90,19 @@
 (setq gnus-group-line-format "%P%3y: %(%G%)\n")
 (defvar gnus-gcc-mark-as-read t)
 (setq gnus-always-read-dribble-file t)
+
+(use-package ligature
+  :config
+  ;; Enable all Iosevka ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode
+			  '("-<<" "-<" "-<-" "<--" "<---" "<<-" "<-" "->" "->>" "-->" "--->" "->-" ">-" ">>-"
+			    "=<<" "=<" "=<=" "<==" "<===" "<<=" "<=" "=>" "=>>" "==>" "===>" "=>=" ">=" ">>="
+			    "<->" "<-->" "<--->" "<---->" "<=>" "<==>" "<===>" "<====>" "::" ":::" "__"
+			    "<~" "<~~" "</" "</>" "/>" "~~>" "~>" "=="  "/=" "<>" "===" "=/="
+			    "<:" ":=" ":-" ":+" "*=" "*+" "<*" "<*>" "*>" "<|" "<|>" "|>" "<." "<.>" ".>" "+*" "=*" "+:" "-:" "=:" ":>"
+			    "[|" "|]" "++" "+++" "\\/" "/\\" "|-" "-|" "<<" ">>" ">>>" "<<<"
+			    ))
+  (global-ligature-mode t))
 
 (provide 'init)
 ;;; init.el ends here
