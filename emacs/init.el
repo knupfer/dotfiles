@@ -10,6 +10,9 @@
 (require 'gnus-sum)
 (require 'gnus-topic)
 (require 'ligature)
+(require 'bbdb)
+
+(bbdb-initialize 'gnus 'message)
 
 (load-theme 'modus-vivendi)
 (setq-default inhibit-startup-screen t
