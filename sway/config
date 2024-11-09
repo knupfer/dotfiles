@@ -30,7 +30,7 @@ output * bg #000000 solid_color
 #
 # Example configuration:
 #
-exec swayidle -w before-sleep 'waylock'
+exec swayidle -w before-sleep 'waylock -init-color 0xff00ff -input-color 0x0000ff -fail-color 0xff0000'
 
 ### Input configuration
 input type:keyboard xkb_layout knu
