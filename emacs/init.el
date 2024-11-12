@@ -4,6 +4,7 @@
 (require 'flycheck)
 (require 'org)
 (require 'org-indent)
+(require 'ob-haskell)
 (require 'magit)
 (require 'avy)
 (require 'gnus)
