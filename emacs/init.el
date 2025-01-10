@@ -47,7 +47,7 @@
   (require 'llm-ollama)
   (setopt ellama-provider
 	  (make-llm-ollama
-	   :chat-model "mannix/gemma2-9b-simpo:q6_k"))
+	   :chat-model "qwen2.5:14b"))
   (setopt ellama-auto-scroll t)
   (setopt ellama-session-auto-save nil))
 
