@@ -12,6 +12,8 @@
 (require 'gnus-topic)
 (require 'ligature)
 (require 'bbdb)
+(require 'gptel)
+(require 'gptel-ollama)
 
 (bbdb-initialize 'gnus 'message)
 
@@ -49,7 +51,8 @@
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
                    :stream t
-                   :models '(qwen2.5:14b))))
+                   :models '(qwen2.5:14b)))
+  (add-hook 'gptel-post-stream-hook 'fill-paragraph))
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
       '(("<M-left>" backward-sentence)
