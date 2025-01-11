@@ -53,6 +53,7 @@
                    :stream t
                    :models '(qwen2.5:14b)))
   (add-hook 'gptel-post-stream-hook 'fill-paragraph))
+(gptel "*scratch*")
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
       '(("<M-left>" backward-sentence)
