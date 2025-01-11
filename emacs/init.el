@@ -42,14 +42,14 @@
 
 (global-flycheck-mode)
 
-(use-package ellama
+(use-package gptel
   :init
-  (require 'llm-ollama)
-  (setopt ellama-provider
-	  (make-llm-ollama
-	   :chat-model "qwen2.5:14b"))
-  (setopt ellama-auto-scroll t)
-  (setopt ellama-session-auto-save nil))
+  (setq
+   gptel-model 'qwen2.5:14b
+   gptel-backend (gptel-make-ollama "Ollama"
+                   :host "localhost:11434"
+                   :stream t
+                   :models '(qwen2.5:14b))))
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
       '(("<M-left>" backward-sentence)
@@ -59,7 +59,7 @@
         ("<C-prior>" beginning-of-buffer)
         ("<C-next>" end-of-buffer)
         ("C-c m" magit-status)
-        ("C-a" ellama-chat)
+        ("C-a" gptel-send)
 	("M-a" avy-goto-word-1)))
 
 (setq org-log-done 'time
