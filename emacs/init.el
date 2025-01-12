@@ -51,9 +51,24 @@
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
                    :stream t
-                   :models '(qwen2.5:14b)))
-  (add-hook 'gptel-post-stream-hook 'fill-paragraph))
+                   :models '(qwen2.5:14b))
+   gptel-default-mode 'org-mode
+   gptel-prompt-prefix-alist
+   '((markdown-mode . "# ")
+     (org-mode . "* ")
+     (text-mode . "# "))
+   gptel-response-prefix-alist
+   '((markdown-mode . "## Response
+
+")
+     (org-mode . "** Response
+
+")
+     (text-mode . "## Response
+
+"))))
 (gptel "*scratch*")
+(add-hook 'emacs-startup-hook (lambda () (goto-char (point-max))))
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
       '(("<M-left>" backward-sentence)
