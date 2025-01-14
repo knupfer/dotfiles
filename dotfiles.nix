@@ -50,6 +50,7 @@ in
       extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock myYambar myFoot myEmacs];
     };
   };
+  security.pam.services.waylock = {};
   services.xserver.xkb.extraLayouts.knu = {
     description = "My custom xkb layouts.";
     languages = [ "de" ];
