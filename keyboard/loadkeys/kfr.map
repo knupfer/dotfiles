@@ -68,6 +68,10 @@ strings as usual
 
 #==========================================================================
 
+                keycode  41 = dead_acute
+        shiftl  keycode  41 = dead_tilde
+        altrgr  keycode  41 = degree
+
                 keycode   2 = +ssharp
         altgr   keycode   2 = Prior
 
@@ -111,11 +115,10 @@ strings as usual
 
                 keycode  13 = j
         shiftl  keycode  13 = +J
-        altgr   keycode  13 = plus
         ctrll   keycode  13 = ampersand
 
                 keycode  15 = k
-         shiftl keycode  15 = +K
+        shiftl  keycode  15 = +K
 
                 keycode  16 = h
         shiftl  keycode  16 = +H

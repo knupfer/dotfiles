@@ -18,7 +18,7 @@ xkb_symbols "knu_base" {
 
         // Number row
     key.type[Group1] = "EIGHT_LEVEL";
-    key <TLDE> { [ dead_circumflex , dead_caron , NoSymbol     , NoSymbol, NoSymbol  , NoSymbol  ] };
+    key <TLDE> { [ dead_acute      , dead_tilde , NoSymbol     , NoSymbol, degree    , NoSymbol  ] };
     key <AE01> { [ ssharp          , U1E9E      , NoSymbol     , NoSymbol, Prior     , Prior     ] };
     key <AE03> { [ u               , U          , underscore   , NoSymbol, BackSpace , BackSpace ] };
     key <AE04> { [ udiaeresis      , Udiaeresis , bracketleft  , NoSymbol, Up        , Up        ] };
@@ -28,7 +28,7 @@ xkb_symbols "knu_base" {
     key <AE08> { [ g               , G          , less         , NoSymbol, 7         , 7         ] };
     key <AE09> { [ c               , C          , greater      , NoSymbol, 8         , 8         ] };
     key <AE10> { [ l               , L          , equal        , NoSymbol, 9         , 9         ] };
-    key <AE12> { [ j               , J          , ampersand    , NoSymbol, plus      , plus      ] };
+    key <AE12> { [ j               , J          , ampersand    , NoSymbol, NoSymbol  , NoSymbol  ] };
 
         // Top row
     key  <TAB> { [ k               , K          , NoSymbol     , NoSymbol, NoSymbol  , NoSymbol  ] };
