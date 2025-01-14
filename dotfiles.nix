@@ -86,4 +86,5 @@ in
     languages = [ "de" ];
     symbolsFile = "${dotfiles}/keyboard/xkb/knu";
   };
+  time.timeZone = "Europe/Berlin";
 }
