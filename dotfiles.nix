@@ -41,14 +41,44 @@ let
 in
 
 {
-  environment.variables.EDITOR = "${myEmacs}/bin/emacsclient -c --alternate-editor=";
+  boot.tmp.useTmpfs = true;
   console.keyMap = "${dotfiles}/keyboard/loadkeys/kfr.map";
+  environment.variables.EDITOR = "${myEmacs}/bin/emacsclient -c --alternate-editor=";
+  fonts = {
+    fontconfig = {
+      defaultFonts = {
+        monospace = ["Iosevka"];
+        sansSerif = ["Iosevka Aile"];
+        serif     = ["Iosevka Etoile"];
+      };
+    };
+    packages = (with pkgs; [
+      libertine
+      iosevka
+      (iosevka-bin.override {variant = "Aile";})
+      (iosevka-bin.override {variant = "Etoile";})
+      (iosevka-bin.override {variant = "Slab";})
+      sarasa-gothic
+    ]);
+  };
+  i18n.defaultLocale = "de_DE.UTF-8";
   programs = {
+    light.enable = true;
     sway = {
       enable = true;
       extraOptions = ["--config=${dotfiles}/sway/config"];
       extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock myYambar myFoot myEmacs];
     };
+  };
+  services = {
+    ollama.enable = true;
+    power-profiles-daemon.enable = false;
+    printing = {
+      enable = true;
+      drivers = [ pkgs.epson-escpr ];
+    };
+    tlp.enable = true;
+    libinput.enable = true;
   };
   security.pam.services.waylock = {};
   services.xserver.xkb.extraLayouts.knu = {
