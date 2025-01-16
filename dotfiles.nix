@@ -71,6 +71,7 @@ in
     };
   };
   services = {
+    libinput.enable = true;
     ollama.enable = true;
     power-profiles-daemon.enable = false;
     printing = {
@@ -78,7 +79,6 @@ in
       drivers = [ pkgs.epson-escpr ];
     };
     tlp.enable = true;
-    libinput.enable = true;
   };
   security.pam.services.waylock = {};
   services.xserver.xkb.extraLayouts.knu = {
