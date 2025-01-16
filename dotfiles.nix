@@ -28,16 +28,6 @@ let
     '';
   };
 
-  myFoot = pkgs.symlinkJoin {
-    name = "foot";
-    paths = [ pkgs.foot ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-    wrapProgram $out/bin/foot \
-      --add-flags "--font=monospace:size=12 --override=colors.background=000000"
-    '';
-  };
-
 in
 
 {
@@ -63,11 +53,21 @@ in
   };
   i18n.defaultLocale = "de_DE.UTF-8";
   programs = {
-    light.enable = true;
+    foot = {
+      enable = true;
+      settings = {
+        main.font = "monospace:size=12";
+        colors.background = "000000";
+      };
+    };
+    light = {
+      enable = true;
+      brightnessKeys.enable = true;
+    };
     sway = {
       enable = true;
       extraOptions = ["--config=${dotfiles}/sway/config"];
-      extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock myYambar myFoot myEmacs];
+      extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock myYambar myEmacs];
     };
   };
   services = {

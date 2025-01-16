@@ -41,8 +41,6 @@ input type:touchpad middle_emulation enabled
     bindsym XF86AudioMute exec amixer -q set Master toggle
     bindsym XF86AudioLowerVolume exec amixer -q set Master 2%-
     bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+
-    bindsym XF86MonBrightnessDown exec light -U 1
-    bindsym XF86MonBrightnessUp exec light -A 1
 
     # Start a terminal
     bindsym $mod+h exec foot
@@ -89,5 +87,6 @@ input type:touchpad middle_emulation enabled
     bindsym $mod+y resize shrink height 10px
     bindsym $mod+comma resize grow height 10px
 
-exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP
 exec yambar
+
+include /etc/sway/config.d/*
