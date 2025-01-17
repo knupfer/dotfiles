@@ -53,24 +53,6 @@ in
   };
   i18n.defaultLocale = "de_DE.UTF-8";
   programs = {
-    firefox = {
-      enable = true;
-      languagePacks = ["de" "en-US"];
-      policies = {
-        DisablePocket = true;
-        DisableTelemetry = true;
-        ExtensionSettings = {
-          "*" =  {
-            installation_mode = "blocked";
-          };
-          "uBlock0@raymondhill.net" = {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-          };
-        };
-        TranslateEnabled = false;
-      };
-    };
     foot = {
       enable = true;
       settings = {
