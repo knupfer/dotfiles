@@ -3,7 +3,8 @@ let
 
   dotfiles = ./.;
 
-  myEmacs = pkgs.symlinkJoin {
+  myEmacs = let tex = (pkgs.texlive.combine {inherit (pkgs.texlive) scheme-medium iwona;}); in pkgs.symlinkJoin {
+
     name = "emacs";
     paths = [ ((pkgs.emacs.override { withPgtk = true; }).pkgs.withPackages (melpa: with melpa;
       [ avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
@@ -14,6 +15,7 @@ let
       --eval "(native-compile \"${dotfiles}/emacs/init.el\" \"$out/share/emacs/native-lisp/init.eln\")" \
 
     wrapProgram $out/bin/emacs \
+      --prefix PATH : ${pkgs.lib.makeBinPath [ tex ]} \
       --add-flags "--load $out/share/emacs/native-lisp/init.eln"
     '';
   };

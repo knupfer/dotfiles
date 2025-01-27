@@ -68,6 +68,7 @@
 
 "))))
 (gptel "*scratch*")
+(add-hook 'gptel-post-response-functions 'org--latex-preview-region)
 (add-hook 'emacs-startup-hook (lambda () (goto-char (point-max))))
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
@@ -100,7 +101,10 @@
       org-startup-folded t
       org-startup-indented t
       org-indent-mode-turns-on-hiding-stars nil
-      org-indent-indentation-per-level 1)
+      org-indent-indentation-per-level 1
+      org-preview-latex-image-directory (concat user-emacs-directory "latex/")
+      org-format-latex-options '(:foreground "#f0f" :scale 1.1)
+      org-latex-packages-alist '("\\usepackage[math]{iwona}"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
