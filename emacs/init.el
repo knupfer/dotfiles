@@ -103,7 +103,7 @@
       org-indent-mode-turns-on-hiding-stars nil
       org-indent-indentation-per-level 1
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
-      org-format-latex-options (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 2)
+      org-format-latex-options (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1.5)
       org-latex-packages-alist '("\\usepackage[math]{iwona}"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
