@@ -84,6 +84,8 @@ in
     ]);
   };
   i18n.defaultLocale = "de_DE.UTF-8";
+  networking.networkmanager.enable = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   programs = {
     foot = {
       enable = true;
@@ -119,4 +121,5 @@ in
     symbolsFile = "${dotfiles}/keyboard/xkb/knu";
   };
   time.timeZone = "Europe/Berlin";
+  users.mutableUsers = false;
 }
