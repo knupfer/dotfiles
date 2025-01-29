@@ -37,7 +37,7 @@ in
   fonts = {
     fontconfig = {
       defaultFonts = {
-        monospace = ["Iosevka"];
+        monospace = ["Iosevka Term"];
         sansSerif = ["Iosevka Aile"];
         serif     = ["Iosevka Etoile"];
       };
@@ -48,6 +48,7 @@ in
       (iosevka-bin.override {variant = "Aile";})
       (iosevka-bin.override {variant = "Etoile";})
       (iosevka-bin.override {variant = "Slab";})
+      (iosevka-bin.override {variant = "SGr-IosevkaTerm";})
       sarasa-gothic
     ]);
   };
