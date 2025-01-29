@@ -33,7 +33,38 @@ in
 {
   boot.tmp.useTmpfs = true;
   console.keyMap = "${dotfiles}/keyboard/loadkeys/kfr.map";
-  environment.variables.EDITOR = "${myEmacs}/bin/emacsclient -c --alternate-editor=";
+  environment = {
+    systemPackages = (with pkgs; [
+      age
+      passage
+
+      alsa-utils
+
+      borgbackup
+      btop
+
+      cabal2nix
+
+      firefox
+
+      git
+      gimp
+
+      haskellPackages.bench
+      haskellPackages.cabal-install
+      haskellPackages.ghc
+
+      libreoffice
+
+      pandoc
+
+      vlc
+
+      zip
+      unzip
+    ]);
+    variables.EDITOR = "${myEmacs}/bin/emacsclient -c --alternate-editor=";
+  };
   fonts = {
     fontconfig = {
       defaultFonts = {
