@@ -13,7 +13,7 @@ let
       --eval "(native-compile \"${dotfiles}/emacs/init.el\" \"$out/share/emacs/native-lisp/init.eln\")" \
 
     wrapProgram $out/bin/emacs \
-      --prefix PATH : ${pkgs.lib.makeBinPath [ tex ]} \
+      --prefix PATH : ${pkgs.lib.makeBinPath [ tex pkgs.mupdf ]} \
       --add-flags "--load $out/share/emacs/native-lisp/init.eln"
     '';
   };
