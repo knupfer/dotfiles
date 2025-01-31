@@ -68,7 +68,17 @@
 
 "))))
 (gptel "*scratch*")
-(add-hook 'gptel-post-response-functions 'org--latex-preview-region)
+
+(add-hook 'gptel-post-stream-hook 'gptel-stream-latex)
+
+(defun gptel-stream-latex
+    ()
+  "Create LaTeX previews in a streaming fashion."
+  (let ((beg (save-excursion
+	       (gptel-beginning-of-response)
+	       (point))))
+    (org--latex-preview-region beg (point))))
+
 (add-hook 'emacs-startup-hook (lambda () (goto-char (point-max))))
 
 (mapc (lambda (x) (define-key global-map (kbd (car x)) (cadr x)))
