@@ -67,9 +67,6 @@
      (text-mode . "## Response
 
 "))))
-(gptel "*scratch*")
-
-(add-hook 'gptel-post-stream-hook 'gptel-stream-latex)
 
 (defun gptel-stream-latex
     ()
@@ -78,6 +75,11 @@
 	       (gptel-beginning-of-response)
 	       (point))))
     (org--latex-preview-region beg (point))))
+
+(add-hook 'gptel-mode-hook 'visual-line-mode)
+(add-hook 'gptel-post-stream-hook 'gptel-stream-latex)
+
+(gptel "*scratch*")
 
 (add-hook 'emacs-startup-hook (lambda () (goto-char (point-max))))
 
