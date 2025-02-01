@@ -116,7 +116,7 @@
       org-indent-indentation-per-level 1
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
       org-format-latex-options (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1.5)
-      org-latex-packages-alist '("\\usepackage{libertine}" "\\usepackage[libertine]{newtxmath}"))
+      org-latex-packages-alist '("\\usepackage{libertine}" "\\usepackage[libertine]{newtxmath}" "\\usepackage[spacing=true]{microtype}"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
