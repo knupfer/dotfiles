@@ -2,7 +2,7 @@
 let
 
   dotfiles = ./.;
-  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng ulem libertine newtx etoolbox microtype;});
+  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng ulem libertinus-type1 newtx etoolbox microtype;});
 
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
@@ -75,7 +75,7 @@ in
       };
     };
     packages = (with pkgs; [
-      libertine
+      libertinus
       iosevka
       (iosevka-bin.override {variant = "Aile";})
       (iosevka-bin.override {variant = "Etoile";})
