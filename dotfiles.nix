@@ -2,8 +2,9 @@
 let
 
   dotfiles = ./.;
+  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng ulem libertine newtx etoolbox;});
 
-  myEmacs = let tex = (pkgs.texlive.combine {inherit (pkgs.texlive) scheme-basic dvipng ulem cm-super;}); in pkgs.symlinkJoin {
+  myEmacs = pkgs.symlinkJoin {
     name = "emacs";
     paths = [ ((pkgs.emacs.override { withPgtk = true; }).pkgs.withPackages (melpa: with melpa;
       [ avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
