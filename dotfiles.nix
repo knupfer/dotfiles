@@ -2,7 +2,8 @@
 let
 
   dotfiles = ./.;
-  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng ulem libertinus-type1 newtx etoolbox microtype;});
+  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng ulem newtx etoolbox microtype
+                                libertinus libertinus-type1 fontaxes xstring xkeyval;});
 
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
