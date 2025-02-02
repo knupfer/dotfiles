@@ -2,13 +2,20 @@
 let
 
   dotfiles = ./.;
+
+  lilypond-mode = melpa: melpa.trivialBuild rec {
+    pname = "lilypond-mode";
+    version = pkgs.lilypond.version;
+    src = "${pkgs.lilypond}/share/emacs/site-lisp";
+  };
+
   tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng dvisvgm ulem newtx etoolbox microtype
-                                libertinus libertinus-type1 fontaxes xstring xkeyval;});
+                                libertinus libertinus-type1 fontaxes xstring xkeyval wrapfig capt-of;});
 
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
-    paths = [ ((pkgs.emacs.override { withPgtk = true; }).pkgs.withPackages (melpa: with melpa;
-      [ avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
+    paths = [ (pkgs.emacs30-pgtk.pkgs.withPackages (melpa: with melpa;
+      [ (lilypond-mode melpa) avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
     $out/bin/emacs --batch \
@@ -57,6 +64,7 @@ in
       haskellPackages.ghc
 
       libreoffice
+      lilypond
 
       pandoc
 

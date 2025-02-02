@@ -5,6 +5,7 @@
 (require 'org)
 (require 'org-indent)
 (require 'ob-haskell)
+(require 'ob-lilypond)
 (require 'magit)
 (require 'avy)
 (require 'gnus)
@@ -43,6 +44,11 @@
 (blink-cursor-mode -1)
 
 (global-flycheck-mode)
+
+(autoload 'LilyPond-mode "lilypond-mode" "LilyPond Editing Mode" t)
+(add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
+(add-to-list 'auto-mode-alist '("\\.ily\\'" . LilyPond-mode))
+(add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
 
 (use-package gptel
   :init
