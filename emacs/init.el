@@ -93,21 +93,22 @@
         ("C-c m" magit-status)
 	("M-a" avy-goto-word-1)))
 
-(defvar my/keys-keymap (make-keymap)
+(defvar knu/keys-keymap (make-keymap)
   "Keymap for my/keys-mode.")
 
-(define-minor-mode my/keys-mode
-  "Minor mode for my personal keybindings."
+(define-minor-mode knu/keys-mode
+  "Minor mode for knu personal keybindings."
+  :group 'misc
   :init-value t
   :global t
-  :keymap my/keys-keymap)
+  :keymap knu/keys-keymap)
 
 ;; The keymaps in `emulation-mode-map-alists' take precedence over
 ;; `minor-mode-map-alist'
 (add-to-list 'emulation-mode-map-alists
-             `((my/keys-mode . ,my/keys-keymap)))
+             `((knu/keys-mode . ,knu/keys-keymap)))
 
-(define-key my/keys-keymap (kbd "C-a") 'gptel-send)
+(define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
 (setq org-log-done 'time
       org-startup-folded t
