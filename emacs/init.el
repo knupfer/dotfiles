@@ -15,6 +15,7 @@
 (require 'bbdb)
 (require 'gptel)
 (require 'gptel-ollama)
+(require 'org-inline-pdf)
 
 (bbdb-initialize 'gnus 'message)
 
@@ -50,6 +51,8 @@
 (add-to-list 'auto-mode-alist '("\\.ily\\'" . LilyPond-mode))
 (add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+(add-hook 'org-mode-hook #'org-inline-pdf-mode)
+(setq org-image-max-width 'window)
 (setq org-startup-with-inline-images t)
 (setq org-startup-with-latex-preview t)
 

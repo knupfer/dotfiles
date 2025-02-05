@@ -3,6 +3,18 @@ let
 
   dotfiles = ./.;
 
+
+  myPdf2svg = pkgs.writeShellApplication {
+    name = "pdf2svg";
+    runtimeInputs = with pkgs; [ gnused pdf2svg cairosvg ];
+    text =
+''
+#!/usr/bin/env bash
+pdf2svg "$1" "$2"
+sed -i "s/rgb(0%, 0%, 0%)/rgb(100%, 0%, 100%)/" "$2"
+cairosvg -f svg -s 3 -o "$2" "$2"
+'';};
+
   lilypond-mode = melpa: melpa.trivialBuild rec {
     pname = "lilypond-mode";
     version = pkgs.lilypond.version;
@@ -15,14 +27,14 @@ let
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
     paths = [ (pkgs.emacs30-pgtk.pkgs.withPackages (melpa: with melpa;
-      [ (lilypond-mode melpa) avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
+      [ (lilypond-mode melpa) org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
     $out/bin/emacs --batch \
       --eval "(native-compile \"${dotfiles}/emacs/init.el\" \"$out/share/emacs/native-lisp/init.eln\")" \
 
     wrapProgram $out/bin/emacs \
-      --prefix PATH : ${pkgs.lib.makeBinPath [ tex pkgs.mupdf ]} \
+      --prefix PATH : ${pkgs.lib.makeBinPath [ tex pkgs.mupdf myPdf2svg ]} \
       --add-flags "--load $out/share/emacs/native-lisp/init.eln"
     '';
   };
