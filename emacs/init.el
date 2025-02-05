@@ -49,6 +49,9 @@
 (add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
 (add-to-list 'auto-mode-alist '("\\.ily\\'" . LilyPond-mode))
 (add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
+(add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+(setq org-startup-with-inline-images t)
+(setq org-startup-with-latex-preview t)
 
 (use-package gptel
   :init
