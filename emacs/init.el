@@ -124,7 +124,9 @@
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
       org-preview-latex-default-process 'dvisvgm
       org-format-latex-options (plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1.5) :background "Transparent")
-      org-latex-packages-alist '("\\usepackage[libertinus]{newtx}" "\\usepackage[spacing=true]{microtype}"))
+      org-latex-packages-alist '("\\usepackage[ngerman]{babel}"
+				 "\\usepackage[libertinus]{newtx}"
+				 "\\usepackage[spacing=true]{microtype}"))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
