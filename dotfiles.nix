@@ -10,7 +10,7 @@ let
   };
 
   tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng dvisvgm ulem newtx etoolbox microtype
-                                libertinus libertinus-type1 fontaxes xstring xkeyval wrapfig capt-of;});
+                                libertinus libertinus-type1 fontaxes xstring xkeyval wrapfig capt-of babel-german;});
 
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
