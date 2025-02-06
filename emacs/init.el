@@ -144,7 +144,12 @@
       org-format-latex-options (plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1.5) :background "Transparent")
       org-latex-packages-alist '("\\usepackage[ngerman]{babel}"
 				 "\\usepackage[libertinus, osf]{newtx}"
-				 "\\usepackage[spacing=true]{microtype}"))
+				 "\\usepackage[spacing=true]{microtype}"
+				 "\\makeatletter"
+				 "\\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}"
+				 "\\makeatother")
+      org-latex-image-default-width "\\maxwidth{.9\\linewidth}")
+
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
