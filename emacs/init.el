@@ -80,6 +80,17 @@
 
 "))))
 
+(defun lilypond-fragment-path ()
+  "Calculate the sha of the source."
+  (let ((elem (org-element-at-point)))
+    (concat (expand-file-name user-emacs-directory) "lilypond/" (sha1 (org-element-property :value elem)) ".pdf")))
+
+(setq ob-lilypond-header-args
+      `((:results . "file link replace")
+	(:prologue . "\\language \"deutsch\" \\version \"2.24.4\"")
+        (:file . (lambda () (lilypond-fragment-path)))))
+(org-babel-lilypond-set-header-args org-babel-lilypond-arrange-mode)
+
 (defun gptel-stream-latex
     ()
   "Create LaTeX previews in a streaming fashion."
