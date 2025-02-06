@@ -87,6 +87,7 @@
 
 (setq ob-lilypond-header-args
       `((:results . "file link replace")
+	(:exports . "results")
 	(:prologue . "\\language \"deutsch\" \\version \"2.24.4\"")
         (:file . (lambda () (lilypond-fragment-path)))))
 (org-babel-lilypond-set-header-args org-babel-lilypond-arrange-mode)
