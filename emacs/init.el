@@ -88,7 +88,20 @@
 (setq ob-lilypond-header-args
       `((:results . "file link replace")
 	(:exports . "results")
-	(:prologue . "\\language \"deutsch\" \\version \"2.24.4\"")
+	(:prologue . "
+\\language \"deutsch\"
+\\version \"2.24.4\"
+\\paper {
+  left-margin=4.2\\cm
+  right-margin=4.2\\cm
+}
+\\layout {
+  \\context {
+    \\Score
+    \\omit BarNumber
+  }
+}
+")
         (:file . (lambda () (lilypond-fragment-path)))))
 (org-babel-lilypond-set-header-args org-babel-lilypond-arrange-mode)
 
