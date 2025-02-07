@@ -134,6 +134,7 @@
 
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
+(defvar my-a4-article (cons "a4article" (cons "\\documentclass[a4paper, 11pt]{article}" (cdr (cdr (assoc "article" org-latex-classes))))))
 (setq org-log-done 'time
       org-startup-folded t
       org-startup-indented t
@@ -148,8 +149,9 @@
 				 "\\makeatletter"
 				 "\\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}"
 				 "\\makeatother")
-      org-latex-image-default-width "\\maxwidth{.9\\linewidth}")
-
+      org-latex-image-default-width "\\maxwidth{\\linewidth}"
+      org-latex-classes (cons my-a4-article org-latex-classes)
+      org-latex-default-class "a4article")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
