@@ -164,7 +164,8 @@
 				 "\\makeatother")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-latex-classes (cons my-a4-article org-latex-classes)
-      org-latex-default-class "a4article")
+      org-latex-default-class "a4article"
+      org-export-with-toc nil)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
