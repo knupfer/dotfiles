@@ -158,11 +158,30 @@
       org-format-latex-options (plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1.5) :background "Transparent")
       org-export-default-language "de"
       org-latex-packages-alist '( ("AUTO" "babel" t ("pdflatex" "xelatex" "lualatex"))
-				 "\\usepackage[libertinus, osf]{newtx}"
-				 "\\usepackage[spacing=true]{microtype}"
-				 "\\makeatletter"
-				 "\\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}"
-				 "\\makeatother")
+				  "
+\\usepackage[libertinus, osf]{newtx}
+\\usepackage[spacing=true]{microtype}
+\\usepackage{array}
+\\makeatletter
+\\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
+\\makeatother
+\\newcommand{\\klassenarbeit}[2]
+  {  \\title{Klassenarbeit #1}
+     \\author{Klassenstufe #2}
+     \\date{}
+     \\maketitle
+     \\begin{center}
+     \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
+                    Datum & & Punktzahl       \\\\
+                          & &                 \\\\
+                     Name & & Note            \\\\
+                          & &                 \\\\
+       Selbsteinschätzung & & Unterrichtsnote \\\\
+                          & &
+     \\end{tabular}
+     \\end{center}
+  }
+")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-latex-classes (cons my-a4-article org-latex-classes)
       org-latex-default-class "a4article"
