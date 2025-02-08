@@ -156,7 +156,8 @@
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
       org-preview-latex-default-process 'dvisvgm
       org-format-latex-options (plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1.5) :background "Transparent")
-      org-latex-packages-alist '("\\usepackage[ngerman]{babel}"
+      org-export-default-language "de"
+      org-latex-packages-alist '( ("AUTO" "babel" t ("pdflatex" "xelatex" "lualatex"))
 				 "\\usepackage[libertinus, osf]{newtx}"
 				 "\\usepackage[spacing=true]{microtype}"
 				 "\\makeatletter"
