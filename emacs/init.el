@@ -165,22 +165,34 @@
 \\makeatletter
 \\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
 \\makeatother
-\\newcommand{\\klassenarbeit}[2]
-  {  \\title{Klassenarbeit #1}
-     \\author{Klassenstufe #2}
-     \\date{}
-     \\maketitle
-     \\begin{center}
-     \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
-                    Datum & & Punktzahl       \\\\
-                          & &                 \\\\
-                     Name & & Note            \\\\
-                          & &                 \\\\
-       Selbsteinschätzung & & Unterrichtsnote \\\\
-                          & &
-     \\end{tabular}
-     \\end{center}
-  }
+\\newcommand{\\klassenarbeit}[2]{
+  \\title{Klassenarbeit #1}
+  \\author{Klassenstufe #2}
+  \\date{}
+  \\maketitle
+  \\begin{center}
+    \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
+                   Datum & & Punktzahl       \\\\
+                         & &                 \\\\
+                    Name & & Note            \\\\
+                         & &                 \\\\
+      Selbsteinschätzung & & Unterrichtsnote \\\\
+                         & &
+    \\end{tabular}
+  \\end{center}
+}
+\\newenvironment{fragen}{
+  \\begin{center}
+  \\begin{tabular}{lcc}
+  & \\begin{sideways}Falsch\\end{sideways} & \\begin{sideways}Richtig\\end{sideways}\\\\
+  \\hline
+}{
+  \\end{tabular}
+  \\end{center}
+}
+\\newcommand{\\frage}[1]{
+  #1 & \\(\\square\\) & \\(\\square\\)\\\\
+}
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-latex-classes (cons my-a4-article org-latex-classes)
