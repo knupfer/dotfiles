@@ -195,9 +195,16 @@
 }
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
-      org-latex-classes (cons my-a4-article org-latex-classes)
-      org-latex-default-class "a4article"
       org-export-with-toc nil)
+
+(defvar my-a4-exam
+  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}" '("\\section{\\protect\\marginpar{%s Punkte}}" . "\\section*{%s}")
+        "%s & \\(\\square\\) & \\(\\square\\)\\\\"
+        )
+  )
+
+(setq org-latex-classes (cons my-a4-exam org-latex-classes)
+      org-latex-default-class "a4exam")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
