@@ -18,6 +18,8 @@ client.focused #aaaaaa #00AAAA #FFFFFF #005555
 ### Output configuration
 #
 output * bg #000000 solid_color
+output HDMI-A-1 scale 3
+output "Samsung Electric Company S24D300 0x5A5A4158" scale 1
 # output * scale 1
 #
 # Example configuration:
