@@ -92,8 +92,8 @@ in
     fontconfig = {
       defaultFonts = {
         monospace = ["Iosevka Term"];
-        sansSerif = ["Iosevka Aile"];
-        serif     = ["Iosevka Etoile"];
+        sansSerif = ["Libertinus Sans"];
+        serif     = ["Libertinus Serif"];
       };
     };
     packages = (with pkgs; [
