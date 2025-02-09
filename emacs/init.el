@@ -161,6 +161,8 @@
 				  "
 \\usepackage[libertinus, osf]{newtx}
 \\usepackage[spacing=true]{microtype}
+\\usepackage{siunitx}
+\\sisetup{per-mode=fraction}
 \\usepackage{array}
 \\makeatletter
 \\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}

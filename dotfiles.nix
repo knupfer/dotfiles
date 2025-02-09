@@ -21,7 +21,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
     src = "${pkgs.lilypond}/share/emacs/site-lisp";
   };
 
-  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng dvisvgm ulem newtx etoolbox microtype
+  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvipng dvisvgm ulem newtx etoolbox microtype siunitx
                                 libertinus libertinus-type1 fontaxes xstring xkeyval wrapfig capt-of babel-german;});
 
   myEmacs = pkgs.symlinkJoin {
