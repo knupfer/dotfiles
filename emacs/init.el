@@ -177,28 +177,31 @@
 \\newcommand{\\frage}[1]{
   #1 & \\(\\square\\) & \\(\\square\\)\\\\
 }
-\\let\\oldtitle\\maketitle
-\\def\\maketitle{\\date{}\\oldtitle\\begin{center}
-    \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
-                   Datum & & Punktzahl       \\\\
-                         & &                 \\\\
-                    Name & & Note            \\\\
-                         & &                 \\\\
-      Selbsteinschätzung & & Unterrichtsnote \\\\
-                         & &
-    \\end{tabular}
-  \\end{center}}
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil)
 
 (defvar my-a4-exam
-  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}\\AtEndDocument{
+  (list "a4exam" "
+\\documentclass[a4paper, 11pt]{article}
+\\AtEndDocument{
   \\begin{center}
     \\vfill
     \\textit{Viel Erfolg.}
   \\end{center}
-}" "\\section{\\protect\\marginpar{%s Punkte}}"))
+}
+\\let\\oldtitle\\maketitle
+\\def\\maketitle{\\date{}\\oldtitle\\begin{center}
+  \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
+                 Datum & & Punktzahl       \\\\
+                       & &                 \\\\
+                  Name & & Note            \\\\
+                       & &                 \\\\
+    Selbsteinschätzung & & Unterrichtsnote \\\\
+                       & &
+  \\end{tabular}
+\\end{center}}
+" "\\section[Aufgabe \\thesection]{\\protect\\marginpar{%s Punkte}}"))
 
 (setq org-latex-classes (cons my-a4-exam org-latex-classes)
       org-latex-default-class "a4exam")
