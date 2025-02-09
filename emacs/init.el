@@ -176,12 +176,6 @@
 \\newcommand{\\frage}[1]{
   #1 & \\(\\square\\) & \\(\\square\\)\\\\
 }
-\\AtEndDocument{
-  \\begin{center}
-    \\vfill
-    \\textit{Viel Erfolg.}
-  \\end{center}
-}
 \\let\\oldtitle\\maketitle
 \\def\\maketitle{\\date{}\\oldtitle\\begin{center}
     \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
@@ -198,7 +192,12 @@
       org-export-with-toc nil)
 
 (defvar my-a4-exam
-  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}" "\\section{\\protect\\marginpar{%s Punkte}}"))
+  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}\\AtEndDocument{
+  \\begin{center}
+    \\vfill
+    \\textit{Viel Erfolg.}
+  \\end{center}
+}" "\\section{\\protect\\marginpar{%s Punkte}}"))
 
 (setq org-latex-classes (cons my-a4-exam org-latex-classes)
       org-latex-default-class "a4exam")
