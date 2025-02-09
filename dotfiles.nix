@@ -61,7 +61,7 @@ in
       alsa-utils
 
       borgbackup
-      bibata-cursors
+      bibata-cursors #configure with dconf-editor
       btop
 
       cabal2nix
