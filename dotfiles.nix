@@ -57,11 +57,11 @@ in
   environment = {
     systemPackages = (with pkgs; [
       age
-      passage
 
       alsa-utils
 
       borgbackup
+      bibata-cursors
       btop
 
       cabal2nix
@@ -79,6 +79,7 @@ in
       lilypond
 
       pandoc
+      passage
 
       vlc
 
