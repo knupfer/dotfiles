@@ -147,7 +147,6 @@
 
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
-(defvar my-a4-article (cons "a4article" (cons "\\documentclass[a4paper, 11pt]{article}" (cdr (cdr (assoc "article" org-latex-classes))))))
 (setq org-log-done 'time
       org-startup-folded t
       org-startup-indented t
@@ -165,22 +164,6 @@
 \\makeatletter
 \\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
 \\makeatother
-\\newcommand{\\klassenarbeit}[2]{
-  \\title{Klassenarbeit #1}
-  \\author{Klassenstufe #2}
-  \\date{}
-  \\maketitle
-  \\begin{center}
-    \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
-                   Datum & & Punktzahl       \\\\
-                         & &                 \\\\
-                    Name & & Note            \\\\
-                         & &                 \\\\
-      Selbsteinschätzung & & Unterrichtsnote \\\\
-                         & &
-    \\end{tabular}
-  \\end{center}
-}
 \\newenvironment{fragen}{
   \\begin{center}
   \\begin{tabular}{lcc}
@@ -193,15 +176,29 @@
 \\newcommand{\\frage}[1]{
   #1 & \\(\\square\\) & \\(\\square\\)\\\\
 }
+\\AtEndDocument{
+  \\begin{center}
+    \\vfill
+    \\textit{Viel Erfolg.}
+  \\end{center}
+}
+\\let\\oldtitle\\maketitle
+\\def\\maketitle{\\date{}\\oldtitle\\begin{center}
+    \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
+                   Datum & & Punktzahl       \\\\
+                         & &                 \\\\
+                    Name & & Note            \\\\
+                         & &                 \\\\
+      Selbsteinschätzung & & Unterrichtsnote \\\\
+                         & &
+    \\end{tabular}
+  \\end{center}}
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil)
 
 (defvar my-a4-exam
-  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}" '("\\section{\\protect\\marginpar{%s Punkte}}" . "\\section*{%s}")
-        "%s & \\(\\square\\) & \\(\\square\\)\\\\"
-        )
-  )
+  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}" "\\section{\\protect\\marginpar{%s Punkte}}"))
 
 (setq org-latex-classes (cons my-a4-exam org-latex-classes)
       org-latex-default-class "a4exam")
