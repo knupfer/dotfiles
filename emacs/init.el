@@ -99,6 +99,7 @@
   \\context {
     \\Score
     \\omit BarNumber
+    \\numericTimeSignature
   }
 }
 ")
