@@ -180,6 +180,9 @@
 \\newcommand{\\frage}[1]{
   #1 & \\(\\square\\) & \\(\\square\\)\\\\
 }
+\\newcommand{\\antwort}[1][4em]{
+  \\underline{\\parbox[b][1.5em]{#1}{\\makebox{}}}
+}
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil)
