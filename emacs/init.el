@@ -94,6 +94,11 @@
 \\paper {
   left-margin=4.2\\cm
   right-margin=4.2\\cm
+  #(define fonts
+    (make-pango-font-tree \"Libertinus Serif\"
+                          \"Libertinus Sans\"
+                          \"Iosevka\"
+                          (/ staff-height pt 20)))
 }
 \\layout {
   \\context {
