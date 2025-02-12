@@ -186,7 +186,7 @@
   #1 & \\(\\square\\) & \\(\\square\\)\\\\
 }
 \\newcommand{\\antwort}[1][4em]{
-  \\underline{\\parbox[b][1.5em]{#1}{\\makebox{}}}
+  \\underline{\\parbox[b][4\\itemsep]{#1}{\\makebox{}}}
 }
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
