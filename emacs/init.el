@@ -173,7 +173,7 @@
 \\makeatletter
 \\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
 \\makeatother
-\\newenvironment{fragen}{
+\\newenvironment{bools}{
   \\begin{center}
   \\begin{tabular}{lcc}
   & \\begin{sideways}Falsch\\end{sideways} & \\begin{sideways}Richtig\\end{sideways}\\\\
@@ -182,7 +182,7 @@
   \\end{tabular}
   \\end{center}
 }
-\\newcommand{\\frage}[1]{
+\\newcommand{\\bool}[1]{
   #1 & \\(\\square\\) & \\(\\square\\)\\\\
 }
 \\newcommand{\\antwort}[1][4em]{
