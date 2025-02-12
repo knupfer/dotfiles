@@ -80,15 +80,7 @@
 
 "))))
 
-(defun lilypond-fragment-path ()
-  "Calculate the sha of the source."
-  (let ((elem (org-element-at-point)))
-    (concat (expand-file-name user-emacs-directory) "lilypond/" (sha1 (org-element-property :value elem)) ".pdf")))
-
-(setq ob-lilypond-header-args
-      `((:results . "file link replace")
-	(:exports . "results")
-	(:prologue . "
+(setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
 \\version \"2.24.4\"
 \\paper {
@@ -107,7 +99,30 @@
     \\numericTimeSignature
   }
 }
-")
+"))
+
+(defun lilypond-fragment-path ()
+  "Calculate the sha of the source."
+  (let ((elem (org-element-at-point)))
+    (concat (expand-file-name user-emacs-directory)
+	    "lilypond/"
+	    (sha1 (concat org-babel-lilypond-paper-settings
+			  (org-element-property :value elem)))
+	    ".pdf")))
+
+(defun org-babel-execute:lilypond (body params)
+  "Execute LilyPond src block according to arrange mode.
+See `org-babel-execute-src-block' for BODY and PARAMS.  Check if cached
+result already exists."
+  (org-babel-lilypond-set-header-args org-babel-lilypond-arrange-mode)
+  (if org-babel-lilypond-arrange-mode
+      (org-babel-lilypond-tangle)
+    (unless (file-exists-p (lilypond-fragment-path))
+      (org-babel-lilypond-process-basic body params))))
+
+(setq ob-lilypond-header-args
+      `((:results . "file link replace")
+	(:exports . "results")
         (:file . (lambda () (lilypond-fragment-path)))))
 (org-babel-lilypond-set-header-args org-babel-lilypond-arrange-mode)
 
