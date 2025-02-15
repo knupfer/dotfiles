@@ -21,10 +21,11 @@ cairosvg -f svg -s 3 -o "$2" "$2"
     src = "${pkgs.lilypond}/share/emacs/site-lisp";
   };
 
-  tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvisvgm ulem microtype siunitx xkeyval
-    libertinus-otf wrapfig capt-of babel-german collection-langgerman
-    fontspec unicode-math lualatex-math # lualatex
-                                ;});
+  tex = pkgs.texliveBasic.withPackages (ps: with ps;
+    [ dvisvgm ulem microtype siunitx xkeyval libertinus-otf
+      wrapfig capt-of babel-german collection-langgerman
+      fontspec unicode-math lualatex-math # lualatex
+    ] );
 
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
