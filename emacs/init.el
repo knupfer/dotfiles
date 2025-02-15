@@ -171,6 +171,8 @@ result already exists."
 (plist-put (cdr (assoc 'dvisvgm org-preview-latex-process-alist)) :latex-compiler '("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f"))
 (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent")
 
+(setq org-confirm-babel-evaluate (lambda (lang body) (not (string= lang "lilypond"))))
+
 (setq org-log-done 'time
       org-startup-folded t
       org-startup-indented t
