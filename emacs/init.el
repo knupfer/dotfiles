@@ -168,24 +168,17 @@ result already exists."
 
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
-(defvar my-preview
-  '(luadvisvgm
-    :image-input-type "dvi"
-    :image-output-type "svg"
-    :image-size-adjust (1.7 . 1.5)
-    :latex-compiler ("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f")
-    :image-converter ("dvisvgm %f --no-fonts --exact-bbox --scale=%S --output=%O")))
+(plist-put (cdr (assoc 'dvisvgm org-preview-latex-process-alist)) :latex-compiler '("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f"))
+(plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent")
 
 (setq org-log-done 'time
       org-startup-folded t
       org-startup-indented t
       org-indent-mode-turns-on-hiding-stars nil
       org-indent-indentation-per-level 1
-      org-preview-latex-process-alist (cons my-preview org-preview-latex-process-alist)
-      org-preview-latex-default-process 'luadvisvgm
+      org-preview-latex-default-process 'dvisvgm
       org-latex-compiler "lualatex"
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
-      org-format-latex-options (plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :scale 1) :background "Transparent")
       org-highlight-latex-and-related '(latex)
       org-export-default-language "de"
       org-latex-packages-alist '( ("AUTO" "babel" t ("pdflatex" "xelatex" "lualatex"))
