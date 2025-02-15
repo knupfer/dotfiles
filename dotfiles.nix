@@ -22,7 +22,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
   };
 
   tex = (pkgs.texlive.combine { inherit (pkgs.texlive) scheme-basic dvisvgm ulem microtype siunitx xkeyval
-    libertinus-otf wrapfig capt-of babel-german
+    libertinus-otf wrapfig capt-of babel-german collection-langgerman
     fontspec unicode-math lualatex-math # lualatex
                                 ;});
 
