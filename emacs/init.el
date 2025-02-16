@@ -194,50 +194,20 @@ result already exists."
 \\makeatletter
 \\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
 \\makeatother
-\\newenvironment{bools}{
-  \\begin{center}
-  \\begin{tabular}{lcc}
-  & \\begin{sideways}Falsch\\end{sideways} & \\begin{sideways}Richtig\\end{sideways}\\\\
-  \\hline
-}{
-  \\end{tabular}
-  \\end{center}
-}
-\\newcommand{\\bool}[1]{
-  #1 & \\(□\\) & \\(□\\)\\\\
-}
-\\newcommand{\\antwort}[1][4em]{
-  \\underline{\\parbox[b][4\\itemsep]{#1}{\\makebox{}}}
-}
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil)
 
 (defvar my-a4-exam
-  (list "a4exam" "
-\\documentclass[a4paper, 11pt]{article}
-\\AtEndDocument{
-  \\begin{center}
-    \\vfill
-    \\textit{Viel Erfolg.}
-  \\end{center}
-}
-\\let\\oldtitle\\maketitle
-\\def\\maketitle{\\date{}\\oldtitle\\begin{center}
-  \\begin{tabular}{w{r}{0.2\\linewidth}w{c}{0.35\\linewidth}w{l}{0.2\\linewidth}}
-                 Datum & & Punktzahl       \\\\
-                       & &                 \\\\
-                  Name & & Note            \\\\
-                       & &                 \\\\
-    Selbsteinschätzung & & Unterrichtsnote \\\\
-                       & &
-  \\end{tabular}
-\\end{center}}
-" "\\section[Aufgabe \\thesection]{\\protect\\marginpar{%s Punkte}}"))
+  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}"
+	"\\title{%s}\\part[\\thetitle]{}"
+	"\\author{%s}\\section[\\theauthor]{}"
+	'("\\subsection[%s]{}\\makeexam" "\\begin{center}\\vfill\\textit{Viel Erfolg.}\\end{center}")
+	"\\addtocontents{toc}{\\protect\\setcounter{tocdepth}{1}}\\subsubsection[Aufgabe \\thesubsubsection]{\\protect\\marginpar{%s Punkte}}
+\\addtocontents{toc}{\\protect\\setcounter{tocdepth}{3}}"
+	))
 
-(setq org-latex-classes (cons my-a4-exam org-latex-classes)
-      org-latex-default-class "a4exam")
-
+(setq org-latex-classes (cons my-a4-exam org-latex-classes))
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
 (server-stop-automatically 'delete-frame)

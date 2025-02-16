@@ -24,6 +24,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
   tex = pkgs.texliveBasic.withPackages (ps: with ps;
     [ dvisvgm ulem microtype siunitx xkeyval libertinus-otf
       wrapfig capt-of babel-german collection-langgerman
+      titlesec titling
       fontspec unicode-math lualatex-math # lualatex
     ] );
 
