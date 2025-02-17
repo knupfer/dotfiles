@@ -200,9 +200,9 @@ result already exists."
 
 (defvar my-a4-exam
   (list "a4exam" "\\documentclass[a4paper, 11pt]{article}"
-	"\\title{%s}\\phantomsection\\addcontentsline{toc}{part}{\\thetitle}"
-	"\\author{%s}\\phantomsection\\addcontentsline{toc}{section}{\\theauthor}"
-	'("\\phantomsection\\addcontentsline{toc}{subsection}{%s}\\makeexam" "\\begin{center}\\vfill\\textit{Viel Erfolg.}\\end{center}")
+	"\\resetsubsubsection\\title{%s}\\addcontentsline{toc}{part}{\\thetitle}"
+	"\\resetsubsubsection\\author{%s}\\addcontentsline{toc}{section}{\\theauthor}"
+	"\\resetsubsubsection\\addcontentsline{toc}{subsection}{%s}\\makeexam"
 	"\\addtocontents{toc}{\\protect\\setcounter{tocdepth}{1}}\\subsubsection[Aufgabe \\thesubsubsection]{\\protect\\marginpar{%s Punkte}}
 \\addtocontents{toc}{\\protect\\setcounter{tocdepth}{3}}"
 	))
