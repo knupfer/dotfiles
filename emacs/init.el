@@ -202,7 +202,7 @@ result already exists."
   (list "a4exam" "\\documentclass[a4paper, 11pt]{article}"
 	"\\resetsubsubsection\\title{%s}\\addcontentsline{toc}{part}{\\thetitle}"
 	"\\resetsubsubsection\\author{%s}\\addcontentsline{toc}{section}{\\theauthor}"
-	"\\resetsubsubsection\\addcontentsline{toc}{subsection}{%s}\\makeexam"
+	"\\stepcounter{subsection}\\resetsubsubsection\\addcontentsline{toc}{subsection}{%s}\\makeexam"
 	"\\addtocontents{toc}{\\protect\\setcounter{tocdepth}{1}}\\subsubsection[Aufgabe \\thesubsubsection]{\\protect\\marginpar{%s Punkte}}
 \\addtocontents{toc}{\\protect\\setcounter{tocdepth}{3}}"
 	))
