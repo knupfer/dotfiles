@@ -198,16 +198,6 @@ result already exists."
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil)
 
-(defvar my-a4-exam
-  (list "a4exam" "\\documentclass[a4paper, 11pt]{article}"
-	"\\resetsubsubsection\\title{%s}\\addcontentsline{toc}{part}{\\thetitle}"
-	"\\resetsubsubsection\\author{%s}\\addcontentsline{toc}{section}{\\theauthor}"
-	"\\stepcounter{subsection}\\resetsubsubsection\\addcontentsline{toc}{subsection}{%s}\\makeexam"
-	"\\addtocontents{toc}{\\protect\\setcounter{tocdepth}{1}}\\subsubsection[Aufgabe \\thesubsubsection]{\\protect\\marginpar{%s Punkte}}
-\\addtocontents{toc}{\\protect\\setcounter{tocdepth}{3}}"
-	))
-
-(setq org-latex-classes (cons my-a4-exam org-latex-classes))
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
 (server-stop-automatically 'delete-frame)
