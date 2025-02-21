@@ -87,7 +87,7 @@
   left-margin=4.2\\cm
   right-margin=4.2\\cm
   #(define fonts
-    (make-pango-font-tree \"Libertinus Serif\"
+    (make-pango-font-tree \"EB Garamond 12\"
                           \"Libertinus Sans\"
                           \"Iosevka\"
                           (/ staff-height pt 20)))
@@ -187,7 +187,10 @@ result already exists."
 				  ("" "microtype" nil nil)
 				  "
 \\usepackage{rotating}
-\\usepackage[oldstyle, proportional, defaultfeatures={Ligatures={Historic, Rare, TeX}, StylisticSet=6}]{libertinus-otf}
+\\usepackage{unicode-math}
+\\setmainfont{EB Garamond}[Ligatures={Historic, Rare, TeX}]
+\\setmathfont{Garamond Math}
+\\setmathfont{Libertinus Math}[range={\"25A1}]
 \\usepackage{siunitx}
 \\sisetup{per-mode=fraction}
 \\usepackage{array}

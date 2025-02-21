@@ -26,6 +26,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       wrapfig capt-of babel-german collection-langgerman
       titling fancyhdr
       ocgx2 media9
+      garamond-math
       pgfornament pgf pgfopts
       fontspec unicode-math lualatex-math # lualatex
     ] );
@@ -110,6 +111,7 @@ in
       (iosevka-bin.override {variant = "Slab";})
       (iosevka-bin.override {variant = "SGr-IosevkaTerm";})
       sarasa-gothic
+      eb-garamond
     ]);
   };
   i18n.defaultLocale = "de_DE.UTF-8";
