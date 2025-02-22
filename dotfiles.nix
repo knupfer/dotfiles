@@ -101,7 +101,7 @@ in
       defaultFonts = {
         monospace = ["Iosevka Term"];
         sansSerif = ["Libertinus Sans"];
-        serif     = ["Libertinus Serif"];
+        serif     = ["EB Garamond"];
       };
     };
     packages = (with pkgs; [
