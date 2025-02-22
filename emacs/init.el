@@ -188,7 +188,10 @@ result already exists."
 				  "
 \\usepackage{rotating}
 \\usepackage{unicode-math}
+\\defaultfontfeatures[\\rmfamily]{Ligatures={Rare, Contextual, Historic, TeX},Contextuals={Inner, WordInitial, WordFinal, LineFinal, Alternate, Swash},Style={Swash,Alternate}}
 \\usepackage{ebgaramond}
+\\setmonofont{Iosevka}
+\\setsansfont{Libertinus Sans}
 \\setmathfont{Garamond Math}
 \\setmathfont{Libertinus Math}[range={\"25A1}]
 \\usepackage{siunitx}
