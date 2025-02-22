@@ -27,6 +27,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       titling fancyhdr
       ocgx2 media9
       garamond-math
+      ebgaramond
       pgfornament pgf pgfopts
       fontspec unicode-math lualatex-math # lualatex
     ] );
