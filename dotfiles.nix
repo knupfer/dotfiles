@@ -29,7 +29,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       garamond-math
       ebgaramond
       pgfornament pgf pgfopts
-      fontspec unicode-math lualatex-math # lualatex
+      fontspec unicode-math lualatex-math
     ] );
 
   myEmacs = pkgs.symlinkJoin {
