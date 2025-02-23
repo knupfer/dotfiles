@@ -188,8 +188,16 @@ result already exists."
 				  "
 \\usepackage{rotating}
 \\usepackage{unicode-math}
-\\defaultfontfeatures[\\rmfamily]{Ligatures={Rare, Contextual, Historic, TeX},Contextuals={Inner, WordInitial, WordFinal, LineFinal, Alternate, Swash},Style={Swash,Alternate}}
-\\usepackage{ebgaramond}
+\\setmainfont
+    [ Numbers           = {Proportional, OldStyle},
+      Ligatures         = {Rare, Contextual, Historic, TeX},
+      UprightFont       = *-Regular,
+      ItalicFont        = *-Italic,
+      BoldFont          = *-Medium,
+      BoldItalicFont    = *-Medium Italic,
+      Style             = Swash,
+      Contextuals       = {Inner, WordInitial, WordFinal, LineFinal}
+    ] {EB Garamond}
 \\setmonofont{Iosevka}
 \\setsansfont{Libertinus Sans}
 \\setmathfont{Garamond Math}
