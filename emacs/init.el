@@ -63,7 +63,7 @@
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
                    :stream t
-                   :models '(qwen2.5:14b))
+                   :models '(qwen2.5:14b deepseek-r1:14b))
    gptel-default-mode 'org-mode
    gptel-prompt-prefix-alist
    '((markdown-mode . "# ")
