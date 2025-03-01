@@ -169,7 +169,7 @@ result already exists."
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
 (plist-put (cdr (assoc 'dvisvgm org-preview-latex-process-alist)) :latex-compiler '("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f"))
-(plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent") :scale 1.2)
+(plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent") :scale 2)
 
 (setq org-confirm-babel-evaluate (lambda (lang body) (not (string= lang "lilypond"))))
 
