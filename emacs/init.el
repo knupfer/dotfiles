@@ -179,6 +179,7 @@ result already exists."
       org-startup-indented t
       org-indent-mode-turns-on-hiding-stars nil
       org-indent-indentation-per-level 1
+      org-latex-src-block-backend 'minted
       org-preview-latex-default-process 'dvisvgm
       org-latex-compiler "lualatex"
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
