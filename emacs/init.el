@@ -46,8 +46,10 @@
 
 (global-flycheck-mode)
 
-(load "lilypond-init.el")
-(defalias 'LilyPond-mode 'lilypond-mode)
+(autoload 'LilyPond-mode "lilypond-mode" "LilyPond Editing Mode" t)
+(add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
+(add-to-list 'auto-mode-alist '("\\.ily\\'" . LilyPond-mode))
+(add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 (add-hook 'org-mode-hook #'org-inline-pdf-mode)
 (setq org-image-max-width 'window)
@@ -80,7 +82,7 @@
 
 (setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
-\\version \"2.25.24\"
+\\version \"2.24.4\"
 \\paper {
   left-margin=4.2\\cm
   right-margin=4.2\\cm
@@ -197,9 +199,8 @@ result already exists."
       Contextuals       = {Inner, WordInitial, WordFinal, LineFinal}
     ] {EB Garamond}
 \\setmonofont{Iosevka}
-\\setsansfont{Libertinus Sans}
 \\setmathfont{Garamond Math}
-\\setmathfont{Libertinus Math}[range={\"25A1}]
+\\setmathfont{Iosevka}[range={\"25A1}]
 \\usepackage{siunitx}
 \\sisetup{per-mode=fraction}
 \\usepackage{array}

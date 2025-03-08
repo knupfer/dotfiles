@@ -16,7 +16,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 '';};
 
   tex = pkgs.texliveBasic.withPackages (ps: with ps;
-    [ dvisvgm ulem microtype siunitx xkeyval libertinus-otf
+    [ dvisvgm ulem microtype siunitx xkeyval
       wrapfig capt-of babel-german collection-langgerman
       titling fancyhdr
       ocgx2 media9
@@ -78,7 +78,7 @@ in
       haskellPackages.ghc
 
       libreoffice
-      lilypond-unstable
+      lilypond
 
       pandoc
       passage
