@@ -199,7 +199,7 @@ result already exists."
       Style             = Swash,
       Contextuals       = {Inner, WordInitial, WordFinal, LineFinal}
     ] {EB Garamond}
-\\setmonofont{Iosevka}
+\\setmonofont[Scale=MatchLowercase]{Iosevka}
 \\setmathfont{Garamond Math}
 \\setmathfont{Iosevka}[range={\"25A1}]
 \\usepackage{siunitx}
