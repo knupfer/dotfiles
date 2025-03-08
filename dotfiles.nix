@@ -15,12 +15,6 @@ sed -i "s/rgb(0%, 0%, 0%)/rgb(100%, 0%, 100%)/" "$2"
 cairosvg -f svg -s 3 -o "$2" "$2"
 '';};
 
-  lilypond-mode = melpa: melpa.trivialBuild rec {
-    pname = "lilypond-mode";
-    version = pkgs.lilypond.version;
-    src = "${pkgs.lilypond}/share/emacs/site-lisp";
-  };
-
   tex = pkgs.texliveBasic.withPackages (ps: with ps;
     [ dvisvgm ulem microtype siunitx xkeyval libertinus-otf
       wrapfig capt-of babel-german collection-langgerman
@@ -35,7 +29,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
   myEmacs = pkgs.symlinkJoin {
     name = "emacs";
     paths = [ (pkgs.emacs30-pgtk.pkgs.withPackages (melpa: with melpa;
-      [ (lilypond-mode melpa) org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
+      [ org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
     $out/bin/emacs --batch \
@@ -84,7 +78,7 @@ in
       haskellPackages.ghc
 
       libreoffice
-      lilypond
+      lilypond-unstable
 
       pandoc
       passage

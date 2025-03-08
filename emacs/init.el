@@ -46,10 +46,8 @@
 
 (global-flycheck-mode)
 
-(autoload 'LilyPond-mode "lilypond-mode" "LilyPond Editing Mode" t)
-(add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
-(add-to-list 'auto-mode-alist '("\\.ily\\'" . LilyPond-mode))
-(add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
+(load "lilypond-init.el")
+(defalias 'LilyPond-mode 'lilypond-mode)
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 (add-hook 'org-mode-hook #'org-inline-pdf-mode)
 (setq org-image-max-width 'window)
@@ -82,7 +80,7 @@
 
 (setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
-\\version \"2.24.4\"
+\\version \"2.25.24\"
 \\paper {
   left-margin=4.2\\cm
   right-margin=4.2\\cm
@@ -169,7 +167,7 @@ result already exists."
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
 (plist-put (cdr (assoc 'dvisvgm org-preview-latex-process-alist)) :latex-compiler '("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f"))
-(plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent") :scale 2)
+(plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent")
 
 (setq org-confirm-babel-evaluate (lambda (lang body) (not (string= lang "lilypond"))))
 
