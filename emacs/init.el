@@ -83,6 +83,7 @@
 (setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
 \\version \"2.24.4\"
+#(set-global-staff-size 22)
 \\paper {
   left-margin=4.2\\cm
   right-margin=4.2\\cm
