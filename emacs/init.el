@@ -205,6 +205,9 @@ result already exists."
 \\setmathfont{Iosevka}[range={\"25A1}]
 \\usepackage{siunitx}
 \\sisetup{per-mode=fraction}
+\\usepackage{tikz}
+\\usepackage{pgfplots}
+\\pgfplotsset{compat=1.18}
 \\usepackage{array}
 \\makeatletter
 \\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
