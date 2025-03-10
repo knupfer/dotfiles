@@ -25,6 +25,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       pgfornament pgf pgfopts
       fontspec unicode-math lualatex-math
       minted upquote lineno
+      pgfplots
     ] );
 
   myEmacs = pkgs.symlinkJoin {
