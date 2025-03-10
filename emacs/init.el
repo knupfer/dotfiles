@@ -170,7 +170,7 @@ result already exists."
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
 (plist-put (cdr (assoc 'dvisvgm org-preview-latex-process-alist)) :latex-compiler '("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f"))
-(plist-put (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent") :scale 1.2)
+(plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent")
 
 (setq org-confirm-babel-evaluate (lambda (lang body) (not (string= lang "lilypond"))))
 
@@ -211,7 +211,9 @@ result already exists."
 \\makeatother
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
-      org-export-with-toc nil)
+      org-export-with-toc nil
+      org-format-latex-header (concat "\\documentclass[12pt]"  (string-remove-prefix "\\documentclass"  org-format-latex-header)))
+(setf (car (cdr (assoc "article" org-latex-classes))) "\\documentclass[12pt]{article}")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
