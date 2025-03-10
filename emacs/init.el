@@ -213,7 +213,7 @@ result already exists."
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil
       org-format-latex-header (concat "\\documentclass[12pt]"  (string-remove-prefix "\\documentclass"  org-format-latex-header)))
-(setf (car (cdr (assoc "article" org-latex-classes))) "\\documentclass[12pt]{article}")
+(setf (car (cdr (assoc "article" org-latex-classes))) "\\documentclass[12pt, a4paper]{article}")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
