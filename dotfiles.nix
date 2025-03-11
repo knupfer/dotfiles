@@ -19,6 +19,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
     [ dvisvgm ulem microtype siunitx xkeyval
       wrapfig capt-of babel-german collection-langgerman
       titling fancyhdr
+      newtx iftex fontaxes xstring
       ocgx2 media9
       garamond-math
       ebgaramond

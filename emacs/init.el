@@ -169,9 +169,8 @@ result already exists."
 
 (define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
 
-(plist-put (cdr (assoc 'dvisvgm org-preview-latex-process-alist)) :latex-compiler '("lualatex --output-format=dvi --interaction=nonstopmode --output-directory=%o %f"))
 (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent")
-
+(delete (rassoc '("fontspec" t ("lualatex" "xetex")) org-latex-default-packages-alist) org-latex-default-packages-alist)
 (setq org-confirm-babel-evaluate (lambda (lang body) (not (string= lang "lilypond"))))
 
 (setq org-log-done 'time
@@ -185,10 +184,24 @@ result already exists."
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
       org-highlight-latex-and-related '(latex)
       org-export-default-language "de"
-      org-latex-packages-alist '( ("AUTO" "babel" nil ("pdflatex" "xelatex" "lualatex"))
+      org-latex-packages-alist '( ("AUTO" "babel" nil nil)
 				  ("" "microtype" nil nil)
+				  ("" "rotating" t nil)
+				  ("" "siunitx" t nil)
+				  "\\sisetup{per-mode=fraction}"
+				  ("" "tikz" t nil)
+				  ("" "pgfplots" t nil)
+				  "\\pgfplotsset{compat=1.18}"
+				  ("" "array" nil nil)
 				  "
-\\usepackage{rotating}
+\\makeatletter
+\\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
+\\makeatother
+"
+				  ("" "iftex" t nil)
+				  "
+\\ifluatex
+\\usepackage{fontspec}
 \\usepackage{unicode-math}
 \\setmainfont
     [ Numbers           = {Proportional, OldStyle},
@@ -203,19 +216,13 @@ result already exists."
 \\setmonofont[Scale=MatchLowercase]{Iosevka}
 \\setmathfont{Garamond Math}
 \\setmathfont{Iosevka}[range={\"25A1}]
-\\usepackage{siunitx}
-\\sisetup{per-mode=fraction}
-\\usepackage{tikz}
-\\usepackage{pgfplots}
-\\pgfplotsset{compat=1.18}
-\\usepackage{array}
-\\makeatletter
-\\def\\maxwidth#1{\\ifdim\\Gin@nat@width>#1 #1\\else\\Gin@nat@width\\fi}
-\\makeatother
+\\else
+\\usepackage[vvarbb,ebgaramond,smallerops]{newtx}
+\\fi
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil
-      org-format-latex-header (concat "\\documentclass[12pt]{"  (string-remove-prefix "\\documentclass{"  org-format-latex-header)))
+      org-format-latex-header (string-replace "\\documentclass{article}" "\\documentclass[12pt]{article}"  org-format-latex-header))
 (setf (car (cdr (assoc "article" org-latex-classes))) "\\documentclass[12pt, a4paper]{article}")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
