@@ -185,7 +185,7 @@ result already exists."
       org-preview-latex-image-directory (concat user-emacs-directory "latex/")
       org-highlight-latex-and-related '(latex)
       org-export-default-language "de"
-      org-latex-packages-alist '( ("AUTO" "babel" t ("pdflatex" "xelatex" "lualatex"))
+      org-latex-packages-alist '( ("AUTO" "babel" nil ("pdflatex" "xelatex" "lualatex"))
 				  ("" "microtype" nil nil)
 				  "
 \\usepackage{rotating}
@@ -215,7 +215,7 @@ result already exists."
 ")
       org-latex-image-default-width "\\maxwidth{\\linewidth}"
       org-export-with-toc nil
-      org-format-latex-header (concat "\\documentclass[12pt]"  (string-remove-prefix "\\documentclass"  org-format-latex-header)))
+      org-format-latex-header (concat "\\documentclass[12pt]{"  (string-remove-prefix "\\documentclass{"  org-format-latex-header)))
 (setf (car (cdr (assoc "article" org-latex-classes))) "\\documentclass[12pt, a4paper]{article}")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
