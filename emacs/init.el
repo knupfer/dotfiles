@@ -56,14 +56,18 @@
 (setq org-startup-with-inline-images t)
 (setq org-startup-with-latex-preview t)
 
+(defvar my-models
+  (mapcar (lambda (x) (intern (string-trim-right x " .*")))
+	  (cdr (process-lines "ollama" "ls"))))
+
 (use-package gptel
   :init
   (setq
-   gptel-model 'qwen2.5:14b
+   gptel-model (car my-models)
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
                    :stream t
-                   :models '(qwen2.5:14b deepseek-r1:14b))
+                   :models my-models)
    gptel-default-mode 'org-mode
    gptel-prompt-prefix-alist
    '((markdown-mode . "# ")
