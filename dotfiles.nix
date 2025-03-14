@@ -119,7 +119,7 @@ in
     foot = {
       enable = true;
       settings = {
-        main.font = "monospace:size=12";
+        main.font = "monospace:size=14";
         colors.background = "000000";
       };
     };

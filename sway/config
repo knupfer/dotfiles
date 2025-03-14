@@ -7,7 +7,7 @@
 ### Variables
 #
 set $mod Mod4
-set $menu wmenu-run -f "monospace 12" -N 000000 -S 00AAAA | xargs swaymsg exec --
+set $menu wmenu-run -f "monospace 14" -N 000000 -S 00AAAA | xargs swaymsg exec --
 
 default_border pixel 3
 default_floating_border pixel 3
