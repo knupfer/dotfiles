@@ -96,18 +96,27 @@ in
   fonts = {
     fontconfig = {
       defaultFonts = {
-        monospace = ["Iosevka Term"];
+        monospace = ["Iosevka"];
         sansSerif = ["Libertinus Sans"];
         serif     = ["EB Garamond"];
       };
     };
     packages = (with pkgs; [
       libertinus
-      iosevka
+      (iosevka.override {
+        privateBuildPlan = {
+          family = "Iosevka";
+          spacing = "term";
+          serifs = "sans";
+          nocCvSs = false;
+          exportGlyphNames = false;
+          variants.design.asterisk = "penta-low";
+        };
+        set = "";
+      })
       (iosevka-bin.override {variant = "Aile";})
       (iosevka-bin.override {variant = "Etoile";})
       (iosevka-bin.override {variant = "Slab";})
-      (iosevka-bin.override {variant = "SGr-IosevkaTerm";})
       sarasa-gothic
       eb-garamond
     ]);
