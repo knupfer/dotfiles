@@ -70,7 +70,10 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 
   in pkgs.stdenv.mkDerivation {
     name = "examina";
-    src = src;
+    src = pkgs.lib.fileset.toSource {
+      root = src;
+      fileset = pkgs.lib.fileset.union (src + /examina.org) (src + /img);
+    };
     buildInputs = [
       emacs
       tex
