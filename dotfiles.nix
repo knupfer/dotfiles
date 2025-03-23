@@ -63,7 +63,18 @@ in
   };
   i18n.defaultLocale = "de_DE.UTF-8";
   networking.networkmanager.enable = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    optimise = {
+      automatic = true;
+      dates = ["weekly"];
+    };
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
   programs = {
     foot = {
       enable = true;
