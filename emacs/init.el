@@ -57,8 +57,9 @@
 (setq org-startup-with-latex-preview t)
 
 (defvar my-models
+  (when (executable-find "ollama")
   (mapcar (lambda (x) (intern (string-trim-right x " .*")))
-	  (cdr (process-lines "ollama" "ls"))))
+	  (cdr (process-lines "ollama" "ls")))))
 
 (use-package gptel
   :init

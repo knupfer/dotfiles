@@ -1,64 +1,13 @@
 { pkgs, ... }:
 let
 
-  dotfiles = ./.;
-
-
-  myPdf2svg = pkgs.writeShellApplication {
-    name = "pdf2svg";
-    runtimeInputs = with pkgs; [ gnused pdf2svg cairosvg ];
-    text =
-''
-#!/usr/bin/env bash
-pdf2svg "$1" "$2"
-sed -i "s/rgb(0%, 0%, 0%)/rgb(100%, 0%, 100%)/" "$2"
-cairosvg -f svg -s 3 -o "$2" "$2"
-'';};
-
-  tex = pkgs.texliveBasic.withPackages (ps: with ps;
-    [ dvisvgm ulem microtype siunitx xkeyval
-      wrapfig capt-of babel-german collection-langgerman
-      titling fancyhdr
-      newtx iftex fontaxes xstring
-      ocgx2 media9
-      garamond-math
-      ebgaramond
-      pgfornament pgf pgfopts
-      fontspec unicode-math lualatex-math
-      minted upquote lineno
-      pgfplots
-    ] );
-
-  myEmacs = pkgs.symlinkJoin {
-    name = "emacs";
-    paths = [ (pkgs.emacs30-pgtk.pkgs.withPackages (melpa: with melpa;
-      [ org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-    $out/bin/emacs --batch \
-      --eval "(native-compile \"${dotfiles}/emacs/init.el\" \"$out/share/emacs/native-lisp/init.eln\")" \
-
-    wrapProgram $out/bin/emacs \
-      --prefix PATH : ${pkgs.lib.makeBinPath [ tex pkgs.mupdf myPdf2svg ]} \
-      --add-flags "--load $out/share/emacs/native-lisp/init.eln"
-    '';
-  };
-
-  myYambar = pkgs.symlinkJoin {
-    name = "yambar";
-    paths = [ pkgs.yambar ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-    wrapProgram $out/bin/yambar \
-      --add-flags "--config=${dotfiles}/sway/yambar.conf --backend=wayland"
-    '';
-  };
+  my = import ./myPkgs.nix { inherit pkgs; };
 
 in
 
 {
   boot.tmp.useTmpfs = true;
-  console.keyMap = "${dotfiles}/keyboard/loadkeys/kfr.map";
+  console.keyMap = ./keyboard/loadkeys/kfr.map;
   environment = {
     systemPackages = (with pkgs; [
       age
@@ -91,7 +40,8 @@ in
       zip
       unzip
     ]);
-    variables.EDITOR = "${myEmacs}/bin/emacsclient -c --alternate-editor=";
+    variables.EDITOR = "${my.emacs}/bin/emacsclient -c --alternate-editor=";
+
   };
   fonts = {
     fontconfig = {
@@ -103,17 +53,7 @@ in
     };
     packages = (with pkgs; [
       libertinus
-      (iosevka.override {
-        privateBuildPlan = {
-          family = "Iosevka";
-          spacing = "term";
-          serifs = "sans";
-          nocCvSs = false;
-          exportGlyphNames = false;
-          variants.design.asterisk = "penta-low";
-        };
-        set = "";
-      })
+      my.iosevka
       (iosevka-bin.override {variant = "Aile";})
       (iosevka-bin.override {variant = "Etoile";})
       (iosevka-bin.override {variant = "Slab";})
@@ -138,8 +78,8 @@ in
     };
     sway = {
       enable = true;
-      extraOptions = ["--config=${dotfiles}/sway/config"];
-      extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock myYambar myEmacs];
+      extraOptions = ["--config=${./sway/config}"];
+      extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock my.yambar my.emacs];
     };
   };
   services = {
@@ -156,7 +96,7 @@ in
   services.xserver.xkb.extraLayouts.knu = {
     description = "My custom xkb layouts.";
     languages = [ "de" ];
-    symbolsFile = "${dotfiles}/keyboard/xkb/knu";
+    symbolsFile = ./keyboard/xkb/knu;
   };
   time.timeZone = "Europe/Berlin";
   users.mutableUsers = false;
