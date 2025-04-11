@@ -64,6 +64,8 @@ in
   i18n.defaultLocale = "de_DE.UTF-8";
   networking.networkmanager.enable = true;
   nix = {
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
     gc = {
       automatic = true;
       dates = "weekly";
