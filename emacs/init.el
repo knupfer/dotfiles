@@ -63,7 +63,9 @@
 
 (use-package gptel
   :init
+  (setf (alist-get 'default gptel-directives) "You are a large language model and a helpful assistant. Respond concisely.")
   (setq
+   gptel--system-message (alist-get 'default gptel-directives)
    gptel-model (car my-models)
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
