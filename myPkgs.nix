@@ -49,7 +49,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       --add-flags "--config=${./sway/yambar.conf} --backend=wayland"
     '';
   };
-
   iosevka = pkgs.iosevka.override {
     privateBuildPlan = {
       family = "Iosevka";
@@ -60,42 +59,5 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       variants.design.asterisk = "penta-low";
     };
     set = "";
-  };
-
-  examina = {src}: let
-
-    fontsConf = pkgs.makeFontsConf {
-      fontDirectories = [ iosevka pkgs.eb-garamond pkgs.libertinus ];
-    };
-
-  in pkgs.stdenv.mkDerivation {
-    name = "examina";
-    src = pkgs.lib.fileset.toSource {
-      root = src;
-      fileset = pkgs.lib.fileset.union (src + /examina.org) (src + /img);
-    };
-    buildInputs = [
-      emacs
-      tex
-      pkgs.git
-      pkgs.lilypond
-    ];
-
-    FONTCONFIG_FILE= fontsConf;
-    OSFONTDIR = "${iosevka}";
-
-    buildPhase = ''
-    export TEXMFVAR="$TMPDIR/texmf-var"
-    mkdir -p "$TEXMFVAR"
-    export HOME=$(mktemp -d)
-    mkdir -p ~/.emacs.d/lilypond
-
-    emacs --batch examina.org --eval "(org-latex-export-to-pdf)"
-  '';
-
-    installPhase = ''
-    mkdir -p $out
-    cp examina.pdf $out/
-  '';
   };
 }
