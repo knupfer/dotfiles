@@ -174,7 +174,7 @@ result already exists."
 (add-to-list 'emulation-mode-map-alists
              `((knu/keys-mode . ,knu/keys-keymap)))
 
-(define-key knu/keys-keymap (kbd "C-a") 'gptel-send)
+(define-key knu/keys-keymap (kbd "C-S-a") 'gptel-send)
 
 (plist-put (plist-put org-format-latex-options :foreground "#f0f") :background "Transparent")
 (delete (rassoc '("fontspec" t ("lualatex" "xetex")) org-latex-default-packages-alist) org-latex-default-packages-alist)
