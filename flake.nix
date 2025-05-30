@@ -60,17 +60,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
       --add-flags "--config=${./sway/yambar.conf} --backend=wayland"
     '';
           };
-          iosevka = pkgs.iosevka.override {
-            privateBuildPlan = {
-              family = "Iosevka";
-              spacing = "term";
-              serifs = "sans";
-              nocCvSs = false;
-              exportGlyphNames = false;
-              variants.design.asterisk = "penta-low";
-            };
-            set = "";
-          };
         };
 
         nixosModules.default = let my = self.packages.x86_64-linux; in {
@@ -121,7 +110,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
             packages = (with pkgs; [
               libertinus
-              my.iosevka
+              iosevka
               (iosevka-bin.override {variant = "Aile";})
               (iosevka-bin.override {variant = "Etoile";})
               (iosevka-bin.override {variant = "Slab";})
