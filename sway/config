@@ -40,7 +40,10 @@ input type:keyboard xkb_layout knu
 input type:touchpad middle_emulation enabled
 
 ### Key bindings
-#
+
+    bindsym Mod4+Escape input type:keyboard xkb_layout de
+    bindsym Mod5+Escape input type:keyboard xkb_layout knu
+
     bindsym XF86AudioMute exec amixer -q set Master toggle
     bindsym XF86AudioLowerVolume exec amixer -q set Master 2%-
     bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+
