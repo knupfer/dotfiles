@@ -25,7 +25,7 @@
 	      auto-save-default nil
 	      epg-pinentry-mode 'loopback)
 (add-to-list 'default-frame-alist
-               '(font . "monospace:size=18"))
+               '(font . "monospace:semibold:size=18"))
 (set-face-attribute 'mode-line nil
                       :background "#033"
                       :box nil)

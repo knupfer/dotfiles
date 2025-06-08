@@ -138,7 +138,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             foot = {
               enable = true;
               settings = {
-                main.font = "monospace:size=14";
+                main.font = "monospace:semibold:size=14";
                 colors.background = "000000";
               };
             };
