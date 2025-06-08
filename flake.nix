@@ -51,13 +51,13 @@ sed -i "s/rgb(0%, 0%, 0%)/rgb(100%, 0%, 100%)/" "$2"
 cairosvg -f svg -s 3 -o "$2" "$2"
 '';};
 
-          yambar = pkgs.symlinkJoin {
-            name = "yambar";
-            paths = [ pkgs.yambar ];
+          i3status-rs = pkgs.symlinkJoin {
+            name = "i3status-rs";
+            paths = [ pkgs.i3status-rust ];
             buildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
-    wrapProgram $out/bin/yambar \
-      --add-flags "--config=${./sway/yambar.conf} --backend=wayland"
+    wrapProgram $out/bin/i3status-rs \
+      --add-flags "${./sway/i3status-rs.toml}"
     '';
           };
         };
@@ -149,7 +149,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             sway = {
               enable = true;
               extraOptions = ["--config=${./sway/config}"];
-              extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock my.yambar my.emacs];
+              extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock my.emacs my.i3status-rs];
             };
           };
           services = {

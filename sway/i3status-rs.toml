@@ -1,0 +1,26 @@
+[theme]
+[theme.overrides]
+idle_bg = "#000000"
+idle_fg = "#FFFFFF"
+separator = "  "
+
+[icons]
+[icons.overrides]
+volume = [ "Volume:" ]
+volume_muted = [ "Muted:" ]
+
+[[block]]
+block = "sound"
+max_vol = 100
+show_volume_when_muted = true
+
+[[block]]
+block = "battery"
+interval = 60
+charging_format = " Charging: $percentage "
+format = " Capacity: $percentage "
+
+[[block]]
+block = "time"
+interval = 60
+format = " $timestamp.datetime(f:'%Y.%-m.%-d %R')"
