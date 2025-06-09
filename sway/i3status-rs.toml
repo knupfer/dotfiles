@@ -23,4 +23,4 @@ format = " Capacity: $percentage "
 [[block]]
 block = "time"
 interval = 60
-format = " $timestamp.datetime(f:'%Y.%-m.%-d %R')"
+format = " $timestamp.datetime(f:'%Y.%-m.%-d %-H:%M')"
