@@ -18,6 +18,9 @@ show_volume_when_muted = true
 block = "battery"
 interval = 60
 charging_format = " Charging: $percentage "
+not_charging_format = " Capacity: $percentage "
+empty_format = " Capacity: $percentage "
+full_format = " Capacity: $percentage "
 format = " Capacity: $percentage "
 
 [[block]]
