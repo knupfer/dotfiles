@@ -73,7 +73,6 @@ input type:touchpad middle_emulation enabled
 
 bar {
     font Iosevka Semibold 14
-    output eDP-1
     position top
     status_command i3status-rs
     gaps 0
