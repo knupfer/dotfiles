@@ -146,7 +146,11 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
             light = {
               enable = true;
-              brightnessKeys.enable = true;
+              brightnessKeys = {
+                enable = true;
+                minBrightness = 2;
+                step = 5;
+              };
             };
             sway = {
               enable = true;
