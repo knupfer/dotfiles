@@ -92,6 +92,7 @@ strings as usual
 
                 keycode   8 = v
         shiftl  keycode   8 = +V
+        altgr   keycode   8 = exclamdown
         ctrll   keycode   8 = exclam
 
                 keycode   9 = g
@@ -143,6 +144,7 @@ strings as usual
 
                 keycode  22 = d
         shiftl  keycode  22 = +D
+        altgr   keycode  22 = questiondown
         ctrll   keycode  22 = question
 
                 keycode  23 = t
