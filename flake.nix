@@ -165,7 +165,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
           hardware = {
             enableRedistributableFirmware = true;
-            hardware.graphics.enable = true;
+            graphics.enable = true;
           };
 
           i18n.defaultLocale = "de_DE.UTF-8";
