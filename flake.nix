@@ -159,6 +159,16 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
           };
           services = {
+            desktopManager.gnome.enable = true;
+            displayManager.ly = {
+              enable = true;
+              settings = {
+                hide_borders = true;
+                hide_key_hints = true;
+                hide_version_string = true;
+              };
+              x11Support = false;
+            };
             libinput.enable = true;
             ollama.enable = true;
             power-profiles-daemon.enable = false;
@@ -167,13 +177,13 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               drivers = [ pkgs.epson-escpr ];
             };
             tlp.enable = true;
+            xserver.xkb.extraLayouts.knu = {
+              description = "My custom xkb layouts.";
+              languages = [ "de" ];
+              symbolsFile = ./keyboard/xkb/knu;
+            };
           };
           security.pam.services.waylock = {};
-          services.xserver.xkb.extraLayouts.knu = {
-            description = "My custom xkb layouts.";
-            languages = [ "de" ];
-            symbolsFile = ./keyboard/xkb/knu;
-          };
           time.timeZone = "Europe/Berlin";
           users.mutableUsers = false;
         };
