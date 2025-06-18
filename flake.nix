@@ -1,8 +1,10 @@
 {
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-  outputs = { self, nixpkgs }:
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+  };
+  outputs = { self, nixos-hardware, nixpkgs }:
 
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
@@ -62,6 +64,50 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
+        nixosModules.mipro = {
+          imports =
+            [ self.nixosModules.default
+              nixos-hardware.nixosModules.common-gpu-intel-kaby-lake
+              nixos-hardware.nixosModules.common-cpu-intel
+            ];
+          boot = {
+            loader.grub = {
+              configurationLimit = 15;
+              device = "/dev/nvme0n1";
+              enable = true;
+              splashImage = null;
+              extraConfig = ''
+        set color_normal=dark-gray/black
+        set menu_color_highlight=red/black
+        set timeout_style=hidden
+        set cmdline_linux=noht
+      '';
+              extraEntries = ''
+        menuentry "Windows" {
+          chainloader (hd0,1)+1
+        }
+      '';
+            };
+            loader.timeout = 1;
+            initrd = {
+              luks.devices.root = {
+                device = "/dev/disk/by-uuid/3d0b7d6c-12ec-4683-8ca0-4949d5656cf0";
+                preLVM = true;
+                allowDiscards = true;
+              };
+            };
+          };
+          hardware = {
+            graphics = {
+              extraPackages = [
+                pkgs.intel-media-driver
+                pkgs.intel-compute-runtime
+              ];
+            };
+          };
+          networking.hostName = "mipro";
+        };
+
         nixosModules.default = let my = self.packages.x86_64-linux; in {
           boot.tmp.useTmpfs = true;
           console.keyMap = ./keyboard/loadkeys/kfr.map;
@@ -71,7 +117,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 
               alsa-utils
 
-              borgbackup
+              borgbackup #borg create --exclude-caches /mnt/borgcube::$HOSTNAME-$USER-{now:%Y-%m-%d} ~
               bibata-cursors #configure with dconf-editor
               btop
 
@@ -98,7 +144,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               unzip
             ]);
             variables.EDITOR = "${my.emacs}/bin/emacsclient -c --alternate-editor=";
-
           };
           fonts = {
             fontconfig = {
@@ -118,6 +163,11 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               eb-garamond
             ]);
           };
+          hardware = {
+            enableRedistributableFirmware = true;
+            hardware.graphics.enable = true;
+          };
+
           i18n.defaultLocale = "de_DE.UTF-8";
           networking.networkmanager.enable = true;
           nix = {
@@ -185,6 +235,11 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
           security.pam.services.waylock = {};
           time.timeZone = "Europe/Berlin";
+          users.extraUsers.gast = {
+            password = "gast";
+            isNormalUser = true;
+            uid=1003;
+          };
           users.mutableUsers = false;
         };
       };
