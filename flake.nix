@@ -88,10 +88,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               gdm.enable = true;
               ly.enable = pkgs.lib.mkForce false;
             };
-            logind.lidSwitch = "hibernate";
           };
-          users.users.ramirez.uid = pkgs.lib.mkForce 1002;
-          users.users.gast.uid = pkgs.lib.mkForce 1003;
         };
 
         nixosModules.mipro = {
@@ -136,6 +133,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
           };
           networking.hostName = "mipro";
+          services.logind.lidSwitch = "suspend";
         };
 
         nixosModules.default = let my = self.packages.x86_64-linux; in {
@@ -261,6 +259,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               package = my.emacs;
             };
             libinput.enable = true;
+            logind.lidSwitch = pkgs.lib.mkDefault "hibernate";
             ollama.enable = true;
             openssh = {
               enable = true;
