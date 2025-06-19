@@ -80,14 +80,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
         };
 
         nixosModules.ramirez = {
-          services = {
-            displayManager = {
-              autoLogin = {
-                enable = true;
-                user = "ramirez";
-              };
-            };
-          };
+          services.displayManager.autoLogin.user = "ramirez";
         };
 
         nixosModules.s440 = {
