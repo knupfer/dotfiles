@@ -87,7 +87,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
                 user = "ramirez";
               };
               gdm.enable = true;
-              ly.enable = false;
+              ly.enable = pkgs.lib.mkForce false;
             };
             openssh = {
               enable = true;
