@@ -146,7 +146,10 @@ cairosvg -f svg -s 3 -o "$2" "$2"
         };
 
         nixosModules.default = let my = self.packages.x86_64-linux; in {
-          boot.tmp.useTmpfs = true;
+          boot = {
+            kernelPackages = pkgs.linuxPackages_latest;
+            tmp.useTmpfs = true;
+          };
           #console.keyMap = ./keyboard/loadkeys/kfr.map;
           environment = {
             systemPackages = (with pkgs; [
