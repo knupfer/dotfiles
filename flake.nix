@@ -65,17 +65,20 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 
         nixosModules.knupfer = {
           console.keyMap = ./keyboard/loadkeys/kfr.map;
-          services.displayManager = {
-            ly = {
-              enable = true;
-              settings = {
-                hide_borders = true;
-                hide_key_hints = true;
-                hide_version_string = true;
+          services = {
+            displayManager = {
+              ly = {
+                enable = true;
+                settings = {
+                  hide_borders = true;
+                  hide_key_hints = true;
+                  hide_version_string = true;
+                };
+                x11Support = false;
               };
-              x11Support = false;
+              gdm.enable = false;
             };
-            gdm.enable = false;
+            openssh.enable = false;
           };
         };
 
@@ -262,7 +265,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             logind.lidSwitch = pkgs.lib.mkDefault "hibernate";
             ollama.enable = true;
             openssh = {
-              enable = true;
+              enable = pkgs.lib.mkDefault true;
               settings = {
                 PermitRootLogin = "no";
                 PasswordAuthentication = false;
