@@ -64,6 +64,44 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
+        nixosModules.s440 = {
+          imports = [ self.nixosModules.default ];
+          boot = {
+            loader.grub = {
+              device      = "/dev/sda";
+              enable      = true;
+              splashImage = null;
+            };
+            loader.timeout = 1;
+            initrd.luks.devices.root = {
+              device = "/dev/sda3";
+              preLVM = true;
+            };
+          };
+          networking.hostName = "s440";
+          services = {
+            avahi.enable = true;
+            displayManager = {
+              autoLogin = {
+                enable = true;
+                user = "ramirez";
+              };
+              gdm.enable = true;
+              ly.enable = false;
+            };
+            openssh = {
+              enable = true;
+              settings = {
+                PermitRootLogin = "no";
+                PasswordAuthentication = false;
+              };
+            };
+            logind.lidSwitch = "hibernate";
+          };
+          users.users.ramirez.uid = 1002;
+          users.users.gast.uid = 1003;
+        };
+
         nixosModules.mipro = {
           imports =
             [ self.nixosModules.default
@@ -110,7 +148,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 
         nixosModules.default = let my = self.packages.x86_64-linux; in {
           boot.tmp.useTmpfs = true;
-          console.keyMap = ./keyboard/loadkeys/kfr.map;
+          #console.keyMap = ./keyboard/loadkeys/kfr.map;
           environment = {
             systemPackages = (with pkgs; [
               age
@@ -122,6 +160,8 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               btop
 
               cabal2nix
+
+              evince
 
               firefox
 
@@ -137,6 +177,8 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 
               pandoc
               passage
+
+              signal-desktop
 
               vlc
 
@@ -235,12 +277,26 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
           security.pam.services.waylock = {};
           time.timeZone = "Europe/Berlin";
-          users.extraUsers.gast = {
-            password = "gast";
-            isNormalUser = true;
-            uid=1003;
+          users = {
+            mutableUsers = false;
+            users = {
+              knupfer = {
+                extraGroups = [ "wheel" "networkmanager" "video" ];
+                isNormalUser = true;
+                uid=1000;
+              };
+              ramirez = {
+                extraGroups  = [ "wheel" "networkmanager" "video" ];
+                isNormalUser = true;
+                uid=1001;
+              };
+              gast = {
+                password = "gast";
+                isNormalUser = true;
+                uid=1002;
+              };
+            };
           };
-          users.mutableUsers = false;
         };
       };
 }
