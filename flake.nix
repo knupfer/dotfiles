@@ -88,13 +88,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               gdm.enable = true;
               ly.enable = pkgs.lib.mkForce false;
             };
-            openssh = {
-              enable = true;
-              settings = {
-                PermitRootLogin = "no";
-                PasswordAuthentication = false;
-              };
-            };
             logind.lidSwitch = "hibernate";
           };
           users.users.ramirez.uid = pkgs.lib.mkForce 1002;
@@ -269,6 +262,13 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
             libinput.enable = true;
             ollama.enable = true;
+            openssh = {
+              enable = true;
+              settings = {
+                PermitRootLogin = "no";
+                PasswordAuthentication = false;
+              };
+            };
             power-profiles-daemon.enable = false;
             printing = {
               enable = true;
