@@ -63,6 +63,33 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
+        nixosModules.knupfer = {
+          console.keyMap = ./keyboard/loadkeys/kfr.map;
+          services.displayManager = {
+            ly = {
+              enable = true;
+              settings = {
+                hide_borders = true;
+                hide_key_hints = true;
+                hide_version_string = true;
+              };
+              x11Support = false;
+            };
+            gdm.enable = false;
+          };
+        };
+
+        nixosModules.ramirez = {
+          services = {
+            displayManager = {
+              autoLogin = {
+                enable = true;
+                user = "ramirez";
+              };
+            };
+          };
+        };
+
         nixosModules.s440 = {
           imports = [ self.nixosModules.default ];
           boot = {
@@ -78,17 +105,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
           };
           networking.hostName = "s440";
-          services = {
-            avahi.enable = true;
-            displayManager = {
-              autoLogin = {
-                enable = true;
-                user = "ramirez";
-              };
-              gdm.enable = true;
-              ly.enable = pkgs.lib.mkForce false;
-            };
-          };
         };
 
         nixosModules.mipro = {
@@ -141,7 +157,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             kernelPackages = pkgs.linuxPackages_latest;
             tmp.useTmpfs = true;
           };
-          #console.keyMap = ./keyboard/loadkeys/kfr.map;
           environment = {
             systemPackages = (with pkgs; [
               age
@@ -244,15 +259,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
           services = {
             desktopManager.gnome.enable = true;
-            displayManager.ly = {
-              enable = true;
-              settings = {
-                hide_borders = true;
-                hide_key_hints = true;
-                hide_version_string = true;
-              };
-              x11Support = false;
-            };
+            displayManager.gdm.enable = pkgs.lib.mkDefault true;
             emacs = {
               defaultEditor = true;
               enable = true;
