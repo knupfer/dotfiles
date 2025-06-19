@@ -1,5 +1,4 @@
 {
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -185,7 +184,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               zip
               unzip
             ]);
-            variables.EDITOR = "${my.emacs}/bin/emacsclient -c --alternate-editor=";
           };
           fonts = {
             fontconfig = {
@@ -260,6 +258,11 @@ cairosvg -f svg -s 3 -o "$2" "$2"
                 hide_version_string = true;
               };
               x11Support = false;
+            };
+            emacs = {
+              defaultEditor = true;
+              enable = true;
+              package = my.emacs;
             };
             libinput.enable = true;
             ollama.enable = true;

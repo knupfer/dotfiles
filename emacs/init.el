@@ -234,7 +234,6 @@ result already exists."
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq custom-file "/dev/null")
-(server-stop-automatically 'delete-frame)
 
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
