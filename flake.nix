@@ -98,8 +98,8 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             };
             logind.lidSwitch = "hibernate";
           };
-          users.users.ramirez.uid = 1002;
-          users.users.gast.uid = 1003;
+          users.users.ramirez.uid = pkgs.lib.mkForce 1002;
+          users.users.gast.uid = pkgs.lib.mkForce 1003;
         };
 
         nixosModules.mipro = {
