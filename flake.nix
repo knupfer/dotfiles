@@ -92,7 +92,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             boot.loader.efi.canTouchEfiVariables = true;
             boot.initrd.luks.devices."luks-56e161a7-0533-4a2e-8842-f0ffadc0db74".device = "/dev/disk/by-uuid/56e161a7-0533-4a2e-8842-f0ffadc0db74";
             hardware.graphics = {
-              enable = true;
               extraPackages = [
                 pkgs.intel-media-driver
                 pkgs.intel-compute-runtime
