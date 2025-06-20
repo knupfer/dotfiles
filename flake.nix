@@ -286,7 +286,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               enable = true;
               drivers = [ pkgs.epson-escpr ];
             };
-            #tlp.enable = true;
+            tlp.enable = true;
             xserver.xkb.extraLayouts.knu = {
               description = "My custom xkb layouts.";
               languages = [ "de" ];
