@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
   outputs = { self, nixos-hardware, nixpkgs }:
 
@@ -119,10 +118,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
 
         nixosModules.mipro = {
           imports =
-            [ self.nixosModules.default
-              nixos-hardware.nixosModules.common-gpu-intel-kaby-lake
-              nixos-hardware.nixosModules.common-cpu-intel
-            ];
+            [ self.nixosModules.default ];
           boot = {
             loader.grub = {
               configurationLimit = 15;
@@ -290,7 +286,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               enable = true;
               drivers = [ pkgs.epson-escpr ];
             };
-            tlp.enable = true;
+            #tlp.enable = true;
             xserver.xkb.extraLayouts.knu = {
               description = "My custom xkb layouts.";
               languages = [ "de" ];
