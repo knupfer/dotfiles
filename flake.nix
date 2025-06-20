@@ -154,7 +154,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             graphics = {
               extraPackages = [
                 pkgs.intel-media-driver
-                pkgs.intel-compute-runtime
+                pkgs.intel-compute-runtime-legacy1
               ];
             };
           };
