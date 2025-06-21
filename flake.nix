@@ -253,7 +253,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               enable = true;
               brightnessKeys = {
                 enable = true;
-                minBrightness = 2;
                 step = 5;
               };
             };
