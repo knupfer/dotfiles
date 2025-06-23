@@ -14,6 +14,7 @@
 (require 'ligature)
 (require 'bbdb)
 (require 'gptel)
+(require 'gptel-org)
 (require 'gptel-ollama)
 (require 'org-inline-pdf)
 
@@ -73,19 +74,10 @@
                    :models my-models)
    gptel-default-mode 'org-mode
    gptel-prompt-prefix-alist
-   '((markdown-mode . "# ")
-     (org-mode . "* ")
-     (text-mode . "# "))
-   gptel-response-prefix-alist
-   '((markdown-mode . "## Response
-
-")
-     (org-mode . "** Response
-
-")
-     (text-mode . "## Response
-
-"))))
+   '((markdown-mode . "")
+     (org-mode . "")
+     (text-mode . ""))
+   gptel-org-branching-context t))
 
 (setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
@@ -144,8 +136,10 @@ result already exists."
 
 (add-hook 'gptel-mode-hook 'visual-line-mode)
 (add-hook 'gptel-post-stream-hook 'gptel-stream-latex)
+(add-hook 'gptel-post-request-hook 'org-insert-heading-respect-content)
 
 (gptel "*scratch*")
+(org-insert-heading)
 
 (add-hook 'emacs-startup-hook (lambda () (goto-char (point-max))))
 
