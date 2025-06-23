@@ -97,6 +97,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               ];
             };
             networking.hostName = "e14";
+            services.tlp.enable = pkgs.lib.mkForce false;
         };
 
         nixosModules.s440 = {
