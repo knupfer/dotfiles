@@ -11,8 +11,6 @@ output HDMI-A-1 scale 3
 output "Samsung Electric Company S24D300 0x5A5A4158" scale 1
 seat * xcursor_theme Bibata-Modern-Ice 32
 
-exec swayidle -w before-sleep 'waylock -init-color 0xff00ff -input-color 0x0000ff -fail-color 0xff0000'
-
 input type:keyboard xkb_layout knu
 input type:touchpad middle_emulation enabled
 

@@ -262,7 +262,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             sway = {
               enable = true;
               extraOptions = ["--config=${./sway/config}"];
-              extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.waylock my.emacs my.i3status-rs];
+              extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle my.emacs my.i3status-rs];
             };
           };
           services = {
@@ -295,7 +295,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               symbolsFile = ./keyboard/xkb/knu;
             };
           };
-          security.pam.services.waylock = {};
           time.timeZone = "Europe/Berlin";
           users = {
             mutableUsers = false;
