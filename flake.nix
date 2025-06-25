@@ -75,7 +75,14 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               ];
             };
             networking.hostName = "e14";
-            powerManagement.powerUpCommands = "echo balance_power | tee /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference";
+            systemd.services.capacity-based-performance = {
+              description = "Adjust performance based on battery capacity.";
+              path = [ pkgs.coreutils ];
+              script = "echo $((255 - 200*$(cat /sys/class/power_supply/BAT0/capacity)/100)) | tee /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference";
+              serviceConfig.Type = "oneshot";
+              startAt = "*:0/5";
+              wantedBy = ["multi-user.target"];
+            };
             powerManagement.powertop.enable = true;
         };
 
