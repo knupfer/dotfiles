@@ -27,7 +27,7 @@ input type:touchpad middle_emulation enabled
     bindsym $mod+h exec foot
 
     # Start emacs
-    bindsym $mod+Shift+h exec $EDITOR
+    bindsym $mod+Shift+h exec emacseditor
 
     # Kill focused window
     bindsym $mod+Shift+c kill

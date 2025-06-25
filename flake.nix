@@ -62,34 +62,12 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
-        nixosModules.knupfer = {
-          console.keyMap = ./keyboard/loadkeys/kfr.map;
-          services = {
-            displayManager = {
-              ly = {
-                enable = true;
-                settings = {
-                  hide_borders = true;
-                  hide_key_hints = true;
-                  hide_version_string = true;
-                };
-                x11Support = false;
-              };
-              gdm.enable = false;
-            };
-            openssh.enable = false;
-          };
-        };
-
-        nixosModules.ramirez = {
-          services.displayManager.autoLogin.user = "ramirez";
-        };
-
         nixosModules.e14 = {
           imports = [ self.nixosModules.default ];
             boot.loader.systemd-boot.enable = true;
             boot.loader.efi.canTouchEfiVariables = true;
             boot.initrd.luks.devices."luks-56e161a7-0533-4a2e-8842-f0ffadc0db74".device = "/dev/disk/by-uuid/56e161a7-0533-4a2e-8842-f0ffadc0db74";
+            #console.keyMap = ./keyboard/loadkeys/kfr.map;
             hardware.graphics = {
               extraPackages = [
                 pkgs.intel-media-driver
@@ -99,7 +77,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             networking.hostName = "e14";
             powerManagement.powerUpCommands = "echo balance_power | tee /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference";
             powerManagement.powertop.enable = true;
-            services.tlp.enable = pkgs.lib.mkForce false;
         };
 
         nixosModules.s440 = {
@@ -114,6 +91,14 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             initrd.luks.devices.root = {
               device = "/dev/sda3";
               preLVM = true;
+            };
+          };
+          hardware = {
+            graphics = {
+              extraPackages = [
+                pkgs.intel-media-driver
+                pkgs.intel-compute-runtime-legacy1
+              ];
             };
           };
           networking.hostName = "s440";
@@ -288,7 +273,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               enable = true;
               drivers = [ pkgs.epson-escpr ];
             };
-            tlp.enable = true;
             xserver.xkb.extraLayouts.knu = {
               description = "My custom xkb layouts.";
               languages = [ "de" ];
