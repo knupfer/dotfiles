@@ -97,6 +97,8 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               ];
             };
             networking.hostName = "e14";
+            powerManagement.powerUpCommands = "echo balance_power | tee /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference";
+            powerManagement.powertop.enable = true;
             services.tlp.enable = pkgs.lib.mkForce false;
         };
 
