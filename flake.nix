@@ -62,28 +62,43 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
-        nixosModules.e14 = {
-          imports = [ self.nixosModules.default ];
-            boot.loader.systemd-boot.enable = true;
-            boot.loader.efi.canTouchEfiVariables = true;
-            boot.initrd.luks.devices."luks-56e161a7-0533-4a2e-8842-f0ffadc0db74".device = "/dev/disk/by-uuid/56e161a7-0533-4a2e-8842-f0ffadc0db74";
-            #console.keyMap = ./keyboard/loadkeys/kfr.map;
-            hardware.graphics = {
-              extraPackages = [
-                pkgs.intel-media-driver
-                pkgs.intel-compute-runtime
-              ];
-            };
-            networking.hostName = "e14";
-            systemd.services.capacity-based-performance = {
-              description = "Adjust performance based on battery capacity.";
-              path = [ pkgs.coreutils ];
-              script = "echo $((255 - 200*$(cat /sys/class/power_supply/BAT0/capacity)/100)) | tee /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference";
-              serviceConfig.Type = "oneshot";
-              startAt = "*:0/5";
-              wantedBy = ["multi-user.target"];
-            };
+        nixosModules.powerManagement =
+          let power-event-handler = pkgs.writeShellScriptBin "power-event-handler" ''
+            #!${pkgs.bash}/bin/bash
+            ON_AC=128
+            echo $((255-$1*(255-$ON_AC))) | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
+          ''; in {
             powerManagement.powertop.enable = true;
+            services.udev.extraRules = ''
+              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${power-event-handler}/bin/power-event-handler 1"
+              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${power-event-handler}/bin/power-event-handler 0"
+            '';
+            systemd.services.powerManagement = {
+              wantedBy = [ "multi-user.target" ];
+              serviceConfig = {
+                Type = "oneshot";
+                ExecStart = "${power-event-handler}/bin/power-event-handler $(cat /sys/class/power_supply/AC/online)";
+              };
+            };
+          };
+
+        nixosModules.e14 = {
+          imports = [ self.nixosModules.default
+                      self.nixosModules.powerManagement
+                    ];
+          boot.loader.systemd-boot.enable = true;
+          boot.loader.efi.canTouchEfiVariables = true;
+          boot.initrd.luks.devices."luks-56e161a7-0533-4a2e-8842-f0ffadc0db74".device = "/dev/disk/by-uuid/56e161a7-0533-4a2e-8842-f0ffadc0db74";
+          console.keyMap = ./keyboard/loadkeys/kfr.map;
+          hardware.graphics = {
+            extraPackages = [
+              pkgs.intel-media-driver
+              pkgs.intel-compute-runtime
+            ];
+          };
+          networking.hostName = "e14";
+          services.displayManager.gdm.enable = pkgs.lib.mkForce false;
+          services.displayManager.ly.enable = true;
         };
 
         nixosModules.s440 = {
