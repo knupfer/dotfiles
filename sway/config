@@ -11,6 +11,8 @@ output HDMI-A-1 scale 3
 output "Samsung Electric Company S24D300 0x5A5A4158" scale 1
 seat * xcursor_theme Bibata-Modern-Ice 32
 
+swayidle timeout 60 'swaymsg "output eDP-1 power off"' resume 'swaymsg "output eDP-1 dpms on"'
+
 input type:keyboard xkb_layout knu
 input type:touchpad middle_emulation enabled
 
