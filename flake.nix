@@ -31,34 +31,34 @@
               [ org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
             buildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
-    $out/bin/emacs --batch \
-      --eval "(native-compile \"${./emacs/init.el}\" \"$out/share/emacs/native-lisp/init.eln\")" \
+              $out/bin/emacs --batch \
+                --eval "(native-compile \"${./emacs/init.el}\" \"$out/share/emacs/native-lisp/init.eln\")" \
 
-    wrapProgram $out/bin/emacs \
-      --prefix PATH : ${pkgs.lib.makeBinPath [ tex pkgs.mupdf pdf2svg ]} \
-      --add-flags "--load $out/share/emacs/native-lisp/init.eln"
-    '';
+              wrapProgram $out/bin/emacs \
+                --prefix PATH : ${pkgs.lib.makeBinPath [ tex pkgs.mupdf pdf2svg ]} \
+                --add-flags "--load $out/share/emacs/native-lisp/init.eln"
+            '';
           };
 
           pdf2svg = pkgs.writeShellApplication {
             name = "pdf2svg";
             runtimeInputs = [ pkgs.gnused pkgs.pdf2svg pkgs.cairosvg ];
-            text =
-              ''
-#!/usr/bin/env bash
-pdf2svg "$1" "$2"
-sed -i "s/rgb(0%, 0%, 0%)/rgb(100%, 0%, 100%)/" "$2"
-cairosvg -f svg -s 3 -o "$2" "$2"
-'';};
+            text = ''
+              #!/usr/bin/env bash
+              pdf2svg "$1" "$2"
+              sed -i "s/rgb(0%, 0%, 0%)/rgb(100%, 0%, 100%)/" "$2"
+              cairosvg -f svg -s 3 -o "$2" "$2"
+            '';
+          };
 
           i3status-rs = pkgs.symlinkJoin {
             name = "i3status-rs";
             paths = [ pkgs.i3status-rust ];
             buildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
-    wrapProgram $out/bin/i3status-rs \
-      --add-flags "${./sway/i3status-rs.toml}"
-    '';
+              wrapProgram $out/bin/i3status-rs \
+                --add-flags "${./sway/i3status-rs.toml}"
+            '';
           };
         };
 
@@ -94,7 +94,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
                     ];
           boot.loader.systemd-boot.enable = true;
           boot.loader.efi.canTouchEfiVariables = true;
-          boot.initrd.luks.devices."luks-56e161a7-0533-4a2e-8842-f0ffadc0db74".device = "/dev/disk/by-uuid/56e161a7-0533-4a2e-8842-f0ffadc0db74";
+          boot.initrd.luks.devices.luks-56e161a7-0533-4a2e-8842-f0ffadc0db74.device = "/dev/disk/by-uuid/56e161a7-0533-4a2e-8842-f0ffadc0db74";
           console.keyMap = ./keyboard/loadkeys/kfr.map;
           hardware.graphics = {
             extraPackages = [
@@ -142,16 +142,16 @@ cairosvg -f svg -s 3 -o "$2" "$2"
               enable = true;
               splashImage = null;
               extraConfig = ''
-        set color_normal=dark-gray/black
-        set menu_color_highlight=red/black
-        set timeout_style=hidden
-        set cmdline_linux=noht
-      '';
+                set color_normal=dark-gray/black
+                set menu_color_highlight=red/black
+                set timeout_style=hidden
+                set cmdline_linux=noht
+              '';
               extraEntries = ''
-        menuentry "Windows" {
-          chainloader (hd0,1)+1
-        }
-      '';
+                menuentry "Windows" {
+                  chainloader (hd0,1)+1
+                }
+              '';
             };
             loader.timeout = 1;
             initrd = {
@@ -236,7 +236,6 @@ cairosvg -f svg -s 3 -o "$2" "$2"
             enableRedistributableFirmware = true;
             graphics.enable = true;
           };
-
           i18n.defaultLocale = "de_DE.UTF-8";
           networking.networkmanager.enable = true;
           nix = {
@@ -344,7 +343,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
                 uid=1000;
               };
               ramirez = {
-                extraGroups  = [ "wheel" "networkmanager" "video" ];
+                extraGroups = [ "wheel" "networkmanager" "video" ];
                 isNormalUser = true;
                 uid=1001;
               };
