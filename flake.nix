@@ -62,16 +62,7 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
-        nixosModules.powerManagement = let
-          power-event-handler = pkgs.writeShellScriptBin "power-event-handler" ''
-if [ "$(cat /sys/class/power_supply/AC/online)" -eq 1 ]; then
-  EPP=balance_performance
-else
-  EPP=power
-fi
-echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
-'';
-        in {
+        nixosModules.powerManagement = {
           boot.kernelParams = [
             "pcie_aspm=force"
             "nvme_core.default_ps_max_latency_us=5500"
@@ -80,12 +71,19 @@ echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_prefe
           powerManagement.powertop.enable = true;
           services.fstrim.enable = true;
           services.udev.extraRules = ''
-              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${power-event-handler}/bin/power-event-handler"
-              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${power-event-handler}/bin/power-event-handler"
-            '';
+            SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
+            SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
+          '';
           systemd.services.powerManagement = {
             wantedBy = [ "multi-user.target" ];
-            script = "${power-event-handler}/bin/power-event-handler";
+            script = ''
+              if [ "$(cat /sys/class/power_supply/AC/online)" -eq 1 ]; then
+                EPP=balance_performance
+              else
+                EPP=power
+              fi
+              echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
+            '';
             serviceConfig.Type = "oneshot";
           };
         };
