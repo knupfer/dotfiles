@@ -72,7 +72,13 @@ fi
 echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
 '';
         in {
+          boot.kernelParams = [
+            "pcie_aspm=force"
+            "nvme_core.default_ps_max_latency_us=5500"
+          ];
+          fileSystems."/".options = ["noatime" "nodiratime"];
           powerManagement.powertop.enable = true;
+          services.fstrim.enable = true;
           services.udev.extraRules = ''
               SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${power-event-handler}/bin/power-event-handler"
               SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${power-event-handler}/bin/power-event-handler"
