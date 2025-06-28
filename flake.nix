@@ -66,6 +66,7 @@
           boot.kernelParams = [
             "pcie_aspm=force"
             "nvme_core.default_ps_max_latency_us=5500"
+            "nowatchdog"
           ];
           fileSystems."/".options = ["noatime" "nodiratime"];
           powerManagement.powertop.enable = true;
