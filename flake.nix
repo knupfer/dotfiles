@@ -62,25 +62,27 @@ cairosvg -f svg -s 3 -o "$2" "$2"
           };
         };
 
-        nixosModules.powerManagement =
-          let power-event-handler = pkgs.writeShellScriptBin "power-event-handler" ''
-            #!${pkgs.bash}/bin/bash
-            ON_AC=128
-            echo $((255-$1*(255-$ON_AC))) | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
-          ''; in {
-            powerManagement.powertop.enable = true;
-            services.udev.extraRules = ''
-              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${power-event-handler}/bin/power-event-handler 1"
-              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${power-event-handler}/bin/power-event-handler 0"
+        nixosModules.powerManagement = let
+          power-event-handler = pkgs.writeShellScriptBin "power-event-handler" ''
+if [ "$(cat /sys/class/power_supply/AC/online)" -eq 1 ]; then
+  EPP=balance_performance
+else
+  EPP=power
+fi
+echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
+'';
+        in {
+          powerManagement.powertop.enable = true;
+          services.udev.extraRules = ''
+              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${power-event-handler}/bin/power-event-handler"
+              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${power-event-handler}/bin/power-event-handler"
             '';
-            systemd.services.powerManagement = {
-              wantedBy = [ "multi-user.target" ];
-              serviceConfig = {
-                Type = "oneshot";
-                ExecStart = "${power-event-handler}/bin/power-event-handler $(cat /sys/class/power_supply/AC/online)";
-              };
-            };
+          systemd.services.powerManagement = {
+            wantedBy = [ "multi-user.target" ];
+            script = "${power-event-handler}/bin/power-event-handler";
+            serviceConfig.Type = "oneshot";
           };
+        };
 
         nixosModules.e14 = {
           imports = [ self.nixosModules.default
