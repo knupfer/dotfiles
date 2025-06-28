@@ -195,8 +195,6 @@ echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_prefe
 
               evince
 
-              firefox
-
               git
               gimp
 
@@ -260,6 +258,35 @@ echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_prefe
             settings.experimental-features = [ "nix-command" "flakes" ];
           };
           programs = {
+            firefox = {
+              enable = true;
+              policies = {
+                DisableTelemetry = true;
+                DisableFirefoxStudies = true;
+                EnableTrackingProtection = {
+                  Value = true;
+                  Locked = true;
+                  Cryptomining = true;
+                  Fingerprinting = true;
+                };
+                DisableFirefoxAccounts = true;
+                DisableAccounts = true;
+                OverrideFirstRunPage = "";
+                OverridePostUpdatePage = "";
+                ExtensionSettings = {
+                  "*".installation_mode = "blocked"; # blocks all addons except uBlock
+                  "uBlock0@raymondhill.net" = {
+                    install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+                    installation_mode = "force_installed";
+                  };
+                };
+                Preferences = {
+                  "browser.translations.enable" = false;
+                  "privacy.donottrackheader.enabled" = true;
+                  "privacy.trackingprotection.enabled" = true;
+                };
+              };
+            };
             foot = {
               enable = true;
               settings = {
