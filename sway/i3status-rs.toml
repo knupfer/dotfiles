@@ -10,6 +10,12 @@ volume = [ "Volume:" ]
 volume_muted = [ "Muted:" ]
 
 [[block]]
+block = "service_status"
+service = "toggle-performance"
+active_format = "☆"
+inactive_format = ""
+
+[[block]]
 block = "sound"
 max_vol = 100
 show_volume_when_muted = true

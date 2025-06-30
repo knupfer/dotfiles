@@ -29,6 +29,8 @@ input type:touchpad middle_emulation enabled
     bindsym XF86AudioLowerVolume exec amixer -q set Master 2%-
     bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+
 
+    bindsym XF86Favorites exec "systemctl is-active --quiet toggle-performance.service && systemctl stop toggle-performance.service || systemctl start toggle-performance.service"
+
     # Start a terminal
     bindsym $mod+h exec foot
 

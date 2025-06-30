@@ -69,11 +69,33 @@
             "nowatchdog"
           ];
           fileSystems."/".options = ["noatime" "nodiratime"];
+          hardware.bluetooth.enable = false;
           powerManagement.powertop.enable = true;
           services.fstrim.enable = true;
           services.udev.extraRules = ''
             SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
             SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
+          '';
+          systemd.services.toggle-performance = {
+            serviceConfig = {
+              RemainAfterExit = "yes";
+              Type = "oneshot";
+              ExecStart = pkgs.writeShellScript "performance" ''
+                echo performance | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
+                echo performance >     /sys/firmware/acpi/platform_profile
+              '';
+              ExecStop = pkgs.writeShellScript "balanced" ''
+                echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
+                echo balanced      > /sys/firmware/acpi/platform_profile
+              '';
+            };
+          };
+          security.polkit.extraConfig = ''
+            polkit.addRule(function(action, subject) {
+              if (action.id == "org.freedesktop.systemd1.manage-units" && action.lookup("unit") == "toggle-performance.service") {
+                return polkit.Result.YES;
+              }
+            });
           '';
           systemd.services.powerManagement = {
             wantedBy = [ "multi-user.target" ];
@@ -104,8 +126,12 @@
             ];
           };
           networking.hostName = "e14";
-          services.displayManager.gdm.enable = pkgs.lib.mkForce false;
-          services.displayManager.ly.enable = true;
+          services = {
+            displayManager.gdm.enable = pkgs.lib.mkForce false;
+            displayManager.ly.enable = true;
+            desktopManager.gnome.enable = pkgs.lib.mkForce false;
+            openssh.enable = false;
+          };
         };
 
         nixosModules.s440 = {
