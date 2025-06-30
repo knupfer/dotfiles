@@ -302,7 +302,7 @@
             sway = {
               enable = true;
               extraOptions = ["--config=${./sway/config}"];
-              extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle my.emacs my.i3status-rs];
+              extraPackages = [pkgs.wmenu pkgs.alsa-utils pkgs.swayidle pkgs.grim pkgs.slurp my.emacs my.i3status-rs];
             };
           };
           services = {
