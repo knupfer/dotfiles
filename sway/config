@@ -22,8 +22,8 @@ input type:touchpad middle_emulation enabled
     bindsym Mod4+Escape input type:keyboard xkb_layout de
     bindsym Mod5+Escape input type:keyboard xkb_layout knu
 
-    bindsym Print exec grim ~/Downloads/screenshot.png
-    bindsym 0x1008127a exec slurp | grim -g - ~/Downloads/screenshot.png
+    bindsym Print exec grim ~/Downloads/screenshot-$(date +%F-%H%M%S).png
+    bindsym 0x1008127a exec slurp | grim -g - ~/Downloads/screenshot-$(date +%F-%H%M%S).png
 
     bindsym --no-repeat XF86AudioMute exec amixer -q set Master toggle
     bindsym XF86AudioLowerVolume exec amixer -q set Master 2%-
