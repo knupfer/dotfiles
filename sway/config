@@ -28,6 +28,7 @@ input type:touchpad middle_emulation enabled
     bindsym --no-repeat XF86AudioMute exec amixer -q set Master toggle
     bindsym XF86AudioLowerVolume exec amixer -q set Master 2%-
     bindsym XF86AudioRaiseVolume exec amixer -q set Master 2%+
+    bindsym XF86AudioMicMute exec amixer -q set Capture toggle
 
     bindsym XF86Favorites exec "systemctl is-active --quiet toggle-performance.service && systemctl stop toggle-performance.service || systemctl start toggle-performance.service"
 
@@ -94,3 +95,4 @@ bar {
 }
 
 include /etc/sway/config.d/*
+
