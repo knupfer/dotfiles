@@ -306,6 +306,8 @@
                 };
                 Preferences = {
                   "browser.translations.enable" = false;
+                  "browser.theme.content-theme" = 0;
+                  "browser.theme.toolbar-theme" = 0;
                   "privacy.donottrackheader.enabled" = true;
                   "privacy.trackingprotection.enabled" = true;
                 };
