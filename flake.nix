@@ -277,7 +277,7 @@
               automatic = true;
               dates = ["weekly"];
             };
-            registry.nixpkgs.flake = nixpkgs;
+
             settings.download-buffer-size = 524288000;
             settings.experimental-features = [ "nix-command" "flakes" ];
           };
