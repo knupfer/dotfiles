@@ -38,6 +38,10 @@ input type:touchpad middle_emulation enabled
     # Start emacs
     bindsym $mod+Shift+h exec emacseditor
 
+    bindsym $mod+Shift+f exec firefox
+    no_focus [app_id="firefox"]
+    bindsym $mod+z layout toggle split tabbed
+
     # Kill focused window
     bindsym $mod+Shift+c kill
 

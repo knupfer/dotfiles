@@ -277,7 +277,6 @@
               automatic = true;
               dates = ["weekly"];
             };
-
             settings.download-buffer-size = 524288000;
             settings.experimental-features = [ "nix-command" "flakes" ];
           };
@@ -285,18 +284,13 @@
             firefox = {
               enable = true;
               policies = {
-                DisableTelemetry = true;
-                DisableFirefoxStudies = true;
-                EnableTrackingProtection = {
-                  Value = true;
-                  Locked = true;
-                  Cryptomining = true;
-                  Fingerprinting = true;
-                };
-                DisableFirefoxAccounts = true;
                 DisableAccounts = true;
-                OverrideFirstRunPage = "";
-                OverridePostUpdatePage = "";
+                DisableFeedbackCommands = true;
+                DisableFirefoxAccounts = true;
+                DisableFirefoxStudies = true;
+                DisableProfileImport = true;
+                DisableTelemetry = true;
+                DisplayMenuBar = "never";
                 ExtensionSettings = {
                   "*".installation_mode = "blocked"; # blocks all addons except uBlock
                   "uBlock0@raymondhill.net" = {
@@ -304,12 +298,34 @@
                     installation_mode = "force_installed";
                   };
                 };
+                FirefoxHome = {
+                  Search = false;
+                  TopSites = false;
+                  SponsoredTopSites = false;
+                  Highlights = false;
+                  Snippets = false;
+                };
+                Homepage.URL = "about:blank";
+                NewTabPage = false;
+                NoDefaultBookmarks = true;
+                SearchEngines.Default = "DuckDuckGo";
+                TranslateEnabled = false;
+                UserMessaging = {
+                  ExtensionRecommendations = false;
+                  FeatureRecommendations = false;
+                  SkipOnboarding = true;  # Key setting to skip onboarding
+                  UrlbarInterventions = false;
+                  WhatsNew = false;
+                };
                 Preferences = {
-                  "browser.translations.enable" = false;
+                  "browser.tabs.opentabfor.middleclick" = false;
                   "browser.theme.content-theme" = 0;
                   "browser.theme.toolbar-theme" = 0;
-                  "privacy.donottrackheader.enabled" = true;
-                  "privacy.trackingprotection.enabled" = true;
+                  "browser.translations.enable" = false;
+                  "browser.link.open_newwindow" = 2;
+                  "browser.link.open_newwindow.restriction" = 0;
+                  "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+                  # add a userChrom.css to remove tabs
                 };
               };
             };
