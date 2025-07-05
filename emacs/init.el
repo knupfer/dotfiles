@@ -76,8 +76,7 @@
    gptel-prompt-prefix-alist
    '((markdown-mode . "")
      (org-mode . "")
-     (text-mode . ""))
-   gptel-org-branching-context t))
+     (text-mode . "")))
 
 (setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
