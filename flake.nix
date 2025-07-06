@@ -105,9 +105,13 @@
               else
                 EPP=power
               fi
-              echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference || echo "epp not writable"
+              echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
             '';
-            serviceConfig.Type = "oneshot";
+            serviceConfig = {
+              Type = "oneshot";
+              Restart = "on-failure";
+              RestartSec = 60;
+            };
           };
         };
 
