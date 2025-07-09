@@ -115,6 +115,29 @@
           };
         };
 
+        nixosModules.epsonET2550 = {
+          environment.systemPackages = with pkgs; [
+            simple-scan
+            sane-airscan  # provide the `airscan-discover` tool for debugging
+            sane-backends # provide the `scanimage` tool for debugging
+          ];
+          hardware.sane = {
+            enable = true;
+            extraBackends = [ pkgs.sane-airscan ];
+          };
+          services = {
+            avahi = {
+              enable = true; # find the scanner on the network automatically
+              nssmdns4 = true; # IPv4 discovery
+              openFirewall = true; # open firewall ports for mDNS
+            };
+            printing = {
+              enable = true;
+              drivers = [ pkgs.epson-escpr ];
+            };
+          };
+        };
+
         nixosModules.e14 = {
           imports = [ self.nixosModules.default
                       self.nixosModules.powerManagement
@@ -206,6 +229,9 @@
         };
 
         nixosModules.default = let my = self.packages.x86_64-linux; in {
+
+          imports = [ self.nixosModules.epsonET2550 ];
+
           boot = {
             kernelPackages = pkgs.linuxPackages_latest;
             tmp.useTmpfs = true;
@@ -372,10 +398,6 @@
               };
             };
             power-profiles-daemon.enable = false;
-            printing = {
-              enable = true;
-              drivers = [ pkgs.epson-escpr ];
-            };
             xserver.xkb.extraLayouts.knu = {
               description = "My custom xkb layouts.";
               languages = [ "de" ];
