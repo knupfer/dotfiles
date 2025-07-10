@@ -116,25 +116,14 @@
         };
 
         nixosModules.epsonET2550 = {
-          environment.systemPackages = with pkgs; [
-            simple-scan
-            sane-airscan  # provide the `airscan-discover` tool for debugging
-            sane-backends # provide the `scanimage` tool for debugging
-          ];
+          environment.systemPackages = [ pkgs.simple-scan ];
           hardware.sane = {
             enable = true;
-            extraBackends = [ pkgs.sane-airscan ];
+            netConf = "192.168.178.25";
           };
-          services = {
-            avahi = {
-              enable = true; # find the scanner on the network automatically
-              nssmdns4 = true; # IPv4 discovery
-              openFirewall = true; # open firewall ports for mDNS
-            };
-            printing = {
-              enable = true;
-              drivers = [ pkgs.epson-escpr ];
-            };
+          services.printing = {
+            enable = true;
+            drivers = [ pkgs.epson-escpr ];
           };
         };
 
@@ -156,7 +145,7 @@
           services = {
             displayManager.gdm.enable = pkgs.lib.mkForce false;
             displayManager.ly.enable = true;
-            desktopManager.gnome.enable = pkgs.lib.mkForce false;
+            #desktopManager.gnome.enable = pkgs.lib.mkForce false;
             openssh.enable = false;
           };
         };
