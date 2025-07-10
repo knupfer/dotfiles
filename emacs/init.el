@@ -129,8 +129,15 @@ result already exists."
     ()
   "Create LaTeX previews in a streaming fashion."
   (let ((beg (save-excursion
-	       (gptel-beginning-of-response)
-	       (point))))
+	       (org-backward-paragraph)
+	       (point)))
+	(end (point)))
+    (save-excursion
+      (goto-char beg)
+      (while (re-search-forward "$ ?\\([^$
+]*[^
+ $]\\) ?\\$" end t)
+   (replace-match "$\\1$" nil nil)))
     (org--latex-preview-region beg (point))))
 
 (add-hook 'gptel-mode-hook 'visual-line-mode)
