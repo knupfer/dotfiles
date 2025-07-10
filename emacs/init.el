@@ -74,9 +74,9 @@
                    :models my-models)
    gptel-default-mode 'org-mode
    gptel-prompt-prefix-alist
-   '((markdown-mode . "")
-     (org-mode . "")
-     (text-mode . ""))))
+   '((markdown-mode . "# ")
+     (org-mode . "* ")
+     (text-mode . "# "))))
 
 (setq org-babel-lilypond-paper-settings (concat org-babel-lilypond-paper-settings "
 \\language \"deutsch\"
@@ -135,10 +135,8 @@ result already exists."
 
 (add-hook 'gptel-mode-hook 'visual-line-mode)
 (add-hook 'gptel-post-stream-hook 'gptel-stream-latex)
-(add-hook 'gptel-post-request-hook 'org-insert-heading-respect-content)
 
 (gptel "*scratch*")
-(org-insert-heading)
 
 (add-hook 'emacs-startup-hook (lambda () (goto-char (point-max))))
 
