@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
-  outputs = { self, nixos-hardware, nixpkgs }:
+  outputs = { self, nixpkgs }:
 
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
