@@ -1,8 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    agenix.url = "github:ryantm/agenix";
   };
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, agenix }:
 
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
@@ -217,9 +218,20 @@
           services.logind.lidSwitch = "suspend";
         };
 
-        nixosModules.default = let my = self.packages.x86_64-linux; in {
+        nixosModules.default = {config, ...}: let my = self.packages.x86_64-linux; in {
 
-          imports = [ self.nixosModules.epsonET2550 ];
+          imports = [
+            self.nixosModules.epsonET2550
+            agenix.nixosModules.default
+          ];
+
+          age = {
+            identityPaths = [ "/etc/nixos/secret.agekey" ];
+            secrets = {
+              knupferHashedPassword.file = secrets/knupferHashedPassword.age;
+              ramirezHashedPassword.file = secrets/ramirezHashedPassword.age;
+            };
+          };
 
           boot = {
             kernelPackages = pkgs.linuxPackages_latest;
@@ -399,12 +411,15 @@
             users = {
               knupfer = {
                 extraGroups = [ "wheel" "networkmanager" "video" ];
+                hashedPasswordFile = config.age.secrets.knupferHashedPassword.path;
                 isNormalUser = true;
                 uid=1000;
               };
               ramirez = {
                 extraGroups = [ "wheel" "networkmanager" "video" ];
+                hashedPasswordFile = config.age.secrets.ramirezHashedPassword.path;
                 isNormalUser = true;
+                openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO4E7bro2Z1/yphVTjPv6R4Se8pMtRrMZYwUXL2u5yh6" ];
                 uid=1001;
               };
               gast = {
