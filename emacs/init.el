@@ -130,14 +130,22 @@ result already exists."
   "Create LaTeX previews in a streaming fashion."
   (let ((beg (save-excursion
 	       (org-backward-paragraph)
+	       (org-backward-paragraph)
 	       (point)))
 	(end (point)))
+
+    (save-excursion
+      (goto-char beg)
+      (while (re-search-forward "
+\\\\begin{" end t)
+	(replace-match "\\\\begin{" nil nil)))
+
     (save-excursion
       (goto-char beg)
       (while (re-search-forward "$ ?\\([^$
 ]*[^
  $]\\) ?\\$" end t)
-   (replace-match "$\\1$" nil nil)))
+	(replace-match "$\\1$" nil nil)))
     (org--latex-preview-region beg (point))))
 
 (add-hook 'gptel-mode-hook 'visual-line-mode)
