@@ -118,13 +118,13 @@
 
         nixosModules.epsonET2550 = {
           environment.systemPackages = [ pkgs.simple-scan ];
-          hardware.sane = {
-            enable = true;
-            netConf = "192.168.178.25";
-          };
-          services.printing = {
-            enable = true;
-            drivers = [ pkgs.epson-escpr ];
+          hardware.sane.enable = true;
+          services = {
+            avahi.enable = true;
+            printing = {
+              enable = true;
+              drivers = [ pkgs.epson-escpr ];
+            };
           };
         };
 
