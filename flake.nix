@@ -252,16 +252,12 @@
               evince
 
               git
-              gimp
 
-              haskellPackages.bench
               haskellPackages.cabal-install
               haskellPackages.ghc
 
               libreoffice
-              lilypond
 
-              pandoc
               passage
 
               signal-desktop
