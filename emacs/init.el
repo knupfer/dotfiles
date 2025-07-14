@@ -64,7 +64,7 @@
 
 (use-package gptel
   :init
-  (setf (alist-get 'default gptel-directives) "You are a large language model and a helpful assistant. Respond concisely.")
+  (setf (alist-get 'default gptel-directives) nil)
   (setq
    gptel--system-message (alist-get 'default gptel-directives)
    gptel-model (car my-models)
