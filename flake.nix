@@ -146,7 +146,7 @@
           services = {
             displayManager.gdm.enable = pkgs.lib.mkForce false;
             displayManager.ly.enable = true;
-            #desktopManager.gnome.enable = pkgs.lib.mkForce false;
+            desktopManager.gnome.enable = pkgs.lib.mkForce false;
             openssh.enable = false;
           };
         };
