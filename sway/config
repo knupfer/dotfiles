@@ -1,5 +1,5 @@
 set $mod Mod4
-set $menu wmenu-run -f "monospace semibold 14" -N 000000 -S 00AAAA | xargs swaymsg exec --
+set $menu wmenu-run -f "Iosevka 13" -N 000000 -S 00AAAA | xargs swaymsg exec --
 
 default_border pixel 3
 default_floating_border pixel 3
@@ -81,12 +81,13 @@ input type:touchpad middle_emulation enabled
     bindsym $mod+comma resize grow height 10px
 
 bar {
-    font Iosevka Semibold 14
+    font Iosevka 13
     position top
     status_command i3status-rs
     gaps 0
     status_edge_padding 0
     status_padding 0
+    height 25
     workspace_min_width 30
     colors {
         background         #000000

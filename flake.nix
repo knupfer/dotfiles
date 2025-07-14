@@ -359,7 +359,7 @@
             foot = {
               enable = true;
               settings = {
-                main.font = "monospace:semibold:size=14";
+                main.font = "Iosevka:size=13";
                 colors.background = "000000";
               };
             };
