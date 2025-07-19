@@ -37,6 +37,12 @@
                       :background "black"
                       :foreground "#0ff")
 
+(show-paren-mode -1)
+(when show-paren--idle-timer
+  (cancel-timer show-paren--idle-timer)
+  (setq show-paren--idle-timer nil))
+
+(auto-save-mode -1)
 (scroll-bar-mode -1)
 (fringe-mode '(0 . nil))
 (column-number-mode)
@@ -44,8 +50,10 @@
 (tool-bar-mode -1)
 (indent-tabs-mode -1)
 (blink-cursor-mode -1)
-
 (global-flycheck-mode)
+
+(setq gc-cons-threshold (* 100 1024 1024))
+(setq gc-cons-percentage 0.5)
 
 (autoload 'LilyPond-mode "lilypond-mode" "LilyPond Editing Mode" t)
 (add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
