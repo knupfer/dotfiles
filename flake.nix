@@ -351,6 +351,8 @@
                   "browser.translations.enable" = false;
                   "browser.link.open_newwindow" = 2;
                   "browser.link.open_newwindow.restriction" = 0;
+                  "gfx.webrender.all" = true;
+                  "layers.acceleration.force-enabled" = true;
                   "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
                   # add a userChrom.css to remove tabs
                 };
