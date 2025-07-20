@@ -64,6 +64,7 @@
         };
 
         nixosModules.powerManagement = {
+          boot.blacklistedKernelModules = [ "bluetooth" "pcspkr" ];
           boot.kernelParams = [
             "pcie_aspm=force"
             "nvme_core.default_ps_max_latency_us=5500"
@@ -71,26 +72,8 @@
           ];
           fileSystems."/".options = ["noatime" "nodiratime"];
           hardware.bluetooth.enable = false;
+          networking.wireless.scanOnLowSignal = false;
           powerManagement.powertop.enable = true;
-          services.fstrim.enable = true;
-          services.udev.extraRules = ''
-            SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
-            SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
-          '';
-          systemd.services.toggle-performance = {
-            serviceConfig = {
-              RemainAfterExit = "yes";
-              Type = "oneshot";
-              ExecStart = pkgs.writeShellScript "performance" ''
-                echo performance | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
-                echo performance >     /sys/firmware/acpi/platform_profile
-              '';
-              ExecStop = pkgs.writeShellScript "balanced" ''
-                echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
-                echo balanced      > /sys/firmware/acpi/platform_profile
-              '';
-            };
-          };
           security.polkit.extraConfig = ''
             polkit.addRule(function(action, subject) {
               if (action.id == "org.freedesktop.systemd1.manage-units" && action.lookup("unit") == "toggle-performance.service") {
@@ -98,20 +81,36 @@
               }
             });
           '';
-          systemd.services.powerManagement = {
-            wantedBy = [ "multi-user.target" ];
-            script = ''
-              if [ "$(cat /sys/class/power_supply/AC/online)" -eq 1 ]; then
-                EPP=balance_performance
-              else
-                EPP=power
-              fi
-              echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
-            '';
-            serviceConfig = {
-              Type = "oneshot";
-              Restart = "on-failure";
-              RestartSec = 60;
+          services = {
+            fstrim.enable = true;
+            pipewire.extraConfig.pipewire."10-low-power" = {
+              context.properties = {
+                default.clock.allowed-rates = [ 44100 48000 ];
+                default.clock.max-quantum = 2048;
+                default.clock.min-quantum = 1024;
+                default.clock.power-saving = true;
+                default.clock.quantum = 1024;
+                default.clock.rate = 44100;
+                session.suspend-timeout-seconds = 2;
+              };
+            };
+            pulseaudio.enable = false;
+          };
+          systemd = {
+            oomd.enable = false;
+            services.toggle-performance = {
+              serviceConfig = {
+                RemainAfterExit = "yes";
+                Type = "oneshot";
+                ExecStart = pkgs.writeShellScript "performance" ''
+                echo performance | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
+                echo performance >     /sys/firmware/acpi/platform_profile
+              '';
+                ExecStop = pkgs.writeShellScript "balanced" ''
+                echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
+                echo balanced      > /sys/firmware/acpi/platform_profile
+              '';
+              };
             };
           };
         };
