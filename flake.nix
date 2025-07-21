@@ -95,21 +95,42 @@
               };
             };
             pulseaudio.enable = false;
+            udev.extraRules = ''
+              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="1", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
+              SUBSYSTEM=="power_supply", ACTION=="change", ATTR{online}=="0", RUN+="${pkgs.systemd}/bin/systemctl start powerManagement"
+            '';
           };
           systemd = {
             oomd.enable = false;
-            services.toggle-performance = {
-              serviceConfig = {
-                RemainAfterExit = "yes";
-                Type = "oneshot";
-                ExecStart = pkgs.writeShellScript "performance" ''
-                echo performance | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
-                echo performance >     /sys/firmware/acpi/platform_profile
-              '';
-                ExecStop = pkgs.writeShellScript "balanced" ''
-                echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
-                echo balanced      > /sys/firmware/acpi/platform_profile
-              '';
+            services = {
+              powerManagement = {
+                wantedBy = [ "multi-user.target" ];
+                script = ''
+                  if [ "$(cat /sys/class/power_supply/AC/online)" -eq 1 ]; then
+                    EPP=balance_performance
+                  else
+                    EPP=power
+                  fi
+                  echo $EPP | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference
+                '';
+                serviceConfig = {
+                  Type = "oneshot";
+                  Restart = "on-failure";
+                };
+              };
+              toggle-performance = {
+                serviceConfig = {
+                  RemainAfterExit = "yes";
+                  Type = "oneshot";
+                  ExecStart = pkgs.writeShellScript "performance" ''
+                    echo performance | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
+                    echo performance >     /sys/firmware/acpi/platform_profile
+                  '';
+                  ExecStop = pkgs.writeShellScript "balanced" ''
+                    echo powersave | tee /sys/devices/system/cpu/cpufreq/policy*/scaling_governor
+                    echo balanced      > /sys/firmware/acpi/platform_profile
+                  '';
+                };
               };
             };
           };
