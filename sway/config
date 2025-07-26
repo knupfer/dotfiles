@@ -12,6 +12,8 @@ output "Samsung Electric Company S24D300 0x5A5A4158" scale 1
 output "Tianma Microelectronics Ltd. TL140ADXP22 Unknown" mode 2880x1800@120Hz
 seat * xcursor_theme Bibata-Modern-Ice 32
 
+exec wl-gammactl -g 1.3
+
 exec swayidle timeout 120 'swaymsg "output eDP-1 power off"' resume 'swaymsg "output eDP-1 power on"'
 
 input type:keyboard xkb_layout knu
