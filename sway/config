@@ -10,6 +10,10 @@ client.focused #aaaaaa #00AAAA #FFFFFF #005555
 output HDMI-A-1 scale 3
 output "Samsung Electric Company S24D300 0x5A5A4158" scale 1
 output "Tianma Microelectronics Ltd. TL140ADXP22 Unknown" mode 2880x1800@120Hz
+
+# Use always the first workspace for hdmi
+workspace 1 output HDMI-A-1, eDP-1
+
 seat * xcursor_theme Bibata-Modern-Ice 32
 
 exec wl-gammactl -g 1.3
