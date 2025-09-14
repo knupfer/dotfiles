@@ -18,6 +18,8 @@ workspace 3 output eDP-1
 workspace 4 output eDP-1
 workspace 1
 
+exec swaymsg -t subscribe '["workspace"]' --monitor | jq -r --unbuffered '.current.output' | xargs -I{} swaymsg "input type:touchpad map_to_output {}"
+
 seat * xcursor_theme Bibata-Modern-Ice 32
 
 exec wl-gammactl -g 1.3
