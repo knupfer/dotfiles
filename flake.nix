@@ -148,7 +148,7 @@
           };
         };
 
-        nixosModules.e14 = {
+        nixosModules.e14 = {config, ...}: {
           imports = [ self.nixosModules.default
                       self.nixosModules.powerManagement
                     ];
@@ -168,6 +168,14 @@
             displayManager.ly.enable = true;
             desktopManager.gnome.enable = pkgs.lib.mkForce false;
             openssh.enable = false;
+            radicale = {
+              enable = true;
+              settings.auth = {
+                type = "htpasswd";
+                htpasswd_filename = config.age.secrets.radicaleUsers.path;
+                htpasswd_encryption = "bcrypt";
+              };
+            };
           };
         };
 
@@ -250,6 +258,11 @@
             secrets = {
               knupferHashedPassword.file = secrets/knupferHashedPassword.age;
               ramirezHashedPassword.file = secrets/ramirezHashedPassword.age;
+              radicaleUsers = {
+                file  = secrets/radicaleUsers.age;
+                owner = "radicale";
+                group = "radicale";
+              };
             };
           };
 
