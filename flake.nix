@@ -235,7 +235,7 @@
             };
           };
           networking.hostName = "mipro";
-          services.logind.lidSwitch = "suspend";
+          services.logind.settings.Login.HandleLidSwitch = "suspend";
         };
 
         nixosModules.default = {config, ...}: let my = self.packages.x86_64-linux; in {
@@ -402,7 +402,7 @@
               package = my.emacs;
             };
             libinput.enable = true;
-            logind.lidSwitch = pkgs.lib.mkDefault "hibernate";
+            logind.settings.Login.HandleLidSwitch = pkgs.lib.mkDefault "hibernate";
             ollama.enable = true;
             openssh = {
               enable = pkgs.lib.mkDefault true;
