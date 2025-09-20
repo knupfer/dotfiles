@@ -197,7 +197,7 @@
                       type = "carddav";
                       url = "http://localhost:5232";
                       username = "knupfer";
-                      password.fetch = ["command" "cat" config.age.secrets.radicaleKnupfer.path];
+                      "password.fetch" = ["command" "cat" config.age.secrets.radicaleKnupfer.path];
                     };
                   };
                 };
