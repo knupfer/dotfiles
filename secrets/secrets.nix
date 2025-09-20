@@ -4,4 +4,5 @@ in
   knupferHashedPassword.age.publicKeys = keys;
   ramirezHashedPassword.age.publicKeys = keys;
   radicaleUsers.age.publicKeys = keys;
+  radicaleKnupfer.age.publicKeys = keys;
 }

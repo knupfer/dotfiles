@@ -176,6 +176,36 @@
                 htpasswd_encryption = "bcrypt";
               };
             };
+            vdirsyncer = {
+              enable = true;
+              jobs.knupfer = {
+                config = {
+                  pairs = {
+                    contacts = {
+                      a = "local_contacts";
+                      b = "remote_contacts";
+                      collections = ["from a" "from b"];
+                    };
+                  };
+                  storages = {
+                    local_contacts = {
+                      type = "filesystem";
+                      path = "~/collections/contacts";
+                      fileext = ".vcf";
+                    };
+                    remote_contacts = {
+                      type = "carddav";
+                      url = "http://localhost:5232";
+                      username = "knupfer";
+                      password.fetch = ["command" "cat" config.age.secrets.radicaleKnupfer.path];
+                    };
+                  };
+                };
+                forceDiscover = true;
+                group = "users";
+                user = "knupfer";
+              };
+            };
           };
         };
 
@@ -262,6 +292,11 @@
                 file  = secrets/radicaleUsers.age;
                 owner = "radicale";
                 group = "radicale";
+              };
+              radicaleKnupfer = {
+                file  = secrets/radicaleKnupfer.age;
+                owner = "knupfer";
+                group = "users";
               };
             };
           };
