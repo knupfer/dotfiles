@@ -28,7 +28,7 @@
 
           emacs = pkgs.symlinkJoin {
             name = "emacs";
-            paths = [ (pkgs.emacs30-pgtk.pkgs.withPackages (melpa: with melpa;
+            paths = [ (pkgs.emacs-pgtk.pkgs.withPackages (melpa: with melpa;
               [ org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
             buildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
