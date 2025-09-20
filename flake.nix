@@ -324,6 +324,8 @@
               haskellPackages.cabal-install
               haskellPackages.ghc
 
+              khard
+
               libreoffice
 
               passage
