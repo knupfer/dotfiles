@@ -29,7 +29,7 @@
           emacs = pkgs.symlinkJoin {
             name = "emacs";
             paths = [ (pkgs.emacs-pgtk.pkgs.withPackages (melpa: with melpa;
-              [ org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode ] )) ];
+              [ org-inline-pdf avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode yaml-mode ] )) ];
             buildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
               $out/bin/emacs --batch \
