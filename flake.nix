@@ -183,17 +183,45 @@
                   pairs = {
                     contacts = {
                       a = "local_contacts";
-                      b = "remote_contacts";
+                      b = "radicale_contacts";
+                      collections = ["from a" "from b"];
+                    };
+                    calendar_moerike_to_radicale = {
+                      a = "radicale_calendar";
+                      b = "moerike_calendar";
+                      collections = [["moerike" "moerike" null]];
+                    };
+                    calendar = {
+                      a = "local_calendar";
+                      b = "radicale_calendar";
                       collections = ["from a" "from b"];
                     };
                   };
                   storages = {
+                    local_calendar = {
+                      type = "filesystem";
+                      path = "~/collections/calendar";
+                      fileext = ".ics";
+                    };
+                    moerike_calendar = {
+                      type = "http";
+                      "url.fetch" = ["command" "cat" config.age.secrets.moerikeCalendar.path];
+                      filter_hook = pkgs.writeShellScript "filter-cal" ''
+                        sed -z 's/"Την.*"//g'
+                      ''; # remove buggy greek
+                    };
                     local_contacts = {
                       type = "filesystem";
                       path = "~/collections/contacts";
                       fileext = ".vcf";
                     };
-                    remote_contacts = {
+                    radicale_calendar = {
+                      type = "caldav";
+                      url = "http://localhost:5232";
+                      username = "knupfer";
+                      "password.fetch" = ["command" "cat" config.age.secrets.radicaleKnupfer.path];
+                    };
+                    radicale_contacts = {
                       type = "carddav";
                       url = "http://localhost:5232";
                       username = "knupfer";
@@ -295,6 +323,11 @@
               };
               radicaleKnupfer = {
                 file  = secrets/radicaleKnupfer.age;
+                owner = "knupfer";
+                group = "users";
+              };
+              moerikeCalendar = {
+                file = secrets/moerikeCalendar.age;
                 owner = "knupfer";
                 group = "users";
               };
