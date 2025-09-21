@@ -186,10 +186,20 @@
                       b = "radicale_contacts";
                       collections = ["from a" "from b"];
                     };
-                    calendar_moerike_to_radicale = {
+                    calendar_moerike_administration_to_radicale = {
                       a = "radicale_calendar";
-                      b = "moerike_calendar";
-                      collections = [["moerike" "moerike" null]];
+                      b = "moerike_administration_calendar";
+                      collections = [["moerike-administration" "moerike-administration" null]];
+                    };
+                    calendar_moerike_public_to_radicale = {
+                      a = "radicale_calendar";
+                      b = "moerike_public_calendar";
+                      collections = [["moerike-public" "moerike-public" null]];
+                    };
+                    calendar_moerike_teacher_to_radicale = {
+                      a = "radicale_calendar";
+                      b = "moerike_teacher_calendar";
+                      collections = [["moerike-teacher" "moerike-teacher" null]];
                     };
                     calendar = {
                       a = "local_calendar";
@@ -203,9 +213,23 @@
                       path = "~/collections/calendar";
                       fileext = ".ics";
                     };
-                    moerike_calendar = {
+                    moerike_administration_calendar = {
                       type = "http";
-                      "url.fetch" = ["command" "cat" config.age.secrets.moerikeCalendar.path];
+                      "url.fetch" = ["command" "cat" config.age.secrets.moerikeAdministrationCalendar.path];
+                      filter_hook = pkgs.writeShellScript "filter-cal" ''
+                        sed -z 's/"Την.*"//g'
+                      ''; # remove buggy greek
+                    };
+                    moerike_public_calendar = {
+                      type = "http";
+                      "url.fetch" = ["command" "cat" config.age.secrets.moerikePublicCalendar.path];
+                      filter_hook = pkgs.writeShellScript "filter-cal" ''
+                        sed -z 's/"Την.*"//g'
+                      ''; # remove buggy greek
+                    };
+                    moerike_teacher_calendar = {
+                      type = "http";
+                      "url.fetch" = ["command" "cat" config.age.secrets.moerikeTeacherCalendar.path];
                       filter_hook = pkgs.writeShellScript "filter-cal" ''
                         sed -z 's/"Την.*"//g'
                       ''; # remove buggy greek
@@ -326,8 +350,18 @@
                 owner = "knupfer";
                 group = "users";
               };
-              moerikeCalendar = {
-                file = secrets/moerikeCalendar.age;
+              moerikeAdministrationCalendar = {
+                file = secrets/moerikeAdministrationCalendar.age;
+                owner = "knupfer";
+                group = "users";
+              };
+              moerikePublicCalendar = {
+                file = secrets/moerikePublicCalendar.age;
+                owner = "knupfer";
+                group = "users";
+              };
+              moerikeTeacherCalendar = {
+                file = secrets/moerikeTeacherCalendar.age;
                 owner = "knupfer";
                 group = "users";
               };
