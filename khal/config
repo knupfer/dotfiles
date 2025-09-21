@@ -1,5 +1,10 @@
 [calendars]
 
+[[private]]
+path = /home/knupfer/collections/calendar/fbf0690d-2757-4c97-a568-792f79a8bda3
+type = calendar
+color = "#FA0"
+
 [[moerike-administration]]
 path = /home/knupfer/collections/calendar/moerike-administration
 type = calendar
