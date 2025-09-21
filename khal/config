@@ -1,0 +1,42 @@
+[calendars]
+
+[[moerike-administration]]
+path = /home/knupfer/collections/calendar/moerike-administration
+type = calendar
+readonly = true
+color = "#F00"
+
+[[moerike-public]]
+path = /home/knupfer/collections/calendar/moerike-public
+type = calendar
+readonly = true
+color = "#0FF"
+
+[[moerike-teacher]]
+path = /home/knupfer/collections/calendar/moerike-teacher
+type = calendar
+readonly = true
+color = "#F0F"
+
+[[bday-work]]
+path = /home/knupfer/collections/contacts/f07da76e-fbcb-4e2a-b92f-e83380c32d3a
+type = birthdays
+readonly = true
+color = "#FF0"
+
+[[bday-private]]
+path = /home/knupfer/collections/contacts/f5695b1d-ed95-9976-9100-cd89c285ffaf
+type = birthdays
+readonly = true
+color = "#FF0"
+
+[locale]
+timeformat = %H:%M
+dateformat = %Y-%m-%d
+longdateformat = %Y-%m-%d
+datetimeformat = %Y-%m-%d %H:%M
+longdatetimeformat = %Y-%m-%d %H:%M
+
+[default]
+highlight_event_days = true
+timedelta = 7d

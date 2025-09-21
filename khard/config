@@ -1,0 +1,6 @@
+[addressbooks]
+[[contacts]]
+path = ~/collections/contacts/f5695b1d-ed95-9976-9100-cd89c285ffaf
+
+[vcard]
+private_objects = ThreemaID,

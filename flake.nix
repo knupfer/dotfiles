@@ -61,6 +61,26 @@
                 --add-flags "${./sway/i3status-rs.toml}"
             '';
           };
+
+          khal = pkgs.symlinkJoin {
+            name = "khal";
+            paths = [ pkgs.khal ];
+            buildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/khal \
+                --add-flags "--config ${./khal/config}"
+            '';
+          };
+
+          khard = pkgs.symlinkJoin {
+            name = "khard";
+            paths = [ pkgs.khard ];
+            buildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/khard \
+                --add-flags "--config ${./khard/config}"
+            '';
+          };
         };
 
         nixosModules.powerManagement = {
@@ -391,8 +411,8 @@
               haskellPackages.cabal-install
               haskellPackages.ghc
 
-              khal
-              khard
+              my.khal
+              my.khard
 
               libreoffice
 
