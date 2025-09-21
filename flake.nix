@@ -357,6 +357,7 @@
               haskellPackages.cabal-install
               haskellPackages.ghc
 
+              khal
               khard
 
               libreoffice
