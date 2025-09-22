@@ -424,6 +424,8 @@
 
               vlc
 
+              wl-clipboard
+
               zip
               unzip
             ]);
