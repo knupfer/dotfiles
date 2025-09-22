@@ -201,29 +201,29 @@
               jobs.knupfer = {
                 config = {
                   pairs = {
-                    contacts = {
-                      a = "local_contacts";
-                      b = "radicale_contacts";
-                      collections = ["from a" "from b"];
-                    };
-                    calendar_moerike_administration_to_radicale = {
+                    get_calendar_moerike_administration = {
                       a = "radicale_calendar";
                       b = "moerike_administration_calendar";
                       collections = [["moerike-administration" "moerike-administration" null]];
                     };
-                    calendar_moerike_public_to_radicale = {
+                    get_calendar_moerike_public = {
                       a = "radicale_calendar";
                       b = "moerike_public_calendar";
                       collections = [["moerike-public" "moerike-public" null]];
                     };
-                    calendar_moerike_teacher_to_radicale = {
+                    get_calendar_moerike_teacher = {
                       a = "radicale_calendar";
                       b = "moerike_teacher_calendar";
                       collections = [["moerike-teacher" "moerike-teacher" null]];
                     };
-                    calendar = {
+                    local_calendar = {
                       a = "local_calendar";
                       b = "radicale_calendar";
+                      collections = ["from a" "from b"];
+                    };
+                    local_contacts = {
+                      a = "local_contacts";
+                      b = "radicale_contacts";
                       collections = ["from a" "from b"];
                     };
                   };
