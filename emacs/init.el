@@ -16,6 +16,7 @@
 (require 'gptel)
 (require 'gptel-org)
 (require 'gptel-ollama)
+(require 'keepass-mode)
 (require 'org-inline-pdf)
 
 (bbdb-initialize 'gnus 'message)
