@@ -411,6 +411,8 @@
               haskellPackages.cabal-install
               haskellPackages.ghc
 
+              keepassxc
+
               my.khal
               my.khard
 
