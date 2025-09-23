@@ -17,26 +17,26 @@ priority = 30
 path = /home/knupfer/collections/calendar/moerike-teacher
 type = calendar
 readonly = true
-color = "#F0F"
+color = "#F5F"
 priority = 20
 
 [[moerike-public]]
 path = /home/knupfer/collections/calendar/moerike-public
 type = calendar
 readonly = true
-color = "#0FF"
+color = "#5FF"
 
 [[bday-work]]
 path = /home/knupfer/collections/contacts/f07da76e-fbcb-4e2a-b92f-e83380c32d3a
 type = birthdays
 readonly = true
-color = "#FF0"
+color = "#FF5"
 
 [[bday-private]]
 path = /home/knupfer/collections/contacts/f5695b1d-ed95-9976-9100-cd89c285ffaf
 type = birthdays
 readonly = true
-color = "#FF0"
+color = "#FF5"
 
 [locale]
 timeformat = %H:%M
