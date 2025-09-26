@@ -405,6 +405,7 @@
 
               cabal2nix
 
+              my.emacs
               evince
 
               git
@@ -540,11 +541,6 @@
           services = {
             desktopManager.gnome.enable = true;
             displayManager.gdm.enable = pkgs.lib.mkDefault true;
-            emacs = {
-              defaultEditor = true;
-              enable = true;
-              package = my.emacs;
-            };
             libinput.enable = true;
             logind.settings.Login.HandleLidSwitch = pkgs.lib.mkDefault "hibernate";
             ollama.enable = true;

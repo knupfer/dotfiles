@@ -18,6 +18,8 @@ workspace 3 output eDP-1
 workspace 4 output eDP-1
 workspace 1
 
+exec emacs --daemon
+
 exec swaymsg -t subscribe '["workspace"]' --monitor | jq -r --unbuffered '.current.output' | xargs -I{} swaymsg "input type:touchpad map_to_output {}"
 
 seat * xcursor_theme Bibata-Modern-Ice 32
@@ -48,7 +50,7 @@ input type:touchpad middle_emulation enabled
     bindsym $mod+h exec foot
 
     # Start emacs
-    bindsym $mod+Shift+h exec emacseditor
+    bindsym $mod+Shift+h exec emacsclient -c
 
     bindsym $mod+Shift+f exec firefox
     bindsym $mod+z layout toggle split tabbed
