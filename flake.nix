@@ -29,7 +29,7 @@
           emacs = pkgs.symlinkJoin {
             name = "emacs";
             paths = [ (pkgs.emacs-pgtk.pkgs.withPackages (melpa: with melpa;
-              [ avy bbdb flycheck gptel haskell-mode keepass-mode ledger-mode ligature magit markdown-mode nix-mode org-inline-pdf yaml-mode ] )) ];
+              [ age avy bbdb flycheck gptel haskell-mode ledger-mode ligature magit markdown-mode nix-mode org-inline-pdf pinentry yaml-mode ] )) ];
             buildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
               $out/bin/emacs --batch \
@@ -395,6 +395,7 @@
           environment = {
             systemPackages = (with pkgs; [
               age
+              rage
 
               alsa-utils
 
@@ -419,6 +420,7 @@
               libreoffice
 
               passage
+              pinentry
 
               signal-desktop
 

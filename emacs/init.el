@@ -16,8 +16,25 @@
 (require 'gptel)
 (require 'gptel-org)
 (require 'gptel-ollama)
-(require 'keepass-mode)
 (require 'org-inline-pdf)
+
+(setq auth-sources '("~/.authinfo" "~/.authinfo.gpg" "~/.netrc" "~/.authinfo.age"))
+
+(use-package pinentry
+  :config
+  (pinentry-start))
+
+(setq age-default-identity "/home/knupfer/.passage/identities")
+
+(use-package age
+  :ensure t
+  :demand t
+  :custom
+  (age-program "rage")
+  (age-default-recipient "age1v9cz4expd4u2vp7dyh8zwlh0asy23lvj83lesm4gxz9sl5chzu5q5amwwf")
+  :config
+  (setenv "PINENTRY_PROGRAM" "pinentry-emacs")
+  (age-file-enable))
 
 (bbdb-initialize 'gnus 'message)
 
